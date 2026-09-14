@@ -4,6 +4,10 @@ Ein offline nutzbarer Editor zum Planen, dokumentieren und prüfen von
 Computernetzwerken. Die fertige Anwendung besteht aus einer einzigen HTML-Datei
 und benötigt weder Webserver noch Installation.
 
+**[Hier sofort ausprobieren](https://ki42-dhbw.github.io/Netzwerktool/)**
+
+Direkt im Browser starten – ohne Download oder Installation.
+
 ## Schnellstart
 
 ### Windows

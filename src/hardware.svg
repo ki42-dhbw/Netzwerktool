@@ -1,0 +1,411 @@
+<g id="hw-defs">
+<!-- ============================================================
+     Hardware-Ansichten: gezeichnete Frontblenden im Format 120 × 48.
+     Bewusst generisch gehalten — keine Nachbildung konkreter
+     Herstellerprodukte, keine fremden Bildrechte.
+     Werden im Fotostreifen der Gerätekachel angezeigt.
+     ============================================================ -->
+
+<symbol id="hw-switch" viewBox="0 0 120 48">
+  <rect x="2" y="9" width="116" height="30" rx="3" fill="#3f4a5a"/>
+  <rect x="2" y="9" width="116" height="9" rx="3" fill="#4b5768"/>
+  <rect x="8" y="21" width="104" height="13" rx="1.5" fill="#1f2733"/>
+  <g fill="#0b1017">
+    <rect x="11" y="23.5" width="9" height="8" rx="1"/><rect x="23" y="23.5" width="9" height="8" rx="1"/>
+    <rect x="35" y="23.5" width="9" height="8" rx="1"/><rect x="47" y="23.5" width="9" height="8" rx="1"/>
+    <rect x="61" y="23.5" width="9" height="8" rx="1"/><rect x="73" y="23.5" width="9" height="8" rx="1"/>
+    <rect x="85" y="23.5" width="9" height="8" rx="1"/><rect x="97" y="23.5" width="9" height="8" rx="1"/>
+  </g>
+  <g fill="#22c55e"><circle cx="15.5" cy="14" r="1.4"/><circle cx="27.5" cy="14" r="1.4"/><circle cx="39.5" cy="14" r="1.4"/></g>
+  <g fill="#94a3b8"><circle cx="51.5" cy="14" r="1.4"/><circle cx="65.5" cy="14" r="1.4"/><circle cx="77.5" cy="14" r="1.4"/></g>
+  <rect x="2" y="36" width="116" height="3" rx="1.5" fill="#2b3440"/>
+</symbol>
+
+<symbol id="hw-switch-managed" viewBox="0 0 120 48">
+  <rect x="0.5" y="6" width="119" height="36" rx="2" fill="#39434f"/>
+  <rect x="0.5" y="6" width="7" height="36" fill="#4a5563"/><rect x="112.5" y="6" width="7" height="36" fill="#4a5563"/>
+  <g fill="#e2e8f0" opacity=".7"><circle cx="4" cy="11" r="1.2"/><circle cx="4" cy="37" r="1.2"/><circle cx="116" cy="11" r="1.2"/><circle cx="116" cy="37" r="1.2"/></g>
+  <rect x="10" y="10" width="76" height="12" rx="1" fill="#1b222c"/>
+  <rect x="10" y="26" width="76" height="12" rx="1" fill="#1b222c"/>
+  <g fill="#0b1017">
+    <rect x="12" y="12" width="5" height="8" rx=".7"/><rect x="18.5" y="12" width="5" height="8" rx=".7"/>
+    <rect x="25" y="12" width="5" height="8" rx=".7"/><rect x="31.5" y="12" width="5" height="8" rx=".7"/>
+    <rect x="38" y="12" width="5" height="8" rx=".7"/><rect x="44.5" y="12" width="5" height="8" rx=".7"/>
+    <rect x="51" y="12" width="5" height="8" rx=".7"/><rect x="57.5" y="12" width="5" height="8" rx=".7"/>
+    <rect x="64" y="12" width="5" height="8" rx=".7"/><rect x="70.5" y="12" width="5" height="8" rx=".7"/>
+    <rect x="77" y="12" width="5" height="8" rx=".7"/>
+    <rect x="12" y="28" width="5" height="8" rx=".7"/><rect x="18.5" y="28" width="5" height="8" rx=".7"/>
+    <rect x="25" y="28" width="5" height="8" rx=".7"/><rect x="31.5" y="28" width="5" height="8" rx=".7"/>
+    <rect x="38" y="28" width="5" height="8" rx=".7"/><rect x="44.5" y="28" width="5" height="8" rx=".7"/>
+    <rect x="51" y="28" width="5" height="8" rx=".7"/><rect x="57.5" y="28" width="5" height="8" rx=".7"/>
+    <rect x="64" y="28" width="5" height="8" rx=".7"/><rect x="70.5" y="28" width="5" height="8" rx=".7"/>
+    <rect x="77" y="28" width="5" height="8" rx=".7"/>
+  </g>
+  <rect x="90" y="10" width="20" height="12" rx="1" fill="#1b222c"/>
+  <rect x="92" y="12" width="7" height="8" rx=".7" fill="#0b1017"/><rect x="101" y="12" width="7" height="8" rx=".7" fill="#0b1017"/>
+  <g fill="#22c55e"><circle cx="93" cy="29" r="1.5"/><circle cx="99" cy="29" r="1.5"/></g>
+  <circle cx="105" cy="29" r="1.5" fill="#f59e0b"/>
+  <rect x="90" y="33" width="20" height="4" rx="1" fill="#2b3440"/>
+</symbol>
+
+<symbol id="hw-switch-l3" viewBox="0 0 120 48">
+  <rect x="0.5" y="6" width="119" height="36" rx="2" fill="#2f3b4a"/>
+  <rect x="0.5" y="6" width="7" height="36" fill="#41505f"/><rect x="112.5" y="6" width="7" height="36" fill="#41505f"/>
+  <rect x="10" y="10" width="70" height="28" rx="1" fill="#19212b"/>
+  <g fill="#0b1017">
+    <rect x="12" y="12" width="5" height="9" rx=".7"/><rect x="18.5" y="12" width="5" height="9" rx=".7"/>
+    <rect x="25" y="12" width="5" height="9" rx=".7"/><rect x="31.5" y="12" width="5" height="9" rx=".7"/>
+    <rect x="38" y="12" width="5" height="9" rx=".7"/><rect x="44.5" y="12" width="5" height="9" rx=".7"/>
+    <rect x="51" y="12" width="5" height="9" rx=".7"/><rect x="57.5" y="12" width="5" height="9" rx=".7"/>
+    <rect x="64" y="12" width="5" height="9" rx=".7"/><rect x="70.5" y="12" width="5" height="9" rx=".7"/>
+    <rect x="12" y="26" width="5" height="9" rx=".7"/><rect x="18.5" y="26" width="5" height="9" rx=".7"/>
+    <rect x="25" y="26" width="5" height="9" rx=".7"/><rect x="31.5" y="26" width="5" height="9" rx=".7"/>
+    <rect x="38" y="26" width="5" height="9" rx=".7"/><rect x="44.5" y="26" width="5" height="9" rx=".7"/>
+    <rect x="51" y="26" width="5" height="9" rx=".7"/><rect x="57.5" y="26" width="5" height="9" rx=".7"/>
+    <rect x="64" y="26" width="5" height="9" rx=".7"/><rect x="70.5" y="26" width="5" height="9" rx=".7"/>
+  </g>
+  <rect x="84" y="12" width="26" height="10" rx="1" fill="#111a24"/>
+  <rect x="86" y="14" width="10" height="6" rx=".6" fill="#0b1017"/><rect x="98" y="14" width="10" height="6" rx=".6" fill="#0b1017"/>
+  <rect x="84" y="26" width="26" height="10" rx="1" fill="#111a24"/>
+  <rect x="86" y="28" width="10" height="6" rx=".6" fill="#0b1017"/><rect x="98" y="28" width="10" height="6" rx=".6" fill="#0b1017"/>
+  <g fill="#38bdf8"><circle cx="88" cy="24" r="1.1"/><circle cx="94" cy="24" r="1.1"/></g>
+</symbol>
+
+<symbol id="hw-router" viewBox="0 0 120 48">
+  <path d="M20 12h80M20 12v-6M100 12v-6" stroke="#64748b" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <rect x="8" y="14" width="104" height="26" rx="5" fill="#3b4756"/>
+  <rect x="8" y="14" width="104" height="8" rx="5" fill="#485565"/>
+  <rect x="14" y="26" width="70" height="10" rx="1.4" fill="#1c242f"/>
+  <g fill="#0b1017">
+    <rect x="16" y="28" width="7" height="6" rx=".7"/><rect x="25" y="28" width="7" height="6" rx=".7"/>
+    <rect x="34" y="28" width="7" height="6" rx=".7"/><rect x="43" y="28" width="7" height="6" rx=".7"/>
+  </g>
+  <rect x="56" y="28" width="9" height="6" rx=".7" fill="#0b1017"/>
+  <rect x="55" y="26" width="11" height="10" rx="1.4" fill="none" stroke="#3b82f6" stroke-width="1"/>
+  <g fill="#22c55e"><circle cx="92" cy="24" r="1.6"/><circle cx="99" cy="24" r="1.6"/></g>
+  <circle cx="106" cy="24" r="1.6" fill="#f59e0b"/>
+  <g fill="#94a3b8"><circle cx="92" cy="32" r="1.6"/><circle cx="99" cy="32" r="1.6"/><circle cx="106" cy="32" r="1.6"/></g>
+</symbol>
+
+<symbol id="hw-wlan-router" viewBox="0 0 120 48">
+  <path d="M30 14V5M60 12V3M90 14v-9" stroke="#64748b" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <rect x="10" y="14" width="100" height="26" rx="8" fill="#37424f"/>
+  <rect x="10" y="14" width="100" height="9" rx="8" fill="#44505f"/>
+  <path d="M46 32a10 10 0 0 1 28 0" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M52 34a5 5 0 0 1 16 0" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="60" cy="36" r="1.8" fill="#38bdf8"/>
+  <g fill="#22c55e"><circle cx="22" cy="31" r="1.5"/><circle cx="28" cy="31" r="1.5"/><circle cx="34" cy="31" r="1.5"/></g>
+  <g fill="#94a3b8"><circle cx="88" cy="31" r="1.5"/><circle cx="94" cy="31" r="1.5"/><circle cx="100" cy="31" r="1.5"/></g>
+</symbol>
+
+<symbol id="hw-firewall" viewBox="0 0 120 48">
+  <rect x="0.5" y="8" width="119" height="32" rx="2" fill="#4a3038"/>
+  <rect x="0.5" y="8" width="7" height="32" fill="#5c3c45"/><rect x="112.5" y="8" width="7" height="32" fill="#5c3c45"/>
+  <rect x="12" y="13" width="30" height="14" rx="1.5" fill="#0f172a"/>
+  <g fill="#4ade80" opacity=".85"><rect x="15" y="16" width="18" height="2"/><rect x="15" y="20" width="24" height="2"/><rect x="15" y="24" width="12" height="2"/></g>
+  <rect x="48" y="14" width="58" height="12" rx="1" fill="#1b222c"/>
+  <g fill="#0b1017">
+    <rect x="50" y="16" width="7" height="8" rx=".7"/><rect x="59" y="16" width="7" height="8" rx=".7"/>
+    <rect x="68" y="16" width="7" height="8" rx=".7"/><rect x="77" y="16" width="7" height="8" rx=".7"/>
+    <rect x="88" y="16" width="7" height="8" rx=".7"/><rect x="97" y="16" width="7" height="8" rx=".7"/>
+  </g>
+  <path d="M12 31h94" stroke="#6b4550" stroke-width="1" fill="none"/>
+  <g fill="#ef4444"><circle cx="16" cy="35" r="1.5"/></g>
+  <g fill="#22c55e"><circle cx="23" cy="35" r="1.5"/><circle cx="30" cy="35" r="1.5"/></g>
+</symbol>
+
+<symbol id="hw-ap" viewBox="0 0 120 48">
+  <rect x="27" y="5" width="66" height="38" rx="10" fill="#e2e8f0"/>
+  <rect x="27" y="5" width="66" height="38" rx="10" fill="none" stroke="#cbd5e1"/>
+  <circle cx="60" cy="24" r="13" fill="none" stroke="#94a3b8" stroke-width="1"/>
+  <circle cx="60" cy="24" r="7" fill="none" stroke="#94a3b8" stroke-width="1"/>
+  <circle cx="60" cy="24" r="3" fill="#38bdf8"/>
+  <circle cx="60" cy="38" r="1.6" fill="#22c55e"/>
+</symbol>
+
+<symbol id="hw-modem" viewBox="0 0 120 48">
+  <path d="M92 14V4" stroke="#64748b" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+  <rect x="18" y="14" width="84" height="26" rx="4" fill="#3b4756"/>
+  <rect x="18" y="14" width="84" height="8" rx="4" fill="#485565"/>
+  <rect x="24" y="26" width="34" height="9" rx="1.2" fill="#1c242f"/>
+  <rect x="26" y="28" width="7" height="5" rx=".6" fill="#0b1017"/>
+  <rect x="35" y="28" width="7" height="5" rx=".6" fill="#0b1017"/>
+  <g fill="#22c55e"><circle cx="70" cy="30" r="1.5"/><circle cx="77" cy="30" r="1.5"/></g>
+  <circle cx="84" cy="30" r="1.5" fill="#f59e0b"/>
+  <circle cx="91" cy="30" r="1.5" fill="#94a3b8"/>
+</symbol>
+
+<symbol id="hw-gateway" viewBox="0 0 120 48">
+  <rect x="34" y="6" width="52" height="36" rx="3" fill="#516072"/>
+  <rect x="34" y="6" width="52" height="7" rx="3" fill="#5e6e82"/>
+  <rect x="30" y="18" width="4" height="12" rx="1" fill="#94a3b8"/>
+  <rect x="86" y="18" width="4" height="12" rx="1" fill="#94a3b8"/>
+  <rect x="40" y="17" width="40" height="10" rx="1.2" fill="#1c242f"/>
+  <rect x="43" y="19" width="7" height="6" rx=".6" fill="#0b1017"/>
+  <rect x="53" y="19" width="7" height="6" rx=".6" fill="#0b1017"/>
+  <path d="M64 22h12m0 0-3-2.5M76 22l-3 2.5" stroke="#38bdf8" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  <g fill="#22c55e"><circle cx="45" cy="34" r="1.4"/><circle cx="51" cy="34" r="1.4"/></g>
+  <rect x="60" y="32" width="18" height="4" rx="1" fill="#3b4756"/>
+</symbol>
+
+<symbol id="hw-server" viewBox="0 0 120 48">
+  <rect x="0.5" y="7" width="119" height="34" rx="2" fill="#3a4552"/>
+  <rect x="0.5" y="7" width="6" height="34" fill="#495667"/><rect x="113.5" y="7" width="6" height="34" fill="#495667"/>
+  <g fill="#e2e8f0" opacity=".55"><circle cx="3.5" cy="12" r="1.1"/><circle cx="3.5" cy="36" r="1.1"/><circle cx="116.5" cy="12" r="1.1"/><circle cx="116.5" cy="36" r="1.1"/></g>
+  <g fill="#2b3440" stroke="#4d596a" stroke-width=".6">
+    <rect x="11" y="11" width="20" height="12" rx="1"/><rect x="33" y="11" width="20" height="12" rx="1"/>
+    <rect x="55" y="11" width="20" height="12" rx="1"/><rect x="77" y="11" width="20" height="12" rx="1"/>
+    <rect x="11" y="25" width="20" height="12" rx="1"/><rect x="33" y="25" width="20" height="12" rx="1"/>
+    <rect x="55" y="25" width="20" height="12" rx="1"/><rect x="77" y="25" width="20" height="12" rx="1"/>
+  </g>
+  <g fill="#22c55e" opacity=".9"><circle cx="14" cy="17" r="1"/><circle cx="36" cy="17" r="1"/><circle cx="58" cy="17" r="1"/><circle cx="80" cy="17" r="1"/>
+    <circle cx="14" cy="31" r="1"/><circle cx="36" cy="31" r="1"/><circle cx="58" cy="31" r="1"/><circle cx="80" cy="31" r="1"/></g>
+  <rect x="101" y="11" width="9" height="26" rx="1.4" fill="#2b3440"/>
+  <circle cx="105.5" cy="16" r="2.4" fill="#1b222c" stroke="#64748b" stroke-width=".7"/>
+  <circle cx="105.5" cy="16" r=".9" fill="#22c55e"/>
+  <g fill="#64748b"><rect x="103" y="23" width="5" height="1.4" rx=".7"/><rect x="103" y="26.5" width="5" height="1.4" rx=".7"/><rect x="103" y="30" width="5" height="1.4" rx=".7"/></g>
+</symbol>
+
+<symbol id="hw-nas" viewBox="0 0 120 48">
+  <rect x="26" y="3" width="68" height="42" rx="4" fill="#3a4552"/>
+  <rect x="26" y="3" width="68" height="42" rx="4" fill="none" stroke="#2b3440"/>
+  <g fill="#2b3440" stroke="#4d596a" stroke-width=".6">
+    <rect x="31" y="7" width="26" height="34" rx="1.5"/><rect x="59" y="7" width="26" height="34" rx="1.5"/>
+  </g>
+  <g fill="#1b222c">
+    <rect x="33" y="9" width="22" height="14" rx="1"/><rect x="61" y="9" width="22" height="14" rx="1"/>
+    <rect x="33" y="25" width="22" height="14" rx="1"/><rect x="61" y="25" width="22" height="14" rx="1"/>
+  </g>
+  <g fill="#22c55e"><circle cx="36" cy="12" r="1"/><circle cx="64" cy="12" r="1"/><circle cx="36" cy="28" r="1"/></g>
+  <circle cx="64" cy="28" r="1" fill="#f59e0b"/>
+  <rect x="88" y="7" width="4" height="34" rx="1" fill="#2b3440"/>
+</symbol>
+
+<symbol id="hw-vmserver" viewBox="0 0 120 48">
+  <rect x="0.5" y="3" width="119" height="19" rx="2" fill="#3a4552"/>
+  <rect x="0.5" y="26" width="119" height="19" rx="2" fill="#3a4552"/>
+  <rect x="0.5" y="3" width="6" height="19" fill="#495667"/><rect x="113.5" y="3" width="6" height="19" fill="#495667"/>
+  <rect x="0.5" y="26" width="6" height="19" fill="#495667"/><rect x="113.5" y="26" width="6" height="19" fill="#495667"/>
+  <g fill="#2b3440" stroke="#4d596a" stroke-width=".6">
+    <rect x="11" y="6" width="17" height="13" rx="1"/><rect x="30" y="6" width="17" height="13" rx="1"/>
+    <rect x="49" y="6" width="17" height="13" rx="1"/><rect x="68" y="6" width="17" height="13" rx="1"/>
+    <rect x="11" y="29" width="17" height="13" rx="1"/><rect x="30" y="29" width="17" height="13" rx="1"/>
+    <rect x="49" y="29" width="17" height="13" rx="1"/><rect x="68" y="29" width="17" height="13" rx="1"/>
+  </g>
+  <g fill="#38bdf8"><circle cx="14" cy="12.5" r="1"/><circle cx="33" cy="12.5" r="1"/><circle cx="52" cy="12.5" r="1"/><circle cx="71" cy="12.5" r="1"/></g>
+  <g fill="#22c55e"><circle cx="14" cy="35.5" r="1"/><circle cx="33" cy="35.5" r="1"/><circle cx="52" cy="35.5" r="1"/><circle cx="71" cy="35.5" r="1"/></g>
+  <rect x="90" y="6" width="20" height="13" rx="1.2" fill="#2b3440"/>
+  <rect x="90" y="29" width="20" height="13" rx="1.2" fill="#2b3440"/>
+</symbol>
+
+<symbol id="hw-gpuserver" viewBox="0 0 120 48">
+  <rect x="0.5" y="4" width="119" height="40" rx="2" fill="#33303f"/>
+  <rect x="0.5" y="4" width="6" height="40" fill="#443f52"/><rect x="113.5" y="4" width="6" height="40" fill="#443f52"/>
+  <g fill="#221f2b">
+    <rect x="11" y="8" width="46" height="32" rx="1.5"/>
+  </g>
+  <g fill="#3d3850">
+    <rect x="14" y="11" width="40" height="3" rx="1.5"/><rect x="14" y="16" width="40" height="3" rx="1.5"/>
+    <rect x="14" y="21" width="40" height="3" rx="1.5"/><rect x="14" y="26" width="40" height="3" rx="1.5"/>
+    <rect x="14" y="31" width="40" height="3" rx="1.5"/>
+  </g>
+  <g fill="#221f2b" stroke="#4a4459" stroke-width=".6">
+    <rect x="62" y="8" width="22" height="32" rx="1.5"/><rect x="86" y="8" width="22" height="32" rx="1.5"/>
+  </g>
+  <g fill="none" stroke="#a855f7" stroke-width="1.1">
+    <circle cx="73" cy="24" r="7"/><circle cx="97" cy="24" r="7"/>
+  </g>
+  <g fill="#a855f7"><circle cx="73" cy="24" r="2"/><circle cx="97" cy="24" r="2"/></g>
+</symbol>
+
+<symbol id="hw-pc" viewBox="0 0 120 48">
+  <rect x="40" y="2" width="40" height="44" rx="3" fill="#3f4a5a"/>
+  <rect x="40" y="2" width="40" height="44" rx="3" fill="none" stroke="#2f3946"/>
+  <rect x="44" y="6" width="32" height="7" rx="1" fill="#1c242f"/>
+  <rect x="44" y="15" width="32" height="7" rx="1" fill="#1c242f"/>
+  <circle cx="49" cy="28" r="2.6" fill="#1c242f" stroke="#64748b" stroke-width=".7"/>
+  <circle cx="49" cy="28" r="1" fill="#38bdf8"/>
+  <g fill="#2b3440"><rect x="56" y="26" width="20" height="2.4" rx="1.2"/><rect x="56" y="31" width="20" height="2.4" rx="1.2"/><rect x="56" y="36" width="20" height="2.4" rx="1.2"/></g>
+  <rect x="44" y="36" width="8" height="6" rx="1" fill="#1c242f"/>
+</symbol>
+
+<symbol id="hw-notebook" viewBox="0 0 120 48">
+  <path d="M24 6h72v26H24z" fill="#3f4a5a"/>
+  <rect x="27" y="8.5" width="66" height="21" rx="1" fill="#0f172a"/>
+  <rect x="30" y="11" width="34" height="2" rx="1" fill="#38bdf8" opacity=".6"/>
+  <rect x="30" y="15" width="52" height="2" rx="1" fill="#475569"/>
+  <rect x="30" y="19" width="44" height="2" rx="1" fill="#475569"/>
+  <path d="M14 34h92l6 8H8z" fill="#4a5665"/>
+  <rect x="52" y="36" width="16" height="2" rx="1" fill="#3a4552"/>
+</symbol>
+
+<symbol id="hw-tablet" viewBox="0 0 120 48">
+  <rect x="34" y="2" width="52" height="44" rx="4" fill="#3f4a5a"/>
+  <rect x="38" y="6" width="44" height="36" rx="1.5" fill="#0f172a"/>
+  <rect x="41" y="9" width="20" height="2.4" rx="1.2" fill="#38bdf8" opacity=".6"/>
+  <rect x="41" y="14" width="34" height="2.4" rx="1.2" fill="#475569"/>
+  <rect x="41" y="19" width="28" height="2.4" rx="1.2" fill="#475569"/>
+</symbol>
+
+<symbol id="hw-smartphone" viewBox="0 0 120 48">
+  <rect x="46" y="1" width="28" height="46" rx="4" fill="#3f4a5a"/>
+  <rect x="49" y="5" width="22" height="37" rx="1.5" fill="#0f172a"/>
+  <rect x="52" y="8" width="10" height="2" rx="1" fill="#38bdf8" opacity=".6"/>
+  <rect x="52" y="12" width="16" height="2" rx="1" fill="#475569"/>
+  <rect x="56" y="3" width="8" height="1.2" rx=".6" fill="#64748b"/>
+</symbol>
+
+<symbol id="hw-raspberrypi" viewBox="0 0 120 48">
+  <rect x="14" y="8" width="92" height="32" rx="2" fill="#14532d"/>
+  <g fill="#166534"><circle cx="19" cy="13" r="2"/><circle cx="101" cy="13" r="2"/><circle cx="19" cy="35" r="2"/><circle cx="101" cy="35" r="2"/></g>
+  <rect x="26" y="9.5" width="46" height="4" rx="1" fill="#1f2933"/>
+  <g fill="#facc15"><rect x="27" y="10.3" width="1.4" height="2.4"/><rect x="30" y="10.3" width="1.4" height="2.4"/><rect x="33" y="10.3" width="1.4" height="2.4"/><rect x="36" y="10.3" width="1.4" height="2.4"/><rect x="39" y="10.3" width="1.4" height="2.4"/><rect x="42" y="10.3" width="1.4" height="2.4"/><rect x="45" y="10.3" width="1.4" height="2.4"/><rect x="48" y="10.3" width="1.4" height="2.4"/></g>
+  <rect x="80" y="16" width="24" height="10" rx="1" fill="#1f2933"/>
+  <rect x="82" y="18" width="9" height="6" rx=".6" fill="#0b1017"/><rect x="93" y="18" width="9" height="6" rx=".6" fill="#0b1017"/>
+  <rect x="80" y="29" width="24" height="9" rx="1" fill="#334155"/>
+  <rect x="30" y="20" width="16" height="14" rx="1" fill="#1f2933"/>
+  <rect x="52" y="22" width="12" height="10" rx="1" fill="#334155"/>
+  <g fill="#22c55e"><circle cx="24" cy="22" r="1.2"/></g><circle cx="24" cy="26" r="1.2" fill="#ef4444"/>
+</symbol>
+
+<symbol id="hw-mcu" viewBox="0 0 120 48">
+  <rect x="30" y="9" width="60" height="30" rx="2" fill="#1e3a5f"/>
+  <g fill="#0f172a"><rect x="33" y="11" width="54" height="2.4" rx=".6"/><rect x="33" y="34.6" width="54" height="2.4" rx=".6"/></g>
+  <g fill="#94a3b8">
+    <rect x="35" y="11.4" width="1.2" height="1.6"/><rect x="39" y="11.4" width="1.2" height="1.6"/><rect x="43" y="11.4" width="1.2" height="1.6"/>
+    <rect x="47" y="11.4" width="1.2" height="1.6"/><rect x="51" y="11.4" width="1.2" height="1.6"/><rect x="55" y="11.4" width="1.2" height="1.6"/>
+    <rect x="59" y="11.4" width="1.2" height="1.6"/><rect x="63" y="11.4" width="1.2" height="1.6"/><rect x="67" y="11.4" width="1.2" height="1.6"/>
+    <rect x="35" y="35" width="1.2" height="1.6"/><rect x="39" y="35" width="1.2" height="1.6"/><rect x="43" y="35" width="1.2" height="1.6"/>
+    <rect x="47" y="35" width="1.2" height="1.6"/><rect x="51" y="35" width="1.2" height="1.6"/><rect x="55" y="35" width="1.2" height="1.6"/>
+  </g>
+  <rect x="44" y="17" width="22" height="14" rx="1" fill="#0f172a"/>
+  <rect x="72" y="18" width="14" height="12" rx="1" fill="#334155"/>
+  <rect x="26" y="19" width="6" height="10" rx="1" fill="#64748b"/>
+  <circle cx="70" cy="34" r="1.3" fill="#22c55e"/>
+</symbol>
+
+<symbol id="hw-camera" viewBox="0 0 120 48">
+  <rect x="34" y="12" width="52" height="24" rx="12" fill="#e2e8f0"/>
+  <rect x="34" y="12" width="52" height="24" rx="12" fill="none" stroke="#cbd5e1"/>
+  <circle cx="46" cy="24" r="9" fill="#1f2933"/>
+  <circle cx="46" cy="24" r="6" fill="#0b1017"/>
+  <circle cx="43.5" cy="21.5" r="1.8" fill="#475569"/>
+  <g fill="#334155"><circle cx="64" cy="20" r="1.2"/><circle cx="69" cy="20" r="1.2"/><circle cx="74" cy="20" r="1.2"/><circle cx="64" cy="28" r="1.2"/><circle cx="69" cy="28" r="1.2"/><circle cx="74" cy="28" r="1.2"/></g>
+  <path d="M60 36v6h-8" stroke="#94a3b8" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="hw-netprinter" viewBox="0 0 120 48">
+  <rect x="30" y="3" width="60" height="10" rx="1.5" fill="#e2e8f0" stroke="#cbd5e1"/>
+  <rect x="20" y="13" width="80" height="20" rx="3" fill="#475569"/>
+  <rect x="20" y="13" width="80" height="6" rx="3" fill="#546274"/>
+  <rect x="26" y="22" width="26" height="7" rx="1" fill="#1c242f"/>
+  <rect x="28" y="23.5" width="16" height="1.6" rx=".8" fill="#4ade80"/>
+  <g fill="#94a3b8"><circle cx="82" cy="25" r="1.5"/><circle cx="89" cy="25" r="1.5"/></g>
+  <rect x="30" y="33" width="60" height="11" rx="1.5" fill="#e2e8f0" stroke="#cbd5e1"/>
+  <rect x="38" y="36" width="44" height="5" rx="1" fill="#f8fafc"/>
+</symbol>
+
+<symbol id="hw-mb-ecos" viewBox="0 0 120 48">
+  <rect x="6" y="4" width="108" height="40" rx="4" fill="#1f2937"/>
+  <rect x="6" y="4" width="108" height="40" rx="4" fill="none" stroke="#111827"/>
+  <rect x="12" y="9" width="52" height="30" rx="2" fill="#0b1220"/>
+  <rect x="15" y="12" width="46" height="24" rx="1" fill="#0d3b66"/>
+  <g fill="#7dd3fc" opacity=".85"><rect x="18" y="15" width="20" height="2.4" rx="1.2"/><rect x="18" y="20" width="34" height="2.4" rx="1.2"/><rect x="18" y="25" width="26" height="2.4" rx="1.2"/></g>
+  <rect x="18" y="30" width="14" height="3.4" rx="1.7" fill="#38bdf8"/>
+  <circle cx="80" cy="17" r="8" fill="#374151" stroke="#4b5563"/>
+  <circle cx="80" cy="17" r="3" fill="#1f2937"/>
+  <path d="M80 10v3" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+  <circle cx="80" cy="33" r="6" fill="#374151" stroke="#4b5563"/>
+  <circle cx="80" cy="33" r="2" fill="#1f2937"/>
+  <g fill="#ef4444"><circle cx="100" cy="12" r="2"/></g>
+  <g fill="#22c55e"><circle cx="107" cy="12" r="2"/></g>
+  <g fill="#4b5563"><rect x="96" y="20" width="14" height="5" rx="1"/><rect x="96" y="28" width="14" height="5" rx="1"/><rect x="96" y="36" width="14" height="5" rx="1"/></g>
+</symbol>
+
+<symbol id="hw-mb-cs3" viewBox="0 0 120 48">
+  <rect x="14" y="2" width="92" height="44" rx="4" fill="#111827"/>
+  <rect x="18" y="6" width="84" height="36" rx="2" fill="#0b1220"/>
+  <rect x="21" y="9" width="78" height="30" rx="1" fill="#1e3a5f"/>
+  <g fill="#0f172a" opacity=".55"><rect x="24" y="12" width="30" height="10" rx="1"/><rect x="57" y="12" width="18" height="10" rx="1"/><rect x="78" y="12" width="18" height="10" rx="1"/></g>
+  <g fill="#38bdf8"><rect x="24" y="26" width="34" height="3" rx="1.5"/><rect x="24" y="32" width="22" height="3" rx="1.5"/></g>
+  <g fill="#f59e0b"><rect x="62" y="26" width="34" height="3" rx="1.5"/></g>
+  <g fill="#22c55e"><rect x="62" y="32" width="26" height="3" rx="1.5"/></g>
+  <circle cx="110" cy="24" r="2" fill="#22c55e"/>
+</symbol>
+
+<symbol id="hw-mb-z21" viewBox="0 0 120 48">
+  <rect x="10" y="13" width="100" height="24" rx="4" fill="#111827"/>
+  <rect x="10" y="13" width="100" height="7" rx="4" fill="#1f2937"/>
+  <rect x="18" y="24" width="30" height="9" rx="1.2" fill="#0b1017"/>
+  <rect x="20" y="26" width="11" height="5" rx=".6" fill="#020617"/>
+  <rect x="33" y="26" width="11" height="5" rx=".6" fill="#020617"/>
+  <g fill="#4b5563"><rect x="56" y="25" width="16" height="7" rx="1"/><rect x="76" y="25" width="16" height="7" rx="1"/></g>
+  <circle cx="100" cy="28" r="2.2" fill="#22c55e"/>
+  <path d="M14 41h92" stroke="#334155" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+  <g stroke="#475569" stroke-width="1.6" stroke-linecap="round"><path d="M26 38v6M52 38v6M78 38v6M100 38v6"/></g>
+</symbol>
+
+<symbol id="hw-mb-booster" viewBox="0 0 120 48">
+  <rect x="14" y="6" width="92" height="36" rx="3" fill="#3f2a2f"/>
+  <rect x="14" y="6" width="92" height="8" rx="3" fill="#4d343a"/>
+  <path d="M42 16l-9 12h6l-2.5 8 9-12h-6z" fill="#fbbf24"/>
+  <rect x="58" y="18" width="40" height="16" rx="1.5" fill="#1c242f"/>
+  <g fill="#94a3b8">
+    <rect x="61" y="21" width="6" height="10" rx="1"/><rect x="70" y="21" width="6" height="10" rx="1"/>
+    <rect x="79" y="21" width="6" height="10" rx="1"/><rect x="88" y="21" width="6" height="10" rx="1"/>
+  </g>
+  <g fill="#22c55e"><circle cx="22" cy="34" r="1.6"/></g>
+  <circle cx="29" cy="34" r="1.6" fill="#ef4444"/>
+</symbol>
+
+<symbol id="hw-mb-feedback" viewBox="0 0 120 48">
+  <rect x="8" y="8" width="104" height="32" rx="2" fill="#1f3a5f"/>
+  <rect x="8" y="8" width="104" height="7" rx="2" fill="#2a4a75"/>
+  <g fill="#0b1017">
+    <rect x="13" y="26" width="94" height="10" rx="1"/>
+  </g>
+  <g fill="#94a3b8">
+    <rect x="15" y="28" width="4" height="6" rx=".6"/><rect x="21" y="28" width="4" height="6" rx=".6"/>
+    <rect x="27" y="28" width="4" height="6" rx=".6"/><rect x="33" y="28" width="4" height="6" rx=".6"/>
+    <rect x="39" y="28" width="4" height="6" rx=".6"/><rect x="45" y="28" width="4" height="6" rx=".6"/>
+    <rect x="51" y="28" width="4" height="6" rx=".6"/><rect x="57" y="28" width="4" height="6" rx=".6"/>
+    <rect x="63" y="28" width="4" height="6" rx=".6"/><rect x="69" y="28" width="4" height="6" rx=".6"/>
+    <rect x="75" y="28" width="4" height="6" rx=".6"/><rect x="81" y="28" width="4" height="6" rx=".6"/>
+    <rect x="87" y="28" width="4" height="6" rx=".6"/><rect x="93" y="28" width="4" height="6" rx=".6"/>
+    <rect x="99" y="28" width="4" height="6" rx=".6"/>
+  </g>
+  <g fill="#22c55e">
+    <circle cx="17" cy="20" r="1.3"/><circle cx="25" cy="20" r="1.3"/><circle cx="33" cy="20" r="1.3"/><circle cx="41" cy="20" r="1.3"/>
+  </g>
+  <g fill="#334155">
+    <circle cx="49" cy="20" r="1.3"/><circle cx="57" cy="20" r="1.3"/><circle cx="65" cy="20" r="1.3"/><circle cx="73" cy="20" r="1.3"/>
+    <circle cx="81" cy="20" r="1.3"/><circle cx="89" cy="20" r="1.3"/><circle cx="97" cy="20" r="1.3"/><circle cx="105" cy="20" r="1.3"/>
+  </g>
+</symbol>
+
+<symbol id="hw-mb-handheld" viewBox="0 0 120 48">
+  <rect x="42" y="2" width="36" height="44" rx="6" fill="#1f2937"/>
+  <rect x="46" y="6" width="28" height="16" rx="2" fill="#0b1220"/>
+  <g fill="#38bdf8"><rect x="49" y="9" width="14" height="2.4" rx="1.2"/><rect x="49" y="13" width="20" height="2.4" rx="1.2"/><rect x="49" y="17" width="10" height="2.4" rx="1.2"/></g>
+  <circle cx="60" cy="32" r="7" fill="#374151" stroke="#4b5563"/>
+  <circle cx="60" cy="32" r="2.4" fill="#1f2937"/>
+  <path d="M60 26v2.6" stroke="#e5e7eb" stroke-width="1.4" stroke-linecap="round"/>
+  <g fill="#4b5563"><rect x="45" y="40" width="8" height="4" rx="1"/><rect x="67" y="40" width="8" height="4" rx="1"/></g>
+  <path d="M78 12h10" stroke="#64748b" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+</symbol>
+
+<symbol id="hw-mb-pc" viewBox="0 0 120 48">
+  <rect x="18" y="4" width="84" height="34" rx="2.5" fill="#3f4a5a"/>
+  <rect x="22" y="7" width="76" height="26" rx="1" fill="#0b1220"/>
+  <g stroke="#64748b" stroke-width="1.2" fill="none"><path d="M26 27h68"/></g>
+  <g stroke="#475569" stroke-width="1.6" fill="none" stroke-linecap="round">
+    <path d="M32 24v6M44 24v6M56 24v6M68 24v6M80 24v6"/>
+  </g>
+  <rect x="30" y="11" width="26" height="9" rx="1" fill="#1e3a5f"/>
+  <g fill="#38bdf8"><rect x="33" y="13.5" width="14" height="1.8" rx=".9"/><rect x="33" y="16.5" width="18" height="1.8" rx=".9"/></g>
+  <rect x="62" y="11" width="30" height="9" rx="1" fill="#14532d"/>
+  <g fill="#4ade80"><rect x="65" y="13.5" width="20" height="1.8" rx=".9"/><rect x="65" y="16.5" width="12" height="1.8" rx=".9"/></g>
+  <path d="M52 38h16v4H52z" fill="#334155"/>
+  <path d="M40 44h40" stroke="#475569" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+</symbol>
+</g>

@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Handbuch — Netzwerk-Topologie-Tool</title>
+<style>
+html,body{height:100%}
+body{margin:0}
+/* ============================================================
+   Hilfe-Dokument — identisch verwendet in hilfe.html und im
+   Hilfe-Overlay der Anwendung. Alles unter .nwt-help gekapselt.
+   ============================================================ */
+
+.nwt-help{
+  --h-bg:#f7f9fc; --h-panel:#fff; --h-line:#e2e8f0; --h-line2:#cbd5e1;
+  --h-ink:#0f172a; --h-ink2:#334155; --h-ink3:#5c6a7d;
+  --h-accent:#2563eb; --h-accent-soft:#eef4ff;
+  --h-soft:#f1f5f9; --h-sunken:#f8fafc; --h-chip:#eef2f7;
+  --h-font:"Segoe UI Variable Text","Segoe UI",Inter,system-ui,-apple-system,Arial,sans-serif;
+  --h-mono:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;
+  display:flex;flex-direction:column;height:100%;
+  font-family:var(--h-font);font-size:14px;line-height:1.62;color:var(--h-ink);
+  background:var(--h-bg);
+}
+
+/* ---------------- Kopfzeile ---------------- */
+.nwt-help .help-top{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:12px 22px;background:var(--h-panel);
+  border-bottom:1px solid var(--h-line);flex:0 0 auto;z-index:5;
+}
+.nwt-help .help-brand{display:flex;align-items:center;gap:10px;margin-right:auto;min-width:0}
+.nwt-help .help-brand svg{width:28px;height:28px;fill:none;stroke:var(--h-accent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.nwt-help .help-brand b{display:block;font-size:15px;font-weight:650;line-height:1.25}
+.nwt-help .help-brand span{display:block;font-size:11.5px;color:var(--h-ink3)}
+.nwt-help .help-search{
+  height:32px;width:230px;border:1px solid var(--h-line);border-radius:8px;
+  padding:0 11px;background:var(--h-sunken);font:inherit;font-size:13px;color:inherit;
+}
+.nwt-help .help-search:focus{outline:none;border-color:var(--h-accent);background:var(--h-panel);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.nwt-help .help-btn{
+  height:32px;padding:0 13px;border:1px solid var(--h-line);border-radius:8px;
+  background:var(--h-panel);cursor:pointer;font:inherit;font-size:13px;color:var(--h-ink2);
+}
+.nwt-help .help-btn:hover{background:var(--h-soft);border-color:var(--h-line2)}
+.nwt-help .help-btn.primary{background:var(--h-accent);border-color:var(--h-accent);color:#fff}
+.nwt-help .help-btn.primary:hover{background:#1d4fd8}
+
+/* ---------------- Zweispaltiges Gerüst ---------------- */
+.nwt-help .help-shell{display:flex;flex:1 1 auto;min-height:0}
+
+.nwt-help .help-toc{
+  flex:0 0 302px;width:302px;overflow-y:auto;overscroll-behavior:contain;
+  padding:18px 12px 40px 20px;background:var(--h-panel);
+  border-right:1px solid var(--h-line);
+}
+.nwt-help .help-toc h4{
+  margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--h-ink3);
+}
+.nwt-help .help-toc ul{list-style:none;margin:0;padding:0}
+.nwt-help .help-toc li{margin:0}
+.nwt-help .help-toc a{
+  display:block;padding:5px 10px;border-radius:7px;text-decoration:none;
+  color:var(--h-ink2);border-left:2px solid transparent;
+}
+.nwt-help .help-toc a:hover{background:var(--h-soft);color:var(--h-ink)}
+.nwt-help .help-toc a.lvl3{padding-left:26px;font-size:13px;color:var(--h-ink3)}
+.nwt-help .help-toc a.lvl2{font-weight:600}
+.nwt-help .help-toc a.on{background:var(--h-accent-soft);color:var(--h-accent);border-left-color:var(--h-accent)}
+.nwt-help .help-toc a.hidden{display:none}
+.nwt-help .toc-empty{padding:10px;color:var(--h-ink3);font-size:13px}
+
+.nwt-help .help-main{
+  flex:1 1 auto;min-width:0;overflow-y:auto;overscroll-behavior:contain;
+  padding:0 0 90px;scroll-behavior:smooth;
+}
+.nwt-help .help-inner{max-width:860px;margin:0 auto;padding:26px 34px 0}
+
+/* ---------------- Typografie ---------------- */
+.nwt-help h2{
+  margin:52px 0 14px;padding-top:14px;font-size:23px;font-weight:680;letter-spacing:-.01em;
+  border-top:1px solid var(--h-line);scroll-margin-top:16px;
+}
+.nwt-help section:first-child h2{margin-top:8px;border-top:0;padding-top:0}
+.nwt-help h3{margin:30px 0 8px;font-size:16px;font-weight:650;color:var(--h-ink);scroll-margin-top:16px}
+.nwt-help p{margin:0 0 12px;color:var(--h-ink2)}
+.nwt-help p.lead{font-size:15.5px;color:var(--h-ink);border-left:3px solid var(--h-accent);padding-left:14px}
+.nwt-help ul,.nwt-help ol{margin:0 0 14px;padding-left:22px;color:var(--h-ink2)}
+.nwt-help li{margin-bottom:5px}
+.nwt-help strong{color:var(--h-ink);font-weight:640}
+.nwt-help em{font-style:normal;color:var(--h-ink);font-weight:560}
+
+.nwt-help ol.steps{counter-reset:s;list-style:none;padding-left:0}
+.nwt-help ol.steps > li{
+  counter-increment:s;position:relative;padding:9px 0 9px 44px;
+  border-bottom:1px solid var(--h-line);
+}
+.nwt-help ol.steps > li::before{
+  content:counter(s);position:absolute;left:0;top:9px;
+  width:28px;height:28px;border-radius:50%;background:var(--h-accent-soft);
+  color:var(--h-accent);font-weight:700;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.nwt-help code{font-family:var(--h-mono);font-size:12.5px;background:var(--h-chip);padding:1.5px 5px;border-radius:4px;color:#0f172a}
+.nwt-help pre{
+  font-family:var(--h-mono);font-size:12.5px;line-height:1.55;
+  background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;
+  overflow-x:auto;margin:0 0 16px;
+}
+.nwt-help pre code{background:transparent;padding:0;color:inherit}
+.nwt-help kbd{
+  font-family:var(--h-mono);font-size:11.5px;background:var(--h-soft);color:var(--h-ink);
+  border:1px solid var(--h-line2);border-bottom-width:2px;border-radius:5px;
+  padding:1px 5px;white-space:nowrap;
+}
+.nwt-help .ui{
+  font-weight:600;color:var(--h-ink);background:var(--h-chip);
+  border:1px solid var(--h-line);border-radius:5px;padding:0 5px;white-space:nowrap;
+}
+
+.nwt-help table{
+  width:100%;border-collapse:collapse;margin:0 0 18px;font-size:13.5px;
+  background:var(--h-panel);border:1px solid var(--h-line);border-radius:10px;overflow:hidden;
+}
+.nwt-help thead th{
+  text-align:left;background:var(--h-soft);color:var(--h-ink3);font-size:11.5px;
+  text-transform:uppercase;letter-spacing:.05em;padding:8px 12px;font-weight:700;
+}
+.nwt-help td{padding:8px 12px;border-top:1px solid var(--h-line);vertical-align:top;color:var(--h-ink2)}
+.nwt-help td:first-child{color:var(--h-ink);font-weight:560}
+.nwt-help table.shortcuts td:first-child{width:230px;white-space:nowrap}
+
+.nwt-help .note{
+  border:1px solid #bfdbfe;background:#eff6ff;border-radius:10px;
+  padding:12px 15px;margin:0 0 16px;color:#1e3a5f;
+}
+.nwt-help .note-warn{border-color:#fcd9a5;background:#fffaf0;color:#7c4a03}
+.nwt-help .note strong{color:inherit}
+
+.nwt-help dl.faq{margin:0}
+.nwt-help dl.faq dt{font-weight:640;color:var(--h-ink);margin-top:18px}
+.nwt-help dl.faq dd{margin:5px 0 0;padding-left:16px;border-left:2px solid var(--h-line);color:var(--h-ink2)}
+
+.nwt-help mark.hit{background:#fef08a;color:inherit;border-radius:3px;padding:0 2px}
+
+.nwt-help .help-foot{
+  max-width:860px;margin:56px auto 0;padding:18px 34px 0;
+  border-top:1px solid var(--h-line);color:var(--h-ink3);font-size:12.5px;
+}
+
+/* ---------------- Schmale Fenster ---------------- */
+@media (max-width:860px){
+  .nwt-help .help-shell{flex-direction:column}
+  .nwt-help .help-toc{flex:0 0 auto;width:auto;max-height:210px;border-right:0;border-bottom:1px solid var(--h-line)}
+  .nwt-help .help-inner{padding:20px 18px 0}
+  .nwt-help .help-search{width:150px}
+}
+
+/* ---------------- Druck ---------------- */
+@media print{
+  .nwt-help{height:auto;background:#fff}
+  .nwt-help .help-top,.nwt-help .help-toc{display:none}
+  .nwt-help .help-shell{display:block}
+  .nwt-help .help-main{overflow:visible;padding:0}
+  .nwt-help .help-inner{max-width:none;padding:0}
+  .nwt-help h2{page-break-after:avoid;break-after:avoid}
+  .nwt-help table,.nwt-help pre,.nwt-help .note{page-break-inside:avoid;break-inside:avoid}
+  .nwt-help pre{background:#f1f5f9;color:#0f172a;border:1px solid #cbd5e1}
+}
+
+</style>
+</head>
+<body class="nwt-help">
+
+  <header class="help-top">
+    <div class="help-brand">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2.5h6v5H9zM2 16.5h6v5H2zM16 16.5h6v5h-6z"/><path d="M12 7.5v3.5M5 16.5v-3.2h14v3.2M12 11v2.3"/></svg>
+      <div>
+        <b>Handbuch</b>
+        <span>Netzwerk-Topologie-Tool</span>
+      </div>
+    </div>
+    <input type="search" class="help-search" placeholder="Im Handbuch suchen …" autocomplete="off" aria-label="Im Handbuch suchen">
+    <button type="button" class="help-btn" data-help-print>Drucken</button>
+    <a class="help-btn primary" href="netzwerk_topologie_tool.html">Programm öffnen</a>
+  </header>
+
+  <div class="help-shell">
+    <nav class="help-toc" aria-label="Inhaltsverzeichnis">
+      <h4>Inhalt</h4>
+      <ul><li><a class="lvl2" href="#k1">1. Überblick</a></li><li><a class="lvl3" href="#k1-1">1.1 Was das Programm leistet</a></li><li><a class="lvl3" href="#k1-2">1.2 Systemvoraussetzungen und Offline-Betrieb</a></li><li><a class="lvl2" href="#k2">2. Die Oberfläche</a></li><li><a class="lvl3" href="#k2-1">2.1 Werkzeugleiste</a></li><li><a class="lvl3" href="#k2-2">2.2 Komponentenkatalog</a></li><li><a class="lvl3" href="#k2-3">2.3 Ebenenbereich</a></li><li><a class="lvl3" href="#k2-4">2.4 Zeichenfläche</a></li><li><a class="lvl3" href="#k2-5">2.5 Statusleiste und Minimap</a></li><li><a class="lvl2" href="#k3">3. Schnelleinstieg</a></li><li><a class="lvl2" href="#k4">4. Geräte</a></li><li><a class="lvl3" href="#k4-1">4.1 Einfügen</a></li><li><a class="lvl3" href="#k4-2">4.2 Auswählen</a></li><li><a class="lvl3" href="#k4-3">4.3 Verschieben und Ausrichten</a></li><li><a class="lvl3" href="#k4-4">4.4 Eigenschaften</a></li><li><a class="lvl3" href="#k4-5">4.5 Ports verwalten</a></li><li><a class="lvl3" href="#k4-6">4.6 Status sichtbar machen</a></li><li><a class="lvl3" href="#k4-7">4.7 Duplizieren, Reihenfolge, Löschen</a></li><li><a class="lvl3" href="#k4-8">4.8 Textfelder und Notizen</a></li><li><a class="lvl2" href="#k5">5. Verbindungen</a></li><li><a class="lvl3" href="#k5-1">5.1 Verbindungen erstellen</a></li><li><a class="lvl3" href="#k5-2">5.2 Verbindungsarten</a></li><li><a class="lvl3" href="#k5-3">5.3 Farbe, Linienstärke und Strichmuster</a></li><li><a class="lvl3" href="#k5-4">5.4 Eigenschaften und Portbelegung</a></li><li><a class="lvl3" href="#k5-5">5.5 Linienführung</a></li><li><a class="lvl3" href="#k5-6">5.6 Knoten: die Führung selbst bestimmen</a></li><li><a class="lvl3" href="#k5-7">5.7 Abzweige</a></li><li><a class="lvl3" href="#k5-8">5.8 Parallele Verbindungen</a></li><li><a class="lvl3" href="#k5-9">5.9 Auswählen und Löschen</a></li><li><a class="lvl2" href="#k6">6. Bereiche, Text und Grafik</a></li><li><a class="lvl3" href="#k6-1">6.1 Bereich anlegen</a></li><li><a class="lvl3" href="#k6-2">6.2 Beschriftung</a></li><li><a class="lvl3" href="#k6-3">6.3 Verschieben und Größe ändern</a></li><li><a class="lvl3" href="#k6-4">6.4 Text, Grafik und Dekoration</a></li><li><a class="lvl3" href="#k6-5">6.5 Form und Farbe einstellen</a></li><li><a class="lvl3" href="#k6-6">6.6 Vorn oder hinten</a></li><li><a class="lvl3" href="#k6-7">6.7 Was Dekoration nicht ist</a></li><li><a class="lvl3" href="#k6-8">6.8 Schrift einstellen</a></li><li><a class="lvl2" href="#k7">7. Ebenen</a></li><li><a class="lvl2" href="#k8">8. Navigieren in großen Plänen</a></li><li><a class="lvl3" href="#k8-1">8.1 Zoomen</a></li><li><a class="lvl3" href="#k8-2">8.2 Ausschnitt verschieben</a></li><li><a class="lvl3" href="#k8-3">8.3 Gerät suchen</a></li><li><a class="lvl2" href="#k9">9. Speichern, Laden und Austausch</a></li><li><a class="lvl3" href="#k9-1">9.1 Projekte im Browser</a></li><li><a class="lvl3" href="#k9-2">9.2 Automatische Sicherung</a></li><li><a class="lvl3" href="#k9-3">9.3 JSON-Export und -Import</a></li><li><a class="lvl3" href="#k9-4">9.4 Grenzen des Browser-Speichers</a></li><li><a class="lvl2" href="#k10">10. Grafikexport und Druck</a></li><li><a class="lvl3" href="#k10-1">10.1 SVG</a></li><li><a class="lvl3" href="#k10-2">10.2 PNG</a></li><li><a class="lvl3" href="#k10-3">10.3 Drucken</a></li><li><a class="lvl3" href="#k10-4">10.4 Vertrauliche Angaben unkenntlich machen</a></li><li><a class="lvl3" href="#k10-5">10.5 Maskierung dauerhaft einschalten</a></li><li><a class="lvl3" href="#k10-6">10.6 Was die Maskierung leistet — und was nicht</a></li><li><a class="lvl2" href="#k11">11. Projektinformationen</a></li><li><a class="lvl2" href="#k12">12. Tastaturkürzel</a></li><li><a class="lvl2" href="#k13">13. Hinweisfenster (Tooltips)</a></li><li><a class="lvl2" href="#k14">14. Bewährte Arbeitsweisen</a></li><li><a class="lvl3" href="#k14-1">14.1 Von oben nach unten zeichnen</a></li><li><a class="lvl3" href="#k14-2">14.2 Namensschema festlegen</a></li><li><a class="lvl3" href="#k14-3">14.3 Erst zeichnen, dann dokumentieren</a></li><li><a class="lvl3" href="#k14-4">14.4 Ports von Anfang an pflegen</a></li><li><a class="lvl3" href="#k14-5">14.5 Ebenen statt zweiter Datei</a></li><li><a class="lvl3" href="#k14-6">14.6 Versionen ablegen</a></li><li><a class="lvl2" href="#k15">15. Datenformat</a></li><li><a class="lvl2" href="#k16">16. Gerätefotos</a></li><li><a class="lvl3" href="#k16-1">16.1 Foto hinzufügen</a></li><li><a class="lvl3" href="#k16-2">16.2 Was gespeichert wird</a></li><li><a class="lvl3" href="#k16-3">16.3 Automatische Verkleinerung</a></li><li><a class="lvl3" href="#k16-4">16.4 Anzeige steuern</a></li><li><a class="lvl3" href="#k16-5">16.5 Empfehlungen</a></li><li><a class="lvl2" href="#k17">17. Netzwerkanalyse eines bestehenden Netzes</a></li><li><a class="lvl3" href="#k17-1">17.1 Warum der Browser nicht selbst scannt</a></li><li><a class="lvl3" href="#k17-2">17.2 Weg 1: mitgeliefertes Analyse-Skript</a></li><li><a class="lvl3" href="#k17-3">17.3 Weg 2: Ausgabe einfügen</a></li><li><a class="lvl3" href="#k17-4">17.4 Unterstützte Quellen</a></li><li><a class="lvl3" href="#k17-5">17.5 Typvorschläge und ihre Zuverlässigkeit</a></li><li><a class="lvl3" href="#k17-6">17.6 Erkannte Verbindungen</a></li><li><a class="lvl3" href="#k17-7">17.7 Übernahme ins Projekt</a></li><li><a class="lvl3" href="#k17-8">17.8 Rechtlicher Hinweis</a></li><li><a class="lvl2" href="#k18">18. Dashboard</a></li><li><a class="lvl3" href="#k18-1">18.1 Übersicht</a></li><li><a class="lvl3" href="#k18-2">18.2 Erkennung</a></li><li><a class="lvl2" href="#k19">19. Modellbahn-Digitalkomponenten</a></li><li><a class="lvl3" href="#k19-1">19.1 Verfügbare Komponenten</a></li><li><a class="lvl3" href="#k19-2">19.2 Ports, Busse und Protokolle</a></li><li><a class="lvl3" href="#k19-3">19.3 Erkennung im Netz</a></li><li><a class="lvl3" href="#k19-4">19.4 Empfohlener Aufbau der Dokumentation</a></li><li><a class="lvl2" href="#k20">20. Eigene Symbole erstellen</a></li><li><a class="lvl3" href="#k20-1">20.1 Zeichnen</a></li><li><a class="lvl3" href="#k20-2">20.2 SVG einfügen</a></li><li><a class="lvl3" href="#k20-3">20.3 Bilddatei verwenden</a></li><li><a class="lvl3" href="#k20-4">20.4 Bezeichnung, Kategorie, Farbe, Ports</a></li><li><a class="lvl3" href="#k20-5">20.5 Speicherung und Weitergabe</a></li><li><a class="lvl3" href="#k20-6">20.6 Bearbeiten und Löschen</a></li><li><a class="lvl2" href="#k21">21. Darstellung und Einstellungen</a></li><li><a class="lvl3" href="#k21-1">21.1 Was wo gespeichert wird</a></li><li><a class="lvl3" href="#k21-2">21.2 Ansicht</a></li><li><a class="lvl3" href="#k21-3">21.3 Gerätedarstellung: die Reihenfolge</a></li><li><a class="lvl3" href="#k21-4">21.4 Die Hardware-Ansicht</a></li><li><a class="lvl3" href="#k21-5">21.5 Gerätebilder je Typ</a></li><li><a class="lvl3" href="#k21-6">21.6 Bildbibliothek: Bilder automatisch zuordnen</a></li><li><a class="lvl3" href="#k21-7">21.7 Warum keine Herstellerfotos mitgeliefert werden</a></li><li><a class="lvl3" href="#k21-8">21.8 Helles und dunkles Design</a></li><li><a class="lvl3" href="#k21-9">21.9 Setups — zwischen Szenarien umschalten</a></li><li><a class="lvl3" href="#k21-10">21.10 Bedienung, Projekt, Speicher und Hilfe</a></li><li><a class="lvl2" href="#k22">22. Problembehebung</a></li><li><a class="lvl2" href="#k23">23. Für Entwickler</a></li></ul>
+    </nav>
+
+    <div class="help-main">
+      <div class="help-inner">
+        <section id="ueberblick">
+<h2 id="k1">1. Überblick</h2>
+
+<p class="lead">Das Netzwerk-Topologie-Tool ist ein Editor zur grafischen Planung und
+Dokumentation von Computernetzwerken. Geräte werden per Drag-and-Drop auf einer
+Zeichenfläche platziert, miteinander verbunden, beschriftet und mit Dokumentationsdaten
+wie IP-Adressen, Hostnamen, Standorten und Portbelegungen versehen.</p>
+
+<h3 id="k1-1">1.1 Was das Programm leistet</h3>
+<ul>
+  <li>Netzpläne zeichnen: 44 Gerätetypen aus sechs Kategorien, frei anordenbar und verbindbar.</li>
+  <li>Netze dokumentieren: je Gerät 17 Felder von der IP-Adresse bis zum Rackplatz, je Verbindung Typ, Geschwindigkeit, VLAN und Portbelegung an beiden Enden.</li>
+  <li>Strukturieren: Netzwerkbereiche (z.&nbsp;B. „DMZ, 192.168.10.0/24“) und ein- und ausblendbare Ebenen für physische, logische, WLAN- oder IoT-Sichten.</li>
+  <li>Sichern und austauschen: benannte Projekte im Browser, JSON-Dateien für Backup und Weitergabe, automatische Zwischensicherung.</li>
+  <li>Weiterverwenden: verlustfreier SVG-Export, PNG-Export und eine Druckansicht ohne Bedienelemente.</li>
+</ul>
+
+<h3 id="k1-2">1.2 Systemvoraussetzungen und Offline-Betrieb</h3>
+<p>Es genügt ein aktueller Browser — Chrome, Edge, Firefox oder Safari in einer Version
+ab etwa 2022. Es wird <strong>kein Server, kein Node.js, keine Datenbank und keine
+Installation</strong> benötigt. Die Datei <code>netzwerk_topologie_tool.html</code> wird
+doppelgeklickt und läuft vollständig lokal im Browser.</p>
+
+<p>Weil das Programm ausschließlich clientseitig arbeitet, verlassen keine Daten den
+Rechner. Alles, was Sie eingeben, liegt entweder im Browser-Speicher dieses einen Rechners
+oder in JSON-Dateien, die Sie selbst exportieren.</p>
+
+<div class="note note-warn">
+<strong>Wichtig für den Datenerhalt:</strong> Der Browser-Speicher ist an Browser, Benutzerprofil
+und Dateipfad gebunden. Wird der Browserverlauf mitsamt „Website-Daten“ gelöscht, ist auch
+das gespeicherte Projekt weg. Exportieren Sie wichtige Netzpläne zusätzlich als JSON-Datei
+(<kbd>Strg</kbd>+<kbd>E</kbd>) und legen Sie diese in Ihre normale Datensicherung.
+</div>
+</section>
+
+
+<section id="oberflaeche">
+<h2 id="k2">2. Die Oberfläche</h2>
+
+<p>Das Fenster besteht aus vier Bereichen: der Werkzeugleiste oben, der Seitenleiste links,
+der Zeichenfläche in der Mitte sowie Statusleiste und Minimap am unteren Rand.</p>
+
+<h3 id="k2-1">2.1 Werkzeugleiste</h3>
+<table>
+<thead><tr><th>Gruppe</th><th>Funktion</th><th>Beschreibung</th></tr></thead>
+<tbody>
+<tr><td rowspan="3">Projekt</td><td>Neu</td><td>Verwirft die aktuelle Topologie und beginnt ein leeres Projekt.</td></tr>
+<tr><td>Speichern</td><td>Legt das Projekt unter einem Namen im Browser-Speicher ab.</td></tr>
+<tr><td>Laden</td><td>Zeigt alle gespeicherten Projekte mit Datum, Geräte- und Verbindungszahl.</td></tr>
+<tr><td rowspan="3">Austausch</td><td>Export</td><td>Untermenü: Projekt als JSON, Diagramm als SVG, Diagramm als PNG.</td></tr>
+<tr><td>Import</td><td>Liest eine zuvor exportierte JSON-Projektdatei wieder ein.</td></tr>
+<tr><td>Drucken</td><td>Öffnet den Druckdialog; Bedienelemente werden ausgeblendet.</td></tr>
+<tr><td>Analyse</td><td>Analyse</td><td>Menü: Netzwerkdaten einlesen, Scan-Datei importieren, Analyse-Skript anzeigen, Dashboard öffnen. Siehe <a href="#k17">Kapitel 17</a>.</td></tr>
+<tr><td rowspan="3">Modus</td><td>Auswahl</td><td>Markieren, Verschieben, Auswahlrechteck. Standardmodus.</td></tr>
+<tr><td>Verbinden</td><td>Zwei Geräte nacheinander anklicken erzeugt eine Verbindung.</td></tr>
+<tr><td>Hand</td><td>Ziehen verschiebt den Bildausschnitt statt der Geräte.</td></tr>
+<tr><td>Historie</td><td>↶ / ↷</td><td>Rückgängig und Wiederholen, bis zu 60 Schritte.</td></tr>
+<tr><td rowspan="4">Ansicht</td><td>− / Prozent / +</td><td>Verkleinern, Zoom auf 100&nbsp;% zurücksetzen, vergrößern.</td></tr>
+<tr><td>⤢</td><td>Passt alle Objekte in den sichtbaren Bereich ein.</td></tr>
+<tr><td>Raster / Snap</td><td>Rasterlinien anzeigen bzw. Objekte am Raster ausrichten.</td></tr>
+<tr><td>Linienführung</td><td>Orthogonal, gerade oder gebogen — gilt für alle Verbindungen.</td></tr>
+<tr><td rowspan="5">Rechts</td><td>Tipps</td><td>Schaltet die Hinweisfenster (Tooltips) ein und aus.</td></tr>
+<tr><td>Fotos</td><td>Zeigt hinterlegte Gerätefotos auf der Zeichenfläche. Siehe <a href="#k16">Kapitel 16</a>.</td></tr>
+<tr><td>Gerät suchen</td><td>Sucht in Namen, IP, Hostname, MAC, Raum, Rack und VLAN.</td></tr>
+<tr><td>Leeren</td><td>Löscht nach Rückfrage alle Geräte, Verbindungen und Bereiche.</td></tr>
+<tr><td>?</td><td>Menü mit Kurzhilfe, diesem Handbuch und den Projektinformationen.</td></tr>
+<tr><td>⚙</td><td>Menü mit Einstellungsseite, Designwechsel und den gesicherten Setups. Siehe <a href="#k21-9">21.9</a>.</td></tr>
+</tbody>
+</table>
+
+<p>Ist das Fenster zu schmal, bricht die Werkzeugleiste in eine zweite Zeile um. Es
+verschwindet nichts hinter einem Rand.</p>
+
+<h3 id="k2-2">2.2 Komponentenkatalog</h3>
+<p>Die linke Seitenleiste enthält alle Gerätetypen, nach Kategorien gruppiert. Ein Klick
+auf eine Kategorieüberschrift klappt die Gruppe zu. Das Suchfeld darüber filtert den
+Katalog nach Bezeichnung.</p>
+<p>Jede Kachel lässt sich auf die Zeichenfläche <strong>ziehen</strong>. Ein einfacher
+<strong>Klick</strong> fügt das Gerät stattdessen in der Mitte des sichtbaren Bereichs
+ein — praktisch, wenn Sie viele gleichartige Geräte nacheinander anlegen.</p>
+<p>Am Ende der Leiste steht die Kategorie <span class="ui">Eigene Symbole</span> mit der Kachel
+<span class="ui">+ Neues Symbol</span>. Damit legen Sie eigene Komponenten an — gezeichnet,
+aus SVG oder aus einer Bilddatei. Siehe <a href="#k20">Kapitel 20</a>.</p>
+
+<h3 id="k2-3">2.3 Ebenenbereich</h3>
+<p>Unten in der Seitenleiste stehen die Ebenen des Projekts. Das Kontrollkästchen blendet
+eine Ebene ein oder aus, die Zahl rechts zeigt die Anzahl der Objekte darauf. Ein
+Doppelklick auf den Namen benennt die Ebene um, das <span class="ui">✕</span> löscht sie.
+Über die Auswahlliste „Neue Objekte auf“ legen Sie fest, auf welche Ebene neu eingefügte
+Geräte kommen.</p>
+
+<h3 id="k2-4">2.4 Zeichenfläche</h3>
+<p>Die Zeichenfläche ist praktisch unbegrenzt. Sie enthält von unten nach oben:
+Rasterhintergrund, Netzwerkbereiche, Verbindungen, Geräte. Diese Reihenfolge sorgt dafür,
+dass Bereiche nie ein Gerät verdecken und Leitungen immer sichtbar bleiben.</p>
+
+<h3 id="k2-5">2.5 Statusleiste und Minimap</h3>
+<p>Die Statusleiste am unteren Rand zeigt den aktiven Modus, die Anzahl von Geräten,
+Verbindungen und Bereichen, die aktuelle Auswahl sowie die Mauszeigerposition in
+Zeichenkoordinaten.</p>
+<p>Die Minimap unten rechts zeigt das gesamte Diagramm im Kleinformat; der blaue Rahmen
+markiert den sichtbaren Ausschnitt. Ein Klick oder Ziehen darin springt an die
+entsprechende Stelle. Über <span class="ui">▾</span> lässt sie sich einklappen.</p>
+</section>
+
+
+<section id="einstieg">
+<h2 id="k3">3. Schnelleinstieg</h2>
+
+<ol class="steps">
+<li><strong>Beispiel ansehen.</strong> Öffnen Sie die Hilfe (<kbd>F1</kbd>) und wählen Sie
+    <span class="ui">Beispielnetzwerk laden</span>. Sie sehen sofort, wie ein fertiger Plan aussieht.</li>
+<li><strong>Leer beginnen.</strong> <span class="ui">Neu</span> in der Werkzeugleiste legt ein leeres Projekt an.</li>
+<li><strong>Geräte platzieren.</strong> Ziehen Sie aus der Seitenleiste nacheinander
+    Internet, Firewall, Router und Switch auf die Fläche. Die Benennung erfolgt automatisch
+    („Switch 1“, „Switch 2“ …).</li>
+<li><strong>Verbinden.</strong> Klicken Sie <span class="ui">Verbinden</span> (oder Taste <kbd>C</kbd>).
+    Klicken Sie das Internet-Symbol an, dann die Firewall — die Verbindung entsteht. Die
+    Firewall bleibt automatisch als Quelle aktiv, sodass Sie die Kette direkt weiterziehen können.
+    <kbd>Esc</kbd> beendet den Verbindungsmodus.</li>
+<li><strong>Dokumentieren.</strong> Doppelklicken Sie ein Gerät und tragen Sie Name, IP-Adresse,
+    Hostname und Standort ein.</li>
+<li><strong>Sichern.</strong> <kbd>Strg</kbd>+<kbd>S</kbd> speichert im Browser,
+    <kbd>Strg</kbd>+<kbd>E</kbd> schreibt zusätzlich eine JSON-Datei.</li>
+</ol>
+</section>
+
+
+<section id="geraete">
+<h2 id="k4">4. Geräte</h2>
+
+<h3 id="k4-1">4.1 Einfügen</h3>
+<p>Es gibt zwei Wege: Ziehen aus dem Katalog auf die gewünschte Stelle, oder Anklicken der
+Katalogkachel für eine Platzierung in der Bildmitte. In beiden Fällen wird das Gerät
+automatisch benannt und dem in der Seitenleiste eingestellten Ebenen zugeordnet.</p>
+<p>Ist <span class="ui">Snap</span> aktiv, rastet die Position auf dem Raster ein. Die
+Rastergröße lässt sich in den Projektinformationen (<span class="ui">?</span> →
+<span class="ui">Projektinformationen</span>) zwischen 5 und 200&nbsp;Pixeln einstellen;
+Standard sind 20.</p>
+
+<h3 id="k4-2">4.2 Auswählen</h3>
+<table>
+<thead><tr><th>Ziel</th><th>Bedienung</th></tr></thead>
+<tbody>
+<tr><td>Ein Gerät</td><td>Anklicken</td></tr>
+<tr><td>Mehrere Geräte einzeln</td><td><kbd>Umschalt</kbd> oder <kbd>Strg</kbd> + Klick (schaltet einzeln um)</td></tr>
+<tr><td>Rechteckige Auswahl</td><td>Auf leerer Fläche ziehen — alles, was das Rechteck berührt, wird markiert</td></tr>
+<tr><td>Auswahl erweitern</td><td><kbd>Umschalt</kbd> gedrückt halten und Rechteck ziehen</td></tr>
+<tr><td>Alles</td><td><kbd>Strg</kbd>+<kbd>A</kbd> (nur sichtbare Ebenen)</td></tr>
+<tr><td>Auswahl aufheben</td><td><kbd>Esc</kbd> oder Klick auf leere Fläche</td></tr>
+</tbody>
+</table>
+
+<h3 id="k4-3">4.3 Verschieben und Ausrichten</h3>
+<p>Markierte Geräte werden durch Ziehen verschoben; alle angeschlossenen Leitungen folgen
+automatisch und lösen sich nie vom Gerät. Sind mehrere Geräte markiert, bewegen sie sich
+gemeinsam und behalten ihre Abstände.</p>
+<p>Für die Feinarbeit eignen sich die Pfeiltasten: sie verschieben die Auswahl um einen
+Pixel, zusammen mit <kbd>Umschalt</kbd> um eine ganze Rasterweite.</p>
+
+<h3 id="k4-4">4.4 Eigenschaften</h3>
+<p>Ein Doppelklick auf ein Gerät — oder Rechtsklick → <span class="ui">Eigenschaften</span> —
+öffnet das Eigenschaftenfenster. Kein Feld ist Pflicht; tragen Sie ein, was Sie
+dokumentieren möchten.</p>
+
+<table>
+<thead><tr><th>Feld</th><th>Zweck und Hinweise</th></tr></thead>
+<tbody>
+<tr><td>Name</td><td>Anzeigename auf der Zeichenfläche. Ab etwa 18 Zeichen wird die Darstellung gekürzt, der volle Name bleibt gespeichert.</td></tr>
+<tr><td>Gerätetyp</td><td>Änderbar. Symbol, Farbe und — sofern die Portliste unverändert war — auch die Portliste passen sich an.</td></tr>
+<tr><td>Hostname</td><td>Wird auf der Kachel angezeigt, falls keine IP-Adresse eingetragen ist.</td></tr>
+<tr><td>Status</td><td>Aktiv, Inaktiv, Warnung, Fehler oder Unbekannt. Erscheint als farbiger Punkt oben rechts auf der Kachel; bei „Unbekannt“ bleibt der Punkt ausgeblendet.</td></tr>
+<tr><td>Hersteller, Modell</td><td>Für Inventarzwecke.</td></tr>
+<tr><td>IP-Adresse</td><td>Wird direkt auf der Kachel angezeigt. Beliebiges Format, auch <code>192.168.1.10/24</code>.</td></tr>
+<tr><td>IPv6-Adresse</td><td>Zusätzliche Adresse, nur im Dialog und in der Suche.</td></tr>
+<tr><td>MAC-Adresse</td><td>Durchsuchbar — praktisch beim Nachverfolgen von Portbelegungen.</td></tr>
+<tr><td>VLAN</td><td>Primäres VLAN des Geräts. Verbindungen haben ein eigenes VLAN-Feld.</td></tr>
+<tr><td>Standort, Raum, Rack</td><td>Physische Verortung; alle drei Felder sind durchsuchbar.</td></tr>
+<tr><td>Ebene</td><td>Verschiebt das Gerät auf eine andere Ebene.</td></tr>
+<tr><td>Betriebssystem</td><td>Freitext, z.&nbsp;B. „Ubuntu 24.04 LTS“.</td></tr>
+<tr><td>Protokoll / Bus</td><td>Für Feldbusse und Digitalprotokolle, z.&nbsp;B. „PROFINET“, „Modbus TCP“ oder bei der Modellbahn „DCC, mfx“. Wird im Dashboard ausgewertet und ist durchsuchbar.</td></tr>
+<tr><td>Gerätefoto</td><td>Echtes Bild des Geräts; wird verkleinert im Projekt gespeichert. Siehe <a href="#k16">Kapitel 16</a>.</td></tr>
+<tr><td>Beschreibung, Bemerkungen</td><td>Zwei mehrzeilige Felder — etwa für Aufgabe des Geräts und für Wartungsnotizen.</td></tr>
+<tr><td>Ports</td><td>Eine Zeile je Port. Siehe nächsten Abschnitt.</td></tr>
+</tbody>
+</table>
+
+<p>Die Schaltflächen unten links im Dialog erlauben <span class="ui">Löschen</span> und
+<span class="ui">Duplizieren</span>, ohne den Dialog vorher schließen zu müssen.</p>
+
+<h3 id="k4-5">4.5 Ports verwalten</h3>
+<p>Mehrere Netzanschlüsse bearbeiten Sie im Gerätedialog über <span class="ui">Schnittstellen</span>.
+Jede zusätzliche Schnittstelle hat Name, IPv4/CIDR, IPv6, MAC, VLAN und Port.
+Der Editor verwendet CSV mit Semikolon; Felder mit Semikolon oder Zeilenumbruch in
+Anführungszeichen setzen. Die Hauptadresse wird weiterhin im normalen Gerätedialog gepflegt.
+Alle Anschlüsse erscheinen auch unter <span class="ui">Analyse → Inventar</span>.</p>
+<p>Jedes Gerät bringt eine typgerechte Portliste mit: ein Managed Switch 24 Ports plus zwei
+Uplinks, ein Router vier LAN-Ports plus WAN, ein Server <code>eth0</code>, <code>eth1</code>
+und <code>iDRAC</code>, eine Firewall <code>WAN</code>, <code>LAN</code>, <code>DMZ</code>
+und <code>MGMT</code>.</p>
+<p>Im Eigenschaftenfenster steht die Liste als Textfeld mit einem Port je Zeile. Sie können
+Ports umbenennen, löschen oder ergänzen — etwa <code>Port 12 (Etage 2)</code>. Diese Namen
+erscheinen anschließend im Verbindungsdialog zur Auswahl.</p>
+<div class="note">
+Wechseln Sie den Gerätetyp, während die Portliste noch dem Standard entspricht, übernimmt
+das Programm automatisch die Ports des neuen Typs. Haben Sie die Liste bereits angepasst,
+bleibt Ihre Fassung erhalten.
+</div>
+
+<h3 id="k4-6">4.6 Status sichtbar machen</h3>
+<p>Der Statuspunkt eignet sich gut für Bestandsaufnahmen: markieren Sie beim Rundgang durch
+den Serverraum jedes überprüfte Gerät als <em>Aktiv</em>, auffällige als <em>Warnung</em>
+und ausgefallene als <em>Fehler</em>. Das Ergebnis ist auf einen Blick lesbar und bleibt
+im Export erhalten.</p>
+
+<h3 id="k4-7">4.7 Duplizieren, Reihenfolge, Löschen</h3>
+<ul>
+<li><strong>Duplizieren</strong> — <kbd>Strg</kbd>+<kbd>D</kbd> oder Kontextmenü. Die Kopie
+    wird leicht versetzt eingefügt und weiterzählend benannt. Sind mehrere Geräte markiert,
+    werden auch die Verbindungen <em>zwischen</em> ihnen mitkopiert.</li>
+<li><strong>Reihenfolge</strong> — <span class="ui">In den Vordergrund</span> bzw.
+    <span class="ui">In den Hintergrund</span> im Kontextmenü, falls sich Kacheln überlappen.</li>
+<li><strong>Löschen</strong> — <kbd>Entf</kbd>, Kontextmenü oder die Schaltfläche im
+    Eigenschaftenfenster. Alle Verbindungen des Geräts werden automatisch mit entfernt; die
+    Statusmeldung nennt die Anzahl. Ein <kbd>Strg</kbd>+<kbd>Z</kbd> stellt beides wieder her.</li>
+</ul>
+
+<h3 id="k4-8">4.8 Textfelder und Notizen</h3>
+<p>In der Kategorie <em>Text &amp; Grafik</em> finden Sie zwei Sonderformen:</p>
+<ul>
+<li><strong>Textfeld</strong> — eine freie Beschriftung ohne Rahmen, etwa für Titel oder
+    Abschnittsüberschriften im Plan. Der Text steht im Feld <em>Name</em>.</li>
+<li><strong>Freie Notiz</strong> — ein gelber Zettel mit umgeknickter Ecke für längere
+    Anmerkungen. Der Text wird automatisch auf bis zu sechs Zeilen umbrochen.</li>
+</ul>
+<p>Beide lassen sich wie Geräte verschieben, duplizieren und auf Ebenen legen, besitzen aber
+keine Netzwerkfelder. Ist eines markiert, ändert der Anfasser unten rechts seine Größe.
+In derselben Kategorie stehen Rahmen, Kreise, Pfeile und Klammern — siehe
+<a href="#k6-4">6.4</a>.</p>
+</section>
+
+
+<section id="verbindungen">
+<h2 id="k5">5. Verbindungen</h2>
+
+<h3 id="k5-1">5.1 Verbindungen erstellen</h3>
+<p>Aktivieren Sie <span class="ui">Verbinden</span> in der Werkzeugleiste oder drücken Sie
+<kbd>C</kbd>. Der erste Klick wählt die Quelle — sie wird grün umrandet, eine gestrichelte
+Vorschaulinie folgt dem Mauszeiger. Der zweite Klick auf ein anderes Gerät erzeugt die
+Verbindung.</p>
+<p>Danach bleibt das Zielgerät automatisch als neue Quelle aktiv. So verkabeln Sie einen
+Switch in einem Durchgang mit allen Clients, ohne jedes Mal neu ansetzen zu müssen.
+<kbd>Esc</kbd> beendet die Kette, ein Klick auf leere Fläche bricht die aktuelle Auswahl ab.</p>
+<p>Alternativ startet <span class="ui">Verbinden ab hier</span> im Kontextmenü eines Geräts
+den Modus direkt mit diesem Gerät als Quelle.</p>
+
+<h4>Welche Art gezogen wird</h4>
+<p>Direkt neben der Schaltfläche <span class="ui">Verbinden</span> steht eine Auswahlliste mit
+allen Verbindungsarten, gruppiert nach Netzwerk, Funk, Peripherie, Feldbus, Modellbahn, Strom
+und Sonstiges. Der farbige Strich links davon zeigt, wie die gewählte Art gezeichnet wird —
+Farbe, Stärke und Muster.</p>
+<p>Was Sie hier wählen, bekommen alle <strong>neu gezogenen</strong> Leitungen. Die Auswahl
+schaltet zugleich in den Verbindungsmodus: Art wählen, zeichnen, fertig. Wer abwechselnd
+Netzwerk und 230 V dokumentiert, wechselt so mit einem Griff.</p>
+<p>Bereits vorhandene Leitungen ändern Sie über Doppelklick oder Rechtsklick →
+<span class="ui">Verbindungstyp ändern …</span>. Dieselbe Einstellung findet sich auch auf der
+Einstellungsseite unter <span class="ui">Bedienung</span> → <span class="ui">Standard-Verbindungstyp</span>;
+beide Stellen zeigen immer denselben Wert.</p>
+<div class="note">
+Verbindungen eines Geräts mit sich selbst sind nicht möglich. Mehrere Verbindungen zwischen
+demselben Gerätepaar sind ausdrücklich erlaubt — etwa für Link Aggregation.
+</div>
+
+<h3 id="k5-2">5.2 Verbindungsarten</h3>
+<p>Ein Netzplan besteht selten nur aus Ethernet. Die Verbindungsarten sind deshalb in sieben
+Gruppen gegliedert; die Auswahlliste im Verbindungsdialog zeigt sie als aufklappbare Blöcke.</p>
+
+<table>
+<thead><tr><th>Gruppe</th><th>Enthält</th><th>Darstellung</th></tr></thead>
+<tbody>
+<tr><td>Netzwerk</td>
+    <td>Ethernet, Gigabit, 2.5/10/25/40/100 Gbit, Glasfaser, WAN, VPN</td>
+    <td>Blau über Violett nach Magenta, mit der Geschwindigkeit zunehmend kräftiger</td></tr>
+<tr><td>Funk</td>
+    <td>WLAN, Bluetooth, Zigbee, LoRaWAN, Mobilfunk, DECT</td>
+    <td>Türkistöne, <strong>durchweg gestrichelt</strong> — Kabel und Funk bleiben so auf einen Blick unterscheidbar</td></tr>
+<tr><td>Peripherie</td>
+    <td>USB 2.0/3.x/USB4, HDMI, DisplayPort, RS-232, RS-485, SAS, Fibre Channel, KVM</td>
+    <td>Bernstein- und Brauntöne</td></tr>
+<tr><td>Feldbus &amp; Industrie</td>
+    <td>CAN, PROFINET, PROFIBUS DP, Modbus RTU/TCP, KNX, DALI, M-Bus, IO-Link</td>
+    <td>Grün- und Olivtöne</td></tr>
+<tr><td>Modellbahn</td>
+    <td>Gleisanschluss, Booster (CDE), LocoNet, XpressNet, S88, CAN, ECoSlink</td>
+    <td>Rot- und Rosétöne, Gleisanschluss betont kräftig</td></tr>
+<tr><td>Strom</td>
+    <td>230 V AC, 24 V DC, PoE, USV-Versorgung</td>
+    <td>Deutlich dicker als Datenleitungen; 230 V und USV zusätzlich als Strich-Punkt</td></tr>
+<tr><td>Sonstiges</td>
+    <td>Logische Verbindung, Benutzerdefiniert</td>
+    <td>Grau gestrichelt</td></tr>
+</tbody>
+</table>
+
+<p>Beim Typwechsel wird die Geschwindigkeit automatisch nachgeführt, solange Sie sie nicht von
+Hand überschrieben haben. Das Feld heißt <span class="ui">Geschwindigkeit / Kennwert</span> und
+nimmt auch andere Angaben auf — bei einer PoE-Leitung etwa „30 W“, bei PROFIBUS „bis 12 Mbit/s“.</p>
+
+<div class="note">
+Standardgeschwindigkeiten sind Vorschläge und dort eingetragen, wo es einen belegten Wert gibt
+— etwa 480 Mbit/s bei USB 2.0 oder 9600 Baud bei KNX. Wo die Bandbreite von Version und Aufbau
+abhängt, bleibt das Feld leer statt geraten. Tragen Sie dort ein, was bei Ihnen tatsächlich läuft.
+</div>
+
+<h3 id="k5-3">5.3 Farbe, Linienstärke und Strichmuster</h3>
+<p>Jede Verbindungsart bringt eine Darstellung mit, die Sie an zwei Stellen ändern können. Die
+Reihenfolge bestimmt, was gilt — die erste zutreffende Ebene gewinnt:</p>
+
+<ol class="steps">
+<li><strong>Diese eine Leitung</strong> — im Verbindungsdialog unter
+    <span class="ui">Darstellung dieser Verbindung</span>. Für die Ausnahme: eine Leitung, die
+    im Plan auffallen soll.</li>
+<li><strong>Dieser Typ im ganzen Projekt</strong> — auf der Einstellungsseite unter
+    <span class="ui">Verbindungsarten</span>. Für die Regel: alle USB-Leitungen violett, einmal
+    eingestellt.</li>
+<li><strong>Auslieferungszustand</strong> — die Vorgabe aus der Tabelle oben.</li>
+</ol>
+
+<p>Einstellbar sind:</p>
+<table>
+<tbody>
+<tr><td>Farbe</td><td>freier Farbwähler</td></tr>
+<tr><td>Linienstärke</td><td>0,5 bis 12 Pixel</td></tr>
+<tr><td>Strichmuster</td><td>durchgezogen, gestrichelt, gepunktet, Strich-Punkt, lang gestrichelt</td></tr>
+</tbody>
+</table>
+
+<p>Der Verbindungsdialog zeigt eine <strong>Vorschaulinie</strong>, die sich beim Ändern sofort
+mitzeichnet. Die Schaltfläche <span class="ui">Darstellung zurücksetzen</span> löst die Leitung
+wieder von ihrer Sonderbehandlung; sie folgt dann erneut ihrem Typ. Schneller geht es über
+Rechtsklick auf die Leitung → <span class="ui">Darstellung ändern …</span>.</p>
+
+<p>Auf der Einstellungsseite sind alle Arten nach Gruppen aufgelistet, jede mit Vorschaulinie,
+Farbfeld, Stärke und Muster. Geänderte Arten sind hervorgehoben und lassen sich einzeln über
+<span class="ui">↺</span> oder gesammelt zurücksetzen. Beides gehört zum Projekt und reist mit
+einer exportierten JSON-Datei mit.</p>
+
+<div class="note">
+Freie Strichmuster per Zahleneingabe gibt es bewusst nicht. Fünf Muster decken jeden lesbaren
+Netzplan ab; mehr Auswahl führt erfahrungsgemäß nur zu Diagrammen, die niemand mehr entziffert.
+</div>
+<h3 id="k5-4">5.4 Eigenschaften und Portbelegung</h3>
+<p>Ein Doppelklick auf eine Leitung öffnet deren Eigenschaften. Neben Beschriftung, Typ,
+Geschwindigkeit und VLAN wählen Sie hier <strong>Port Quelle</strong> und
+<strong>Port Ziel</strong> aus den Portlisten der beteiligten Geräte aus. Die gewählten
+Ports erscheinen als kleine graue Beschriftung direkt an den Leitungsenden.</p>
+
+<p>Damit dokumentieren Sie eine Patchung vollständig:</p>
+<pre>Switch01  Port 5   →   Server01  eth0
+1 Gbit/s · VLAN 20</pre>
+
+<p>Die Schaltfläche <span class="ui">Richtung tauschen</span> vertauscht Quelle und Ziel
+samt Ports — nützlich, wenn Sie beim Zeichnen in der falschen Richtung angesetzt haben.</p>
+
+<p>Auf der Zeichenfläche zeigt die Leitung standardmäßig ihre Geschwindigkeit an; sobald Sie
+eine <strong>Beschriftung</strong> eintragen, tritt diese an die Stelle. Ist ein VLAN
+gesetzt, erscheint es als zweite Zeile.</p>
+
+<h3 id="k5-5">5.5 Linienführung</h3>
+<p>Die Auswahlliste in der Werkzeugleiste stellt die Führung aller Leitungen um:</p>
+<ul>
+<li><strong>Orthogonal</strong> — rechtwinklige Linien mit abgerundeten Ecken. Die Standardeinstellung und die übliche Darstellung in Netzplänen.</li>
+<li><strong>Gerade</strong> — direkte Verbindungslinie zwischen den Kachelrändern.</li>
+<li><strong>Gebogen</strong> — weiche Kurven; übersichtlich bei vielen sich kreuzenden Leitungen.</li>
+</ul>
+<p>Die Endpunkte liegen in jedem Modus exakt auf dem Rand der Gerätekachel, nicht in deren Mitte.</p>
+
+<h3 id="k5-6">5.6 Knoten: die Führung selbst bestimmen</h3>
+<p class="lead">Normalerweise sucht sich eine Leitung ihren Weg selbst. Wo das Ergebnis nicht
+passt — weil die Linie quer über eine Gerätekachel läuft oder sich mit drei anderen kreuzt —
+setzen Sie Knoten, an denen sie entlanggeführt wird.</p>
+
+<ol class="steps">
+<li>Rechtsklick auf die Leitung an der Stelle, wo der Knick sitzen soll.</li>
+<li><span class="ui">Knoten hier einfügen</span>.</li>
+<li>Der Knoten sitzt jetzt im richtigen Abschnitt. Solange die Leitung ausgewählt ist, zeigen
+    kleine Quadrate alle Knoten — ziehen Sie sie mit der Maus.</li>
+</ol>
+<p>Ein <strong>Doppelklick auf ein Quadrat</strong> entfernt diesen Knoten.
+<span class="ui">Alle Knoten entfernen</span> im Kontextmenü stellt die automatische Führung
+wieder her; dasselbe geht im Eigenschaftendialog unter <span class="ui">Führung</span>.</p>
+
+<p>Die Knoten gelten für alle drei Linienführungen: bei <em>orthogonal</em> entsteht zwischen
+zwei Knoten ein rechtwinkliger Weg, bei <em>gerade</em> eine direkte Strecke, bei
+<em>gebogen</em> ein weicher Bogen. Bei aktivem Snap rasten die Knoten am Raster ein.</p>
+<div class="note">
+Eine Leitung mit eigenen Knoten wird <strong>nicht</strong> mehr gegen parallele Leitungen
+versetzt. Wer die Führung selbst bestimmt, will sie genau so — und nicht um ein paar Pixel
+verschoben. Mehr als 40 Knoten je Leitung sind nicht vorgesehen.
+</div>
+
+<h3 id="k5-7">5.7 Abzweige</h3>
+<p class="lead">Ein Abzweig ist ein Punkt, an dem sich eine Leitung teilt: die Abzweigdose im
+Kabelkanal, der T-Verteiler am Bus, die Stelle, an der drei Kabel in einem Kanal
+zusammenlaufen. Er ist ein eigenes Objekt und kein Gerät.</p>
+
+<ol class="steps">
+<li>Rechtsklick auf die Leitung an der Abzweigstelle.</li>
+<li><span class="ui">Abzweig hier einfügen</span>. Die Leitung wird dort geteilt; an der
+    Stelle sitzt nun ein Punkt in der Leitungsfarbe.</li>
+<li><span class="ui">Verbinden</span> anklicken, dann den Abzweig und das Ziel — schon hängt
+    der dritte Strang daran.</li>
+</ol>
+<p>Die beiden Hälften erben Art, Farbe, Geschwindigkeit, VLAN und Ebene der geteilten Leitung.
+Ein Abzweig ändert die Leitung nicht, er unterbricht sie nur. Alternativ ziehen Sie
+<span class="ui">Abzweig / Knotenpunkt</span> aus der Seitenleiste und verbinden von Hand.</p>
+
+<h4>Was ein Abzweig nicht ist</h4>
+<ul>
+<li><strong>Kein Gerät.</strong> Die Statusleiste zählt Abzweige getrennt, und das Dashboard
+    lässt sie aus der Geräteauswertung heraus. Ein T-Stück ist keine Komponente Ihres Netzes.</li>
+<li><strong>Kein Switch.</strong> Wo tatsächlich ein Gerät sitzt, gehört auch eines in den
+    Plan — mit IP, Ports und allem, was dazugehört. Der Abzweig ist für die Stellen gedacht,
+    an denen nichts steht außer einer Klemme oder einer Dose.</li>
+</ul>
+<p>Ein Abzweig hat einen kurzen Eigenschaftendialog: Bezeichnung und Bemerkung — etwa
+„Abzweigdose Kabelkanal Nord“ — sowie die Ebene. Auf der Zeichenfläche bleibt er ein Punkt;
+die Bezeichnung finden Sie über die Suche und im Hinweisfenster.</p>
+
+<div class="note">
+<strong>Knoten oder Abzweig?</strong> Ein <em>Knoten</em> ändert nur den Weg der Linie —
+er ist Darstellung. Ein <em>Abzweig</em> teilt die Leitung wirklich in zwei und lässt weitere
+daran andocken — er ist Inhalt. Wenn Sie unsicher sind: Soll dort etwas abgehen? Dann
+Abzweig. Soll die Linie nur woanders langlaufen? Dann Knoten.
+</div>
+
+<h3 id="k5-8">5.8 Parallele Verbindungen</h3>
+<p>Führen mehrere Leitungen zwischen denselben zwei Geräten, werden sie automatisch
+gegeneinander versetzt gezeichnet, statt sich zu überdecken. So bleiben etwa vier gebündelte
+10-Gbit-Leitungen einzeln erkennbar und anklickbar.</p>
+
+<h3 id="k5-9">5.9 Auswählen und Löschen</h3>
+<p>Leitungen sind über einen unsichtbaren, deutlich breiteren Klickbereich erreichbar — Sie
+müssen die dünne Linie nicht exakt treffen. Ein Klick markiert, <kbd>Entf</kbd> löscht.
+Über das Kontextmenü lassen sich Beschriftung und Verbindungstyp auch ohne den vollen
+Eigenschaftendialog schnell ändern.</p>
+</section>
+
+
+<section id="bereiche">
+<h2 id="k6">6. Bereiche, Text und Grafik</h2>
+
+<p>Netzwerkbereiche sind beschriftete, farbig hinterlegte Rechtecke — für Gebäude,
+Serverräume, Produktionshallen, DMZ, VLAN-Zonen, Außenstellen oder Cloud-Umgebungen.
+Gruppierung und Netzbereich sind dasselbe Werkzeug.</p>
+
+<h3 id="k6-1">6.1 Bereich anlegen</h3>
+<p>Markieren Sie die zusammengehörenden Geräte und drücken Sie <kbd>Strg</kbd>+<kbd>G</kbd>.
+Der Bereich legt sich passend um die Auswahl, und der Eigenschaftendialog öffnet sich
+sofort. Ohne Auswahl entsteht ein leerer Bereich in der Bildmitte, den Sie anschließend
+positionieren.</p>
+
+<h3 id="k6-2">6.2 Beschriftung</h3>
+<p>Ein Bereich hat zwei Textzeilen: eine <strong>Bezeichnung</strong> („Serverraum“) und
+einen <strong>Zusatz</strong> für die technische Angabe („192.168.10.0/24 · VLAN 10“).
+Über die Farbwahl unterscheiden Sie Zonen optisch — etwa Rot für die DMZ, Violett für den
+Serverraum, Grün für die Außenstelle.</p>
+
+<h3 id="k6-3">6.3 Verschieben und Größe ändern</h3>
+<p>Ein Bereich wird an seinem Titelbereich oder an der Rahmenlinie gezogen — die Fläche
+selbst bleibt durchlässig, damit Sie die Geräte darin normal anklicken können.</p>
+<div class="note">
+<strong>Nützlich:</strong> Beim Verschieben eines Bereichs wandern alle Geräte mit, deren
+Mittelpunkt innerhalb liegt. So verschieben Sie einen kompletten Serverraum als Einheit.
+</div>
+<p>Ist der Bereich markiert, erscheint unten rechts ein kleiner Anfasser zum Ändern der
+Größe. Bei aktivem Snap rastet auch dieser am Raster ein.</p>
+
+<h3 id="k6-4">6.4 Text, Grafik und Dekoration</h3>
+<p class="lead">Unter <span class="ui">Text &amp; Grafik</span> in der linken Leiste liegen
+Bausteine, die kein Netzobjekt sind: Beschriftungen, Notizen und einfache Formen. Sie ziehen
+sie genauso auf die Fläche wie ein Gerät.</p>
+<table>
+<thead><tr><th>Baustein</th><th>Wofür</th></tr></thead>
+<tbody>
+<tr><td><b>Textfeld</b></td><td>eine einzelne Zeile — Standortname, Etagenbezeichnung, Überschrift</td></tr>
+<tr><td><b>Freie Notiz</b></td><td>gelber Zettel mit mehrzeiligem Text für Hinweise und offene Punkte</td></tr>
+<tr><td><b>Rahmen</b>, <b>Rahmen abgerundet</b></td><td>Rechtecke, um Zusammengehörendes optisch zu fassen</td></tr>
+<tr><td><b>Kreis</b>, <b>Ellipse</b></td><td>etwas hervorheben, ohne es einzurahmen</td></tr>
+<tr><td><b>Raute</b>, <b>Dreieck</b>, <b>Sechseck</b>, <b>Stern</b></td><td>Entscheidungspunkte, Warnhinweise, Markierungen</td></tr>
+<tr><td><b>Linie</b>, <b>Pfeil</b>, <b>Doppelpfeil</b></td><td>Trennlinien und Verweise, die keine Leitung sind</td></tr>
+<tr><td><b>Geschweifte Klammer</b></td><td>fasst mehrere Zeilen oder Geräte zu einer Erläuterung zusammen</td></tr>
+</tbody>
+</table>
+
+<div class="note">
+<strong>Rahmen oder Bereich?</strong> Ein <em>Bereich</em> ist eine Zone Ihres Netzes: er hat
+Bezeichnung und Netzangabe, nimmt Geräte beim Verschieben mit und zählt im Dashboard. Ein
+<em>Rahmen</em> ist reine Grafik. Für „Serverraum“ nehmen Sie den Bereich, für „hier fehlt
+noch die Abnahme“ die Grafik.
+</div>
+
+<h3 id="k6-5">6.5 Form und Farbe einstellen</h3>
+<p>Ein Doppelklick öffnet den Dialog <span class="ui">Grafikelement</span>. Dort stellen Sie
+ein:</p>
+<table>
+<tbody>
+<tr><td>Figur</td><td>Die Form lässt sich jederzeit wechseln — aus einem Rahmen wird ein Kreis, ohne ihn neu zu ziehen.</td></tr>
+<tr><td>Beschriftung</td><td>steht bei geschlossenen Formen mittig darin, bei Linien und Pfeilen darüber. Bleibt leer, wenn nichts hineingehört.</td></tr>
+<tr><td>Breite, Höhe</td><td>auf den Punkt genau. Schneller geht es mit dem Anfasser unten rechts, solange das Element markiert ist.</td></tr>
+<tr><td>Drehung</td><td>in Grad, um die Mitte. Für eine senkrechte Linie oder einen Pfeil nach unten: 90.</td></tr>
+<tr><td>Linienfarbe, ‑stärke, Strichmuster</td><td>dieselben fünf Muster wie bei Leitungen — durchgezogen bis Strich-Punkt.</td></tr>
+<tr><td>Fläche füllen</td><td>nur bei geschlossenen Formen. Linie, Pfeil und Klammer bleiben immer ungefüllt; eine Füllung ergäbe dort einen Klecks.</td></tr>
+<tr><td>Deckkraft</td><td>Werte unter 1 legen die Fläche wie eine Folie über den Plan — gut, um eine Zone einzufärben, ohne etwas zu verdecken.</td></tr>
+<tr><td>Im Vordergrund</td><td>siehe unten.</td></tr>
+</tbody>
+</table>
+<p>Die Vorschlagsfarben sind bewusst mitteltonig gewählt: sie tragen im hellen wie im dunklen
+Design. Eine sehr helle oder sehr dunkle eigene Farbe kann nach dem Designwechsel
+verschwinden — das gilt für Grafik genauso wie für Bereichsfarben.</p>
+
+<h3 id="k6-6">6.6 Vorn oder hinten</h3>
+<p>Grafikelemente liegen standardmäßig <strong>hinter</strong> Geräten und Leitungen. Ein
+Rahmen um eine Gerätegruppe verdeckt also nichts, auch wenn Sie ihn füllen. Neue Formen sind
+zusätzlich ungefüllt — beides zusammen sorgt dafür, dass Dekoration nie im Weg steht.</p>
+<p>Soll ein Element darüber liegen — etwa ein Pfeil, der auf ein Gerät zeigt, oder eine
+Markierung für eine Besprechung —, setzen Sie im Dialog den Haken
+<span class="ui">Im Vordergrund</span>.</p>
+
+<h3 id="k6-7">6.7 Was Dekoration nicht ist</h3>
+<p>Grafikelemente sind keine Netzobjekte. Daraus folgt:</p>
+<ul>
+<li>Sie lassen sich <strong>nicht verbinden</strong> — der Verbindungsmodus weist sie ab.</li>
+<li>Sie haben keine Ports, keine IP, keinen Status.</li>
+<li>Sie zählen nicht als Gerät. Die Statusleiste führt sie getrennt als
+    <span class="ui">Text/Grafik</span>, und das Dashboard lässt sie aus der Auswertung heraus.</li>
+</ul>
+<p>Alles Übrige verhält sich wie gewohnt: markieren, verschieben, kopieren, duplizieren,
+Ebenen zuordnen, ein- und ausblenden. Sie werden mit dem Projekt gespeichert und
+mitexportiert.</p>
+
+<h3 id="k6-8">6.8 Schrift einstellen</h3>
+<p class="lead">Textfeld, Notiz und die Beschriftung eines Grafikelements tragen dieselben
+Schrifteinstellungen. Ein Doppelklick öffnet den passenden Dialog.</p>
+<table>
+<tbody>
+<tr><td>Schriftart</td><td>Vier Auswahlmöglichkeiten: serifenlos (Standard), Serifen, feste Breite, schmal.</td></tr>
+<tr><td>Schriftgröße</td><td>6 bis 200 Pixel. Ein Textfeld wächst dabei mit; die Notiz behält ihre Größe und bricht neu um.</td></tr>
+<tr><td>Schriftfarbe</td><td>Nur wirksam, wenn <span class="ui">eigene Schriftfarbe verwenden</span> angehakt ist — siehe unten.</td></tr>
+<tr><td>Fett, Kursiv</td><td>frei kombinierbar</td></tr>
+<tr><td>Ausrichtung</td><td>linksbündig, zentriert, rechtsbündig</td></tr>
+</tbody>
+</table>
+
+<div class="note">
+<strong>Warum die Schriftfarbe einen Haken hat.</strong> Ohne eigene Farbe folgt die Schrift
+dem Design: im hellen Design dunkel, im dunklen Design hell. Setzen Sie eine feste Farbe,
+gilt sie in beiden — schwarze Schrift bleibt dann auch auf schwarzem Grund schwarz. Der Haken
+macht diese Entscheidung sichtbar, statt sie im Farbwähler zu verstecken.
+</div>
+
+<h4>Welche Schriften zur Auswahl stehen</h4>
+<p>Es sind <strong>Systemschriften</strong> mit Rückfallkette, keine mitgelieferten
+Schriftdateien. Das hat zwei Gründe: Eine Schriftdatei würde die Programmdatei um ein
+Vielfaches vergrößern, und die Lizenzen der meisten Schriften erlauben die Weitergabe in
+einer fremden Datei nicht. Ein Verweis auf eine Schrift im Netz scheidet aus, weil das
+Programm offline läuft.</p>
+<p>Praktisch heißt das: Auf einem Rechner ohne Georgia zeigt „Serifen“ eine andere
+Serifenschrift. Das Schriftbild ändert sich, die Aussage nicht. In SVG- und PNG-Export wird
+die Angabe mitgeschrieben; beim PNG ist das Ergebnis fest, beim SVG entscheidet der Rechner
+des Empfängers.</p>
+
+<h4>Textfeld und Notiz im Vergleich</h4>
+<table>
+<thead><tr><th></th><th>Textfeld</th><th>Freie Notiz</th></tr></thead>
+<tbody>
+<tr><td>Zeilen</td><td>eine</td><td>mehrere, mit automatischem Umbruch</td></tr>
+<tr><td>Größe</td><td>folgt dem Text — kein Anfasser nötig</td><td>Sie bestimmen sie, per Anfasser oder im Dialog</td></tr>
+<tr><td>Wenn der Platz nicht reicht</td><td>kommt nicht vor</td><td>der Rest wird abgeschnitten und mit „…“ gekennzeichnet</td></tr>
+</tbody>
+</table>
+<p>Reicht der Platz auf einem Zettel nicht, vergrößern Sie ihn oder verkleinern die Schrift —
+das „…“ am Ende sagt Ihnen, dass da noch etwas steht.</p>
+
+</section>
+
+
+<section id="ebenen">
+<h2 id="k7">7. Ebenen</h2>
+
+<p>Ebenen trennen verschiedene Sichten auf dasselbe Netz. Sechs sind voreingestellt:
+Physisches Netzwerk, Logisches Netzwerk, VLAN, WLAN, Server und IoT. Eigene Ebenen legen
+Sie mit <span class="ui">+</span> im Ebenenbereich an.</p>
+
+<p>Jedes Gerät, jede Verbindung und jeder Bereich liegt auf genau einer Ebene. Ausgeblendete
+Ebenen verschwinden vollständig aus der Darstellung — samt der Leitungen, die zu ihren
+Geräten führen. Sie bleiben aber im Projekt und im Export erhalten.</p>
+
+<p>Typische Anwendungen:</p>
+<ul>
+<li>Verkabelung auf „Physisches Netzwerk“, VLAN-Struktur auf „VLAN“ — beim Präsentieren
+    blenden Sie jeweils nur eine Sicht ein.</li>
+<li>Geplanter Ausbau auf einer Ebene „Planung 2027“, die im Normalbetrieb ausgeblendet bleibt.</li>
+<li>Getrennte Ebenen je Gebäude bei großen Liegenschaften.</li>
+</ul>
+
+<p>Beim Löschen einer Ebene werden ihre Objekte nicht entfernt, sondern auf die erste
+verbleibende Ebene verschoben. Der Dialog nennt vorher die betroffene Anzahl. Die letzte
+verbleibende Ebene lässt sich nicht löschen.</p>
+</section>
+
+
+<section id="navigation">
+<h2 id="k8">8. Navigieren in großen Plänen</h2>
+
+<h3 id="k8-1">8.1 Zoomen</h3>
+<table>
+<tbody>
+<tr><td><kbd>Strg</kbd> + Mausrad</td><td>Stufenlos zoomen. Der Punkt unter dem Mauszeiger bleibt exakt stehen.</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>+</kbd> / <kbd>Strg</kbd>+<kbd>−</kbd></td><td>In Stufen zoomen</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>0</kbd></td><td>Zurück auf 100&nbsp;%</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>1</kbd></td><td>Alles einpassen</td></tr>
+</tbody>
+</table>
+<p>Der Zoombereich reicht von 15&nbsp;% bis 500&nbsp;%. Leitungsstärken und Rasterlinien
+bleiben dabei optisch konstant.</p>
+
+<h3 id="k8-2">8.2 Ausschnitt verschieben</h3>
+<ul>
+<li><strong>Mausrad</strong> — vertikal, mit <kbd>Umschalt</kbd> horizontal</li>
+<li><strong>Mittlere Maustaste</strong> — ziehen, jederzeit und in jedem Modus</li>
+<li><strong>Leertaste + Ziehen</strong> — wie das Hand-Werkzeug, ohne den Modus zu wechseln</li>
+<li><strong>Hand-Werkzeug</strong> (<kbd>H</kbd>) — für längeres Navigieren</li>
+<li><strong>Minimap</strong> — Klick oder Ziehen springt direkt an die Stelle</li>
+</ul>
+
+<h3 id="k8-3">8.3 Gerät suchen</h3>
+<p>Für größere Pläne bietet <span class="ui">Analyse → Automatisch anordnen</span> eine
+Anordnung verbundener Geräte in Ebenen. Sie können den gesamten sichtbaren Plan oder nur
+die Auswahl anordnen und manuelle Leitungsknoten wahlweise behalten. Ein Undo nimmt die
+gesamte Anordnung zurück. Die Hindernisvermeidung für orthogonale Leitungen ist in den
+Einstellungen schaltbar; bei komplexen Hindernissen kann Nacharbeit nötig bleiben.</p>
+<p><kbd>Strg</kbd>+<kbd>F</kbd> setzt den Fokus in das Suchfeld. Gesucht wird gleichzeitig
+in Name, IP, IPv6, Hostname, MAC-Adresse, Raum, Rack, Standort, VLAN und Gerätetyp. Mit den
+Pfeiltasten wählen Sie einen Treffer aus, <kbd>Eingabe</kbd> springt hin: die Ansicht
+zentriert das Gerät, markiert es und lässt es kurz orange aufblinken.</p>
+</section>
+
+
+<section id="speichern">
+<h2 id="k9">9. Speichern, Laden und Austausch</h2>
+
+<h3 id="k9-1">9.1 Projekte im Browser</h3>
+<p><span class="ui">Speichern</span> (<kbd>Strg</kbd>+<kbd>S</kbd>) fragt nach einem
+Projektnamen und legt das Projekt im <code>localStorage</code> des Browsers ab. Existiert
+der Name bereits, wird nach Bestätigung überschrieben.</p>
+<p><span class="ui">Laden</span> (<kbd>Strg</kbd>+<kbd>O</kbd>) zeigt alle gespeicherten
+Projekte mit Speicherdatum, Geräte- und Verbindungszahl. Das Papierkorbsymbol in einer Zeile
+löscht das jeweilige Projekt nach Rückfrage.</p>
+
+<h3 id="k9-2">9.2 Automatische Sicherung</h3>
+<p>Die Statusleiste zeigt offene Änderungen, den letzten erfolgreichen Sicherungszeitpunkt
+und Speicherfehler. Vor einem Projektwechsel können Sie <span class="ui">Sichern</span>,
+<span class="ui">Verwerfen</span> oder <span class="ui">Abbrechen</span> wählen.
+Ein zusätzlicher Wiederherstellungspunkt schützt den bisherigen Inhalt.</p>
+<p>Unabhängig davon sichert das Programm den aktuellen Stand automatisch — jeweils kurz
+nachdem Sie eine Änderung abgeschlossen haben. Beim nächsten Start wird dieser Stand
+wiederhergestellt und eine entsprechende Meldung eingeblendet.</p>
+<p>Die automatische Sicherung ist ein Schutz gegen versehentliches Schließen, <em>kein
+Ersatz für benannte Projekte</em>: Sie hält immer nur den zuletzt bearbeiteten Stand.
+Legen Sie Meilensteine bewusst als benanntes Projekt oder als JSON-Datei ab.</p>
+
+<h3 id="k9-3">9.3 JSON-Export und -Import</h3>
+<p><span class="ui">Export → Projekt als JSON</span> (<kbd>Strg</kbd>+<kbd>E</kbd>) schreibt
+eine lesbare Textdatei mit allen Geräten, Positionen, Eigenschaften, Ports, Verbindungen,
+Bereichen, Ebenen und Ansichtseinstellungen. Der Dateiname leitet sich vom Projektnamen ab.</p>
+<p><span class="ui">Import</span> liest eine solche Datei wieder ein. Enthält das aktuelle
+Projekt bereits Objekte, wird vorher gefragt.</p>
+
+<div class="note">
+<strong>Import ist robust:</strong> Die Datei wird vor der Übernahme geprüft. Unbekannte
+Gerätetypen werden durch „Desktop-PC“ ersetzt, doppelte IDs bereinigt, fehlende Felder
+ergänzt und Verbindungen ohne gültige Endpunkte entfernt. Jede Korrektur wird anschließend
+in einem Hinweisfenster aufgelistet — nichts geschieht unbemerkt. Ist die Datei kein
+gültiges JSON oder kein Projektobjekt, erscheint eine verständliche Fehlermeldung und das
+aktuelle Projekt bleibt unangetastet.
+</div>
+
+<h3 id="k9-4">9.4 Grenzen des Browser-Speichers</h3>
+<p><span class="ui">⚙ → Sicherungsverlauf</span> zeigt bis zu 30 Wiederherstellungspunkte
+über alle Projekte sowie die Speicherbelegung. Dort können Sie einen Stand wiederherstellen,
+entfernen oder manuell sichern. Das Archiv nutzt IndexedDB und speichert identische Bilder
+gemeinsam. Alte Browserprojekte werden kopiert und bleiben weiterhin in der Ladeliste.
+Ein Schreibfehler sperrt den Lesezugriff auf vorhandene Projekte nicht.</p>
+<p>Browserdaten sind an das Profil und gegebenenfalls den Dateipfad gebunden. Vor dem Wechsel
+von Browser oder Ablageordner eine JSON-Datei exportieren. Das Löschen von Browserdaten
+kann auch den Sicherungsverlauf entfernen.</p>
+<p>Der <code>localStorage</code> fasst je nach Browser etwa 5–10&nbsp;MB. Das reicht für
+sehr viele Projekte; ein Netzplan mit 200 Geräten liegt im Bereich weniger hundert Kilobyte.
+Ist der Speicher dennoch voll, erscheint eine Meldung mit dem Hinweis, ältere Projekte in
+der Ladeliste zu löschen oder als JSON auszulagern.</p>
+<p>Im privaten Modus mancher Browser ist <code>localStorage</code> gesperrt. Das Programm
+erkennt das beim Start und weist in der Statusleiste darauf hin — Speichern und automatische
+Sicherung entfallen dann, Export und Import funktionieren weiterhin.</p>
+</section>
+
+
+<section id="export">
+<h2 id="k10">10. Grafikexport und Druck</h2>
+
+<h3 id="k10-1">10.1 SVG</h3>
+<p><span class="ui">Export → Diagramm als SVG</span> erzeugt eine verlustfreie Vektorgrafik.
+Sie enthält alle Symbole, Texte, Farben und Linien und lässt sich beliebig skalieren, in
+Word, LibreOffice oder Inkscape einbinden und weiter bearbeiten.</p>
+<p>Der Ausschnitt wird automatisch auf den tatsächlichen Inhalt zugeschnitten. Raster,
+Auswahlrahmen und Bedienhilfen werden nicht mit exportiert; ausgeblendete Ebenen bleiben
+ausgeblendet.</p>
+
+<h3 id="k10-2">10.2 PNG</h3>
+<p><span class="ui">Export → Diagramm als PNG</span> erzeugt eine Pixelgrafik in doppelter
+Auflösung, sodass sie auch in Präsentationen scharf bleibt. Für sehr große Diagramme ist SVG
+die bessere Wahl; überschreitet das Bild eine sinnvolle Größe, weist das Programm darauf hin.</p>
+
+<h3 id="k10-3">10.3 Drucken</h3>
+<p><span class="ui">Export → Bericht exportieren</span> erstellt eine eigenständige
+HTML-Datei mit Zeichnung, Inventar, Verbindungen, Prüfhinweisen und Scanzeitpunkt.
+Öffnen Sie diese Datei im Browser und wählen Sie Drucken bzw. Als PDF speichern.
+Die maskierte Variante enthält die maskierte Zeichnung ohne Inventartabellen;
+Gerätebilder können weiterhin eingebrannte vertrauliche Angaben enthalten.</p>
+<p><span class="ui">Drucken</span> (oder <kbd>Strg</kbd>+<kbd>P</kbd>) blendet
+Werkzeugleiste, Seitenleiste, Statusleiste, Minimap und alle Dialoge aus und passt das
+Diagramm vor dem Druck automatisch auf die Seite ein. Nach dem Druck wird der vorherige
+Bildausschnitt wiederhergestellt.</p>
+<p>Für Pläne im Querformat stellen Sie die Ausrichtung im Druckdialog des Browsers um.
+Über „Als PDF speichern“ erhalten Sie eine weitergabefähige Dokumentation.</p>
+
+<h3 id="k10-4">10.4 Vertrauliche Angaben unkenntlich machen</h3>
+<p class="lead">Ein Netzplan, der das Haus verlässt — als Anlage zum Angebot, als Folie, im
+Ticketsystem — enthält oft mehr, als der Empfänger wissen muss. Das Programm kann Adressen,
+Namen und Notizen im Bild unkenntlich machen, ohne dass Sie Ihre Arbeitsdatei anfassen.</p>
+
+<h4>Der schnelle Weg</h4>
+<p><span class="ui">Export</span> → <span class="ui">Als Bild speichern (maskiert) …</span>
+fragt Format, Größe und Umfang der Maskierung in einem Dialog ab und speichert direkt. Ihre
+Auswahl bleibt am Projekt stehen; beim nächsten Mal steht sie wieder da.</p>
+
+<h4>Was maskiert werden kann</h4>
+<table>
+<thead><tr><th>Gruppe</th><th>Voreingestellt</th></tr></thead>
+<tbody>
+<tr><td>IP-Adressen und Subnetze (IPv4, IPv6)</td><td>an</td></tr>
+<tr><td>MAC-Adressen</td><td>an</td></tr>
+<tr><td>Hostnamen und DNS-Namen</td><td>an</td></tr>
+<tr><td>Geräte- und Bereichsnamen — ersetzt durch Typ und Nummer, etwa „Firewall 2“</td><td>aus</td></tr>
+<tr><td>Portbezeichnungen an den Leitungen</td><td>aus</td></tr>
+<tr><td>Leitungsbeschriftungen (Geschwindigkeit, VLAN, Text)</td><td>aus</td></tr>
+<tr><td>Notizen und Textfelder</td><td>aus</td></tr>
+</tbody>
+</table>
+<p>Die ersten drei Gruppen arbeiten <em>überall</em>, nicht nur in den dafür vorgesehenen
+Feldern: Eine IP-Adresse im Zusatz eines Bereichs, in einer Notiz oder in einer
+Leitungsbeschriftung wird genauso erkannt. Bei Hostnamen ist das eine Heuristik — sie sucht
+nach Namen mit Punkt und Endung („srv01.firma.local“) und kann in seltenen Fällen danebenliegen.</p>
+
+<h4>Vier Arten der Maskierung</h4>
+<table>
+<tbody>
+<tr><td><b>Punkte</b></td><td><code>•••.•••.•.••</code> — die Form bleibt erkennbar, der Wert nicht. Voreinstellung.</td></tr>
+<tr><td><b>Teilweise</b></td><td><code>192.168.x.x</code> — Netzanteil bleibt, Geräteanteil verschwindet. Bei MAC-Adressen bleiben die ersten drei Bytes stehen: die Herstellerkennung, oft genau das, was im Plan bleiben soll.</td></tr>
+<tr><td><b>Balken</b></td><td><code>██████</code> — der klassische Schwärzungsstrich.</td></tr>
+<tr><td><b>Weglassen</b></td><td>Die Angabe verschwindet ersatzlos.</td></tr>
+</tbody>
+</table>
+
+<h3 id="k10-5">10.5 Maskierung dauerhaft einschalten</h3>
+<p>Über <span class="ui">⚙</span> → <span class="ui">Vertrauliche Angaben maskieren</span>
+gilt die Maskierung für die <strong>Zeichenfläche</strong> — und damit automatisch auch für
+Ausdruck, SVG- und PNG-Export. Der aktive Zustand steht in der Statusleiste und am
+Menüeintrag. Auf der Einstellungsseite stellen Sie unter
+<span class="ui">Vertrauliche Angaben maskieren</span> Umfang und Art ein; eine Beispielzeile
+zeigt dabei laufend, wie das Ergebnis aussieht.</p>
+<p>Das ist der ehrlichere Weg für eine Besprechung am Beamer: Sie sehen selbst, was der Raum
+sieht. Das Beispiel-Setup <span class="ui">Weitergabe</span> schaltet genau das ein
+(siehe <a href="#k21-9">21.9</a>).</p>
+
+<h3 id="k10-6">10.6 Was die Maskierung leistet — und was nicht</h3>
+<div class="note">
+<strong>Maskiert wird der Text selbst, nicht ein Balken darüber.</strong> Ein schwarzer
+Balken über echtem Text wäre in einer SVG-Datei bloße Dekoration — die Adresse stünde
+weiterhin im Quelltext und ließe sich mit einem Texteditor herauslesen. Hier steht nach dem
+Export nichts anderes mehr in der Datei. Dasselbe gilt für PNG: das Bild wird aus dem bereits
+maskierten Diagramm gerechnet.
+</div>
+<p>Nicht erfasst wird:</p>
+<ul>
+<li><strong>Gerätefotos.</strong> Was auf einem Foto zu lesen ist — ein Aufkleber mit
+    Seriennummer, ein Display mit IP —, kann das Programm nicht erkennen. Prüfen Sie
+    Bilder selbst, oder schalten Sie für den Export unter
+    <span class="ui">Einstellungen → Gerätedarstellung</span> die Bilder ab.</li>
+<li><strong>Der Projektname</strong> und die Kopfdaten aus den Projektinformationen.</li>
+<li><strong>Die JSON-Datei.</strong> Sie ist Ihre Arbeitsdatei und bleibt vollständig — sonst
+    wäre die Maskierung ein Datenverlust. Wer den Netzplan als Daten weitergeben will, gibt
+    kein maskiertes JSON weiter, sondern ein Bild.</li>
+</ul>
+<p>Die Einstellung gehört zum Projekt und reist in der JSON-Datei mit: ob dieser Plan
+Kundendaten enthält, weiß der Plan selbst am besten.</p>
+</section>
+
+
+<section id="projektinfo">
+<h2 id="k11">11. Projektinformationen</h2>
+<p>Über <span class="ui">?</span> → <span class="ui">Projektinformationen</span> öffnen Sie die Kopfdaten des Projekts:
+Projektname, Beschreibung, Autor, Firma, Standort sowie die Rastergröße. Erstellungs- und
+Änderungsdatum werden automatisch geführt und angezeigt.</p>
+<p>Projektname, Firma und Standort erscheinen oben links in der Kopfzeile und im Titel des
+Browserfensters — hilfreich, wenn Sie mehrere Pläne parallel geöffnet haben.</p>
+</section>
+
+
+<section id="kuerzel">
+<h2 id="k12">12. Tastaturkürzel</h2>
+<p>Katalogeinträge sind mit Tab erreichbar; Enter oder Leertaste fügt sie ein.
+Auf der Zeichenfläche wählt Leertaste das fokussierte Gerät aus, Enter öffnet dessen
+Eigenschaften. Mit den Pfeiltasten lassen sich ausgewählte Geräte verschieben.
+Einstellungen, Dashboard und Handbuch halten den Fokus innerhalb ihrer Ansicht und
+geben ihn beim Schließen zurück. Enter bestätigt das Hauptformular eines Dialogs.</p>
+
+<table class="shortcuts">
+<thead><tr><th>Kürzel</th><th>Funktion</th></tr></thead>
+<tbody>
+<tr><td><kbd>Entf</kbd> / <kbd>Rücktaste</kbd></td><td>Auswahl löschen</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>S</kbd></td><td>Projekt im Browser speichern</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>O</kbd></td><td>Projekt laden</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>N</kbd></td><td>Neues Netzwerk</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>E</kbd></td><td>Projekt als JSON exportieren</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>Z</kbd></td><td>Rückgängig</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>Y</kbd> / <kbd>Strg</kbd>+<kbd>Umschalt</kbd>+<kbd>Z</kbd></td><td>Wiederholen</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>D</kbd></td><td>Auswahl duplizieren</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>A</kbd></td><td>Alles auswählen</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>G</kbd></td><td>Netzwerkbereich um die Auswahl erzeugen</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>F</kbd></td><td>Gerätesuche</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>Umschalt</kbd>+<kbd>D</kbd></td><td>Dashboard öffnen und schließen</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>,</kbd></td><td>Einstellungsseite öffnen und schließen</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>V</kbd></td><td>Bild aus der Zwischenablage als Gerätefoto einfügen</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>P</kbd></td><td>Drucken</td></tr>
+<tr><td><kbd>Strg</kbd> + Mausrad</td><td>Zoomen</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>+</kbd> / <kbd>−</kbd> / <kbd>0</kbd></td><td>Zoom vergrößern / verkleinern / 100&nbsp;%</td></tr>
+<tr><td><kbd>Strg</kbd>+<kbd>1</kbd></td><td>Alles einpassen</td></tr>
+<tr><td><kbd>V</kbd> / <kbd>C</kbd> / <kbd>H</kbd></td><td>Auswahl- / Verbindungs- / Hand-Modus</td></tr>
+<tr><td><kbd>G</kbd></td><td>Raster ein- und ausblenden</td></tr>
+<tr><td><kbd>Leertaste</kbd> + Ziehen</td><td>Zeichenfläche verschieben</td></tr>
+<tr><td>Mittlere Maustaste</td><td>Zeichenfläche verschieben</td></tr>
+<tr><td>Pfeiltasten</td><td>Auswahl um 1 Pixel verschieben</td></tr>
+<tr><td><kbd>Umschalt</kbd> + Pfeiltasten</td><td>Auswahl um eine Rasterweite verschieben</td></tr>
+<tr><td>Doppelklick</td><td>Eigenschaften öffnen</td></tr>
+<tr><td>Rechtsklick</td><td>Kontextmenü</td></tr>
+<tr><td><kbd>Umschalt</kbd> / <kbd>Strg</kbd> + Klick</td><td>Auswahl erweitern</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>Aktion abbrechen, Auswahl aufheben, Dialog schließen</td></tr>
+<tr><td><kbd>F1</kbd> / <kbd>Umschalt</kbd>+<kbd>F1</kbd></td><td>Kurzhilfe / dieses Handbuch</td></tr>
+</tbody>
+</table>
+</section>
+
+
+<section id="tipps">
+<h2 id="k13">13. Hinweisfenster (Tooltips)</h2>
+
+<p>Beim Verweilen auf einer Schaltfläche, einer Katalogkachel, einem Gerät oder einer
+Leitung erscheint nach kurzer Zeit ein Hinweisfenster. Auf der Zeichenfläche ist das mehr
+als eine Beschriftung: für ein Gerät zeigt es Name, Typ, Status, IP, Hostname, MAC,
+Standort, VLAN und die Zahl der Ports; für eine Leitung Typ, Geschwindigkeit, VLAN und
+beide Endpunkte samt Ports. So lesen Sie Dokumentationsdaten, ohne einen Dialog zu öffnen.</p>
+
+<p>Wer die Oberfläche kennt, empfindet Hinweisfenster mit der Zeit als störend. Das
+Kontrollkästchen <span class="ui">Tipps</span> in der Werkzeugleiste schaltet sie deshalb
+vollständig ab — auch die kurzen Beschriftungen der Schaltflächen. Die Einstellung gilt
+für den Browser und bleibt über Sitzungen hinweg erhalten; sie wird <em>nicht</em> mit dem
+Projekt gespeichert und beim Weitergeben einer JSON-Datei nicht übertragen.</p>
+
+<div class="note">
+Während Sie ziehen, während ein Dialog offen ist oder solange das Kontextmenü angezeigt
+wird, erscheinen ohnehin keine Hinweisfenster.
+</div>
+</section>
+
+
+<section id="arbeitsweise">
+<h2 id="k14">14. Bewährte Arbeitsweisen</h2>
+
+<h3 id="k14-1">14.1 Von oben nach unten zeichnen</h3>
+<p>Netzpläne lesen sich am besten hierarchisch: Internet oben, darunter Firewall und Router,
+dann die Verteilebene, ganz unten Server und Clients. Das Beispielnetzwerk folgt diesem
+Aufbau und eignet sich als Vorlage.</p>
+
+<h3 id="k14-2">14.2 Namensschema festlegen</h3>
+<p>Ein einheitliches Schema zahlt sich spätestens ab dem zwanzigsten Gerät aus, etwa
+<code>Standort-Rolle-Nummer</code>: <code>MUC-SW-01</code>, <code>MUC-SRV-03</code>,
+<code>BER-FW-01</code>. Die automatische Benennung ist nur als Startpunkt gedacht —
+benennen Sie Geräte gleich beim Anlegen um.</p>
+
+<h3 id="k14-3">14.3 Erst zeichnen, dann dokumentieren</h3>
+<p>Setzen Sie zuerst alle Geräte und Leitungen, bevor Sie Details eintragen. Das hält den
+Aufbau flüssig; die Feldarbeit erledigen Sie danach in einem Durchgang mit Doppelklick,
+Ausfüllen, <kbd>Esc</kbd>.</p>
+
+<h3 id="k14-4">14.4 Ports von Anfang an pflegen</h3>
+<p>Die Portbelegung ist der Teil der Dokumentation, der im Alltag am meisten Zeit spart und
+am schnellsten veraltet. Tragen Sie sie direkt beim Anlegen der Verbindung ein — später
+lässt sich nicht mehr rekonstruieren, in welchem Switchport das Kabel steckte.</p>
+
+<h3 id="k14-5">14.5 Ebenen statt zweiter Datei</h3>
+<p>Für eine geplante Erweiterung legen Sie besser eine zusätzliche Ebene an, statt eine
+Kopie des Projekts zu pflegen. So bleibt der Bestand die einzige Quelle der Wahrheit, und
+Sie sehen Planung und Bestand jederzeit gemeinsam oder getrennt.</p>
+
+<h3 id="k14-6">14.6 Versionen ablegen</h3>
+<p>Exportieren Sie zu Meilensteinen eine JSON-Datei mit Datum im Namen, etwa
+<code>netz_hauptstandort_2026-08-17.json</code>. Diese Dateien sind reiner Text und lassen
+sich in einer Versionsverwaltung sinnvoll vergleichen.</p>
+</section>
+
+
+<section id="datenformat">
+<h2 id="k15">15. Datenformat</h2>
+
+<p>Exportierte Dateien sind normales, eingerücktes JSON und können auch von anderen
+Werkzeugen gelesen oder erzeugt werden.</p>
+
+<pre>{
+  "name": "Netzwerk Labor 1",
+  "version": 2,
+  "info":     { "description", "author", "company", "location",
+                "created", "modified" },
+  "devices": [
+    { "id": "dev_001", "type": "switch_managed", "name": "Core Switch",
+      "x": 434, "y": 460, "layer": "lay_phys", "status": "active",
+      "ip": "192.168.1.2", "ipv6": "", "mac": "", "hostname": "sw01",
+      "manufacturer": "", "model": "", "location": "", "room": "Serverraum",
+      "rack": "R1", "vlan": "", "os": "", "protocol": "",
+      "description": "", "notes": "",
+      "image": "data:image/jpeg;base64,…",
+      "ports": [ { "name": "Port 1" }, { "name": "Port 2" } ] },
+    { "id": "dev_009", "type": "deco_rect", "name": "Abnahme offen",
+      "x": 380, "y": 420, "layer": "lay_phys",
+      "figure": "rect", "w": 300, "h": 220, "rot": 0,
+      "stroke": "#ea580c", "strokeWidth": 2, "dash": "6 4",
+      "fill": "none", "opacity": 1, "front": false }
+  ],
+  "connections": [
+    { "id": "con_001", "source": "dev_001", "target": "dev_002",
+      "sourcePort": "Port 5", "targetPort": "eth0",
+      "type": "gigabit", "speed": "1 Gbit/s", "vlan": "20",
+      "label": "", "description": "", "layer": "lay_phys",
+      "points": [ { "x": 620, "y": 540 }, { "x": 620, "y": 700 } ] }
+  ],
+  "areas":  [ { "id": "area_001", "label": "Serverraum",
+                "sublabel": "192.168.1.0/24 · VLAN 20",
+                "x": 400, "y": 596, "w": 442, "h": 180,
+                "color": "#7c3aed", "layer": "lay_phys" } ],
+  "layers": [ { "id": "lay_phys", "name": "Physisches Netzwerk",
+                "visible": true } ],
+  "customTypes": [ { "id": "custom_1", "label": "Hutschienen-Netzteil",
+                     "cat": "custom", "color": "#0f172a",
+                     "iconViewBox": "0 0 24 24", "iconInner": "&lt;rect …/&gt;",
+                     "iconImage": "", "ports": [ "230 V", "24 V" ] } ],
+  "settings": { "grid": true, "snap": true, "gridSize": 20,
+                "routing": "orthogonal", "zoom": 1, "panX": 60, "panY": 60,
+                "defaultConnType": "gigabit", "activeLayer": "lay_phys",
+                "photos": true,
+                "privacy": { "on": false, "style": "dots",
+                             "ip": true, "mac": true, "host": true,
+                             "names": false, "ports": false,
+                             "labels": false, "notes": false } },
+  "counters": { "switch_managed": 1 },
+  "seq": 12
+}</pre>
+
+<p>Die wichtigsten Regeln:</p>
+<ul>
+<li><code>id</code> beginnt mit <code>dev_</code>, <code>con_</code> oder <code>area_</code>. Daran erkennt das Programm die Objektart.</li>
+<li><code>source</code> und <code>target</code> einer Verbindung müssen auf vorhandene Geräte verweisen, sonst wird die Verbindung beim Import verworfen.</li>
+<li><code>x</code> und <code>y</code> bezeichnen die linke obere Ecke der Gerätekachel (132 × 88 Pixel).</li>
+<li><code>seq</code> ist der Zähler für neue IDs und wird beim Import automatisch neu bestimmt.</li>
+<li><code>version</code> kennzeichnet das Format. Version 1 wird auf Version 2 migriert;
+unbekannte neuere Versionen werden zurückgewiesen. Geräte haben zusätzlich
+<code>interfaces</code> und <code>observations</code>, Verbindungen ebenfalls
+<code>observations</code> für Zeitpunkt, Methode und beobachteten Status.</li>
+<li><code>image</code> enthält das Gerätefoto vollständig als <code>data:</code>-URL. Dadurch ist
+    die Datei ohne Begleitdateien vollständig — und entsprechend groß.</li>
+<li>Grafikelemente stehen ebenfalls unter <code>devices</code>, tragen aber statt der
+    Netzwerkfelder ihre Darstellung: <code>figure</code>, <code>w</code>, <code>h</code>,
+    <code>rot</code>, <code>stroke</code>, <code>strokeWidth</code>, <code>dash</code>,
+    <code>fill</code>, <code>opacity</code> und <code>front</code>. Beim Import werden Farben
+    nur als Hex-Wert und Strichmuster nur aus Ziffern und Trennern übernommen — alles andere
+    wird verworfen.</li>
+<li><code>settings.privacy</code> hält fest, was beim Export unkenntlich gemacht wird
+    (siehe <a href="#k10-4">10.4</a>). Die Datei selbst bleibt immer unmaskiert.</li>
+<li><code>points</code> einer Verbindung sind die selbst gesetzten Knoten
+    (siehe <a href="#k5-6">5.6</a>). Fehlt die Liste oder ist sie leer, wird die Leitung
+    automatisch geführt. Beim Import werden höchstens 40 Punkte je Leitung übernommen.</li>
+<li>Ein Abzweig ist ein Gerät vom Typ <code>junction</code> — dadurch gelten Auswahl,
+    Ebenen und Verbindungen dafür unverändert.</li>
+<li>Textfeld, Notiz und Grafikbeschriftung tragen <code>font</code> (Schlüssel, nie ein
+    CSS-Wert), <code>fontSize</code>, <code>color</code>, <code>bold</code>,
+    <code>italic</code> und <code>align</code>. Fehlt ein Wert, gilt die Vorgabe — bei der
+    Farbe heißt das: sie folgt dem Design.</li>
+</ul>
+<p>Möchten Sie eine Projektdatei ohne Bilddaten weitergeben, entfernen Sie vor dem Export die
+Fotos über das Kontextmenü, oder löschen Sie in einem Editor die <code>image</code>-Felder. Das
+Programm liest eine Datei auch ohne diese Felder problemlos ein.</p>
+</section>
+
+
+<section id="fotos">
+<h2 id="k16">16. Gerätefotos</h2>
+
+<p class="lead">Ein Symbol zeigt die Geräteart, ein Foto zeigt das Gerät. Bei einem Rundgang
+durch den Serverraum oder an der Anlage sind echte Bilder oft die schnellste Dokumentation:
+Sie erkennen Bauform, Beschriftung, Steckerbelegung und Zustand sofort wieder.</p>
+
+<h3 id="k16-1">16.1 Foto hinzufügen</h3>
+<p>Drei Wege führen zum Ziel:</p>
+<ul>
+  <li><strong>Ziehen und Ablegen</strong> — eine Bilddatei aus dem Explorer direkt auf die
+      Gerätekachel ziehen. Das ist der schnellste Weg für mehrere Geräte hintereinander.</li>
+  <li><strong>Einfügen</strong> — Gerät markieren und mit <kbd>Strg</kbd>+<kbd>V</kbd> ein Bild aus
+      der Zwischenablage übernehmen. Praktisch für Bildschirmausschnitte und Handyfotos, die
+      Sie gerade kopiert haben.</li>
+  <li><strong>Dialog</strong> — Doppelklick auf das Gerät, Abschnitt <span class="ui">Gerätefoto</span>,
+      dort <span class="ui">Foto wählen …</span>. Auch über Rechtsklick →
+      <span class="ui">Foto hinzufügen …</span> erreichbar.</li>
+</ul>
+
+<h3 id="k16-2">16.2 Was gespeichert wird</h3>
+<p>Das Bild wird <strong>im Projekt selbst</strong> abgelegt, nicht als Verweis auf eine Datei.
+Damit reist es automatisch mit:</p>
+<table>
+<tbody>
+<tr><td>Browser-Speicher</td><td>Foto ist im gespeicherten Projekt enthalten</td></tr>
+<tr><td>Automatische Sicherung</td><td>Foto wird mitgesichert und nach dem Neustart wiederhergestellt</td></tr>
+<tr><td>JSON-Export</td><td>Foto steckt als <code>image</code>-Feld im Gerät (Base64-kodiert)</td></tr>
+<tr><td>SVG- und PNG-Export</td><td>Foto ist in der Grafik eingebettet, keine Begleitdateien nötig</td></tr>
+<tr><td>Druck</td><td>Foto wird mitgedruckt</td></tr>
+</tbody>
+</table>
+<p>Eine weitergegebene JSON-Datei ist also vollständig — der Empfänger braucht keine
+Bilddateien. Das ist der Grund für diese Bauweise und gleichzeitig ihr Preis: die Datei wächst.</p>
+
+<h3 id="k16-3">16.3 Automatische Verkleinerung</h3>
+<p>Jedes Bild wird beim Übernehmen auf maximal <strong>640 Pixel</strong> längste Kante skaliert
+und als JPEG neu kodiert. Aus einem 4-MB-Handyfoto werden dadurch typischerweise 30–70 KB.</p>
+<div class="note">
+<strong>Warum das nötig ist:</strong> Base64 vergrößert Binärdaten um etwa ein Drittel. Ein
+unverkleinertes 4-MB-Foto würde rund 5,4 MB belegen — und der gesamte Browser-Speicher fasst
+je nach Browser nur 5–10 MB für <em>alle</em> Projekte zusammen. Ein einziges Foto könnte also
+das Speichern unmöglich machen.
+</div>
+<p>Ab etwa 1,6 MB Gesamtbildmenge weist das Programm einmalig darauf hin. Die belegte Menge
+steht jederzeit im <a href="#k18">Dashboard</a> unter <em>Bilddaten</em>.</p>
+
+<h3 id="k16-4">16.4 Anzeige steuern</h3>
+<p>Ist ein Foto hinterlegt, wächst die Gerätekachel um einen Bildstreifen; Name, Typ und
+IP-Adresse bleiben darunter lesbar. Das Kontrollkästchen <span class="ui">Fotos</span> in der
+Werkzeugleiste blendet alle Bilder auf der Zeichenfläche aus — die Kacheln werden wieder
+kompakt, die Fotos bleiben aber im Projekt gespeichert und im Eigenschaftenfenster sowie im
+Hinweisfenster sichtbar.</p>
+<p>Diese Einstellung gehört zum Projekt und wird mitgespeichert: Sie können also eine
+bildreiche Arbeitsfassung pflegen und für den Ausdruck auf die kompakte Darstellung umschalten.</p>
+
+<h3 id="k16-5">16.5 Empfehlungen</h3>
+<ul>
+  <li>Fotografieren Sie <strong>Frontblende und Rückseite</strong> getrennt — die Rückseite als
+      zweites Gerät mit dem Namenszusatz „(rückseitig)“ oder als Notiz daneben.</li>
+  <li>Ein Foto der <strong>Patchfeldbeschriftung</strong> im Bereich „Serverraum“ spart später viel Sucharbeit.</li>
+  <li>Fotos ersetzen keine Portdokumentation. Die Portliste bleibt durchsuchbar, ein Bild nicht.</li>
+  <li>Bei sehr vielen Geräten: Fotos nur für die Komponenten hinterlegen, die man selten sieht.</li>
+</ul>
+</section>
+
+
+<section id="analyse">
+<h2 id="k17">17. Netzwerkanalyse eines bestehenden Netzes</h2>
+
+<p class="lead">Ein bestehendes Netz muss nicht von Hand abgetippt werden. Das Programm liest
+die Ausgabe gängiger Analysewerkzeuge, leitet daraus Geräte, Typen und Verbindungen ab und
+füllt das Dashboard automatisch.</p>
+
+<h3 id="k17-1">17.1 Warum der Browser nicht selbst scannt</h3>
+<p>Aus Sicherheitsgründen darf eine Webseite — auch eine lokal geöffnete — grundsätzlich nicht:</p>
+<ul>
+  <li>ICMP-Echos (Ping) senden,</li>
+  <li>Rohsockets öffnen oder ARP-Tabellen lesen,</li>
+  <li>beliebige TCP-Ports ansprechen oder SNMP abfragen.</li>
+</ul>
+<p>Diese Beschränkungen sind sinnvoll: sonst könnte jede beliebige Seite Ihr Heim- oder
+Firmennetz ausspähen. Ein „Scanner im HTML“ wäre daher entweder unwirksam oder müsste raten —
+für eine Dokumentation ist beides wertlos. Deshalb geht dieses Programm den belastbaren Weg
+und wertet aus, was Werkzeuge <em>mit</em> Ihren Rechten ermittelt haben.</p>
+
+<h3 id="k17-2">17.2 Weg 1: mitgeliefertes Analyse-Skript</h3>
+<p><span class="ui">Analyse</span> → <span class="ui">Analyse-Skript anzeigen …</span> zeigt
+ein fertiges Skript für Windows (PowerShell 5.1/7) und Linux/macOS (Bash mit Python 3.9+) — zum Kopieren oder
+Herunterladen. Es liegt zusätzlich als <code>netzwerk_analyse.ps1</code> bzw.
+<code>netzwerk_analyse.sh</code> neben dem Programm.</p>
+<p>Das Skript ermittelt mit begrenzter Parallelität:</p>
+<ol>
+  <li>die aktive LAN- oder WLAN-Schnittstelle über die Standardroute — und damit das Subnetz,
+      in dem Sie tatsächlich hängen,</li>
+  <li>welche Adressen auf ICMP antworten,</li>
+  <li>die MAC-Adressen aus der Nachbartabelle des Systems — <em>dafür muss ein Gerät nicht auf
+      Ping antworten</em>, viele Drucker und IoT-Geräte tun das nämlich nicht,</li>
+  <li>Hostnamen über die Namensauflösung des Systems,</li>
+  <li>optional eine kurze Liste gängiger TCP-Ports,</li>
+  <li>und daraus abgeleitete Verbindungen (siehe <a href="#k17-6">17.6</a>).</li>
+</ol>
+<p>Geschrieben wird <code>netzwerk_scan.json</code>. Diese Datei laden Sie über
+<span class="ui">Analyse</span> → <span class="ui">Scan-Datei importieren …</span>.</p>
+<pre>powershell -ExecutionPolicy Bypass -File .\netzwerk_analyse.ps1
+powershell -ExecutionPolicy Bypass -File .\netzwerk_analyse.ps1 -Subnet 192.168.10.0/24
+powershell -ExecutionPolicy Bypass -File .\netzwerk_analyse.ps1 -NoPorts
+powershell -ExecutionPolicy Bypass -File .\netzwerk_analyse.ps1 -ListInterfaces
+powershell -ExecutionPolicy Bypass -File .\netzwerk_analyse.ps1 -Subnet 10.0.0.0/16 -StartAddress 10.0.20.1 -MaxHosts 254 -PlanOnly
+
+chmod +x netzwerk_analyse.sh &amp;&amp; ./netzwerk_analyse.sh
+bash netzwerk_analyse.sh --subnet 10.0.0.0/16 --start-address 10.0.20.1 --max-hosts 254 --plan-only</pre>
+<p><code>-PlanOnly</code> bzw. <code>--plan-only</code> zeigt die Auswahl ohne Scan.
+Mit <code>-InterfaceIndex</code> bzw. <code>--interface</code> wählen Sie die Schnittstelle;
+<code>-Concurrency</code>/<code>--concurrency</code> begrenzt parallele Prüfungen,
+<code>-Timeout</code>/<code>--timeout</code> die Wartezeit in Millisekunden.
+Windows beendet mit Q, Linux/macOS mit Strg+C und schreibt die abgeschlossenen Prüfungen.
+Auch <code>-CancelAfterSeconds</code> bzw. <code>--cancel-after-seconds</code> ist möglich.
+Ausgewählte, ausgelassene und abgeschlossene Adressen stehen im Ergebnis.</p>
+<p>Zu jedem Gerät hält die Datei fest, <em>wie</em> es gefunden wurde — über ICMP, über die
+ARP-Tabelle, über einen offenen Port oder als lokaler Rechner. Diese Angabe bleibt mit
+Zeitpunkt und Status als Beobachtung am Gerät erhalten und ist oft aufschlussreicher als die Trefferliste
+selbst.</p>
+<div class="note">
+Das Skript sendet Ping-, TCP- und Namensauflösungsanfragen für die Bestandsaufnahme.
+Es meldet sich nicht an Geräten an und verändert keine Gerätekonfiguration.
+Der Befund wird lokal als JSON geschrieben; nur freigegebene Netze scannen.
+</div>
+
+<h3 id="k17-3">17.3 Weg 2: Ausgabe einfügen</h3>
+<p><span class="ui">Analyse</span> → <span class="ui">Netzwerkdaten einlesen …</span> öffnet ein
+Textfeld. Führen Sie einen Befehl aus und fügen Sie die komplette Ausgabe ein — das Format
+wird automatisch erkannt. Mehrere Ausgaben dürfen zusammen eingefügt werden; das Programm
+führt sie über IP- und MAC-Adressen zusammen.</p>
+
+<h3 id="k17-4">17.4 Unterstützte Quellen</h3>
+<table>
+<thead><tr><th>Quelle</th><th>Befehl</th><th>Was daraus entsteht</th></tr></thead>
+<tbody>
+<tr><td>Nachbartabelle</td><td><code>arp -a</code> · <code>arp -n</code> · <code>ip neigh</code> · <code>Get-NetNeighbor</code></td><td>IP + MAC, Herstellerhinweis</td></tr>
+<tr><td>Eigene Konfiguration</td><td><code>ipconfig /all</code> · <code>ip addr</code></td><td>Gateway, DNS, Subnetzmaske</td></tr>
+<tr><td>nmap, Hostliste</td><td><code>nmap -sn 192.168.1.0/24</code></td><td>IP, Hostname, MAC, Hersteller</td></tr>
+<tr><td>nmap, Dienste</td><td><code>nmap -sV -oX scan.xml 192.168.1.0/24</code></td><td>zusätzlich offene Ports und Dienste — die beste Grundlage</td></tr>
+<tr><td>nmap, grepbar</td><td><code>nmap -oG - 192.168.1.0/24</code></td><td>IP, Hostname, offene Ports</td></tr>
+<tr><td>nmap, UDP</td><td><code>nmap -sU -p 15730,15731,21105 …</code></td><td>Modellbahnzentralen, die nur über UDP antworten</td></tr>
+<tr><td>Nachbarschaften</td><td><code>show lldp neighbors detail</code> · <code>show cdp neighbors detail</code> · <code>lldpctl</code></td><td><strong>echte Verbindungen</strong> samt Portbezeichnungen</td></tr>
+<tr><td>Portbelegung</td><td><code>show mac address-table</code></td><td>ordnet Geräte konkreten Switchports und VLANs zu</td></tr>
+<tr><td>Listen</td><td>CSV/Semikolon aus Inventar, DHCP-Leases, Router-Export</td><td>IP, MAC, Name, Raum, Rack</td></tr>
+<tr><td>Analyse-Skript</td><td><code>netzwerk_scan.json</code></td><td>alles zusammen, ohne Zusatzsoftware</td></tr>
+</tbody>
+</table>
+<p>LLDP/CDP ist die wertvollste Quelle: nur sie liefert die tatsächliche Verkabelung. Alles
+andere liefert Geräte, aber keine Topologie.</p>
+
+<h3 id="k17-5">17.5 Typvorschläge und ihre Zuverlässigkeit</h3>
+<p>Für jeden gefundenen Host schlägt das Programm einen Gerätetyp vor und begründet ihn. Die
+Reihenfolge der Merkmale:</p>
+<ol>
+  <li><strong>Offene Ports</strong> — das aussagekräftigste Merkmal (z. B. Port 9100 → Netzwerkdrucker,
+      Port 15471 → ESU ECoS). Zuverlässigkeit <em>hoch</em>.</li>
+  <li><strong>Hostname und Hersteller</strong> — z. B. „sw-keller“, „fritz.box“, „Raspberry Pi
+      Foundation“. Zuverlässigkeit <em>mittel</em>.</li>
+  <li><strong>Fallback</strong> — nur ein Webdienst oder SSH erreichbar. Zuverlässigkeit <em>niedrig</em>.</li>
+</ol>
+<p>Zusätzlich wird jeder Host mit dem Projekt abgeglichen — über MAC-Adresse, dann IP, dann
+Name. Bekannte Geräte werden als <em>bekannt</em> markiert und nur ergänzt, neue als
+<em>neu</em>. Vorhandene Eingaben werden nicht überschrieben, solange Sie das nicht
+ausdrücklich ankreuzen.</p>
+<div class="note note-warn">
+Die Vorschläge sind Heuristiken, keine Tatsachen. Prüfen Sie die Liste, bevor Sie sie
+übernehmen — besonders bei Zuverlässigkeit <em>niedrig</em>.
+</div>
+
+<h3 id="k17-6">17.6 Erkannte Verbindungen</h3>
+<p class="lead">Das Analyse-Skript liefert nicht nur Geräte, sondern auch Verbindungen. Sie
+landen im Dashboard in einer eigenen Liste und werden — wie alles andere — erst nach Ihrer
+Bestätigung gezeichnet.</p>
+
+<h4>Was das Programm wissen kann und was nicht</h4>
+<p>Welches Kabel in welchem Switchport steckt, weiß ohne Auskunft der Switches (SNMP, LLDP)
+niemand. Ein Rechner sieht von seinem Platz aus nur, <em>dass</em> ein Gerät erreichbar ist,
+nicht <em>worüber</em>. Alle Verbindungen aus dem Skript sind deshalb begründete Ableitungen
+und tragen ihre Herkunft mit sich:</p>
+<table>
+<thead><tr><th>Methode</th><th>Was sie belegt</th><th>Zuverlässigkeit</th></tr></thead>
+<tbody>
+<tr><td>ARP-Nachbar</td><td>Das Gerät war im selben Layer-2-Netz erreichbar. Der Switchport bleibt unbekannt.</td><td>65 %</td></tr>
+<tr><td>selbst beobachtet</td><td>Der Scan-Rechner hat das Gerät direkt gesehen.</td><td>55 %</td></tr>
+<tr><td>gleiches Subnetz</td><td>Nur die Adresse spricht dafür — die schwächste Aussage.</td><td>40 %</td></tr>
+<tr><td>LLDP / CDP</td><td>Die Geräte melden einander selbst. Das ist eine echte Nachbarschaft.</td><td>hoch</td></tr>
+</tbody>
+</table>
+<p>Deshalb werden abgeleitete Verbindungen als <b>Logische Verbindung</b> eingetragen — grau
+gestrichelt, deutlich unterscheidbar von einer Leitung, die Sie selbst verlegt haben. Wo Sie
+es besser wissen, ändern Sie die Leitungsart per Doppelklick.</p>
+
+<h4>Warum aus vielen Ableitungen wenige Linien werden</h4>
+<p>Das Skript meldet jede Ableitung einzeln. Für 20 Geräte waren das zuletzt 56 Einträge:
+dasselbe Paar dreifach, dazu ein Stern vom Scan-Rechner zu jedem gesehenen Gerät. Ungefiltert
+übernommen ergäbe das einen unlesbaren Filz. Zwei Regeln machen daraus einen Plan:</p>
+<ol class="steps">
+<li>Je Gerätepaar bleibt die <b>bestbelegte</b> Ableitung — die anderen sagen nichts Neues.</li>
+<li>Jedes Gerät behält <b>seine beste Verbindung</b>. Bei Gleichstand gewinnt das stärker
+    vernetzte Gegenüber: der Verteiler, an dem tatsächlich alles hängt.</li>
+</ol>
+<p>Aus „ich habe alle gesehen“ wird so „ich hänge am selben Verteiler wie alle anderen“ — die
+Aussage, die die Daten hergeben, und keine darüber hinaus. Wie viele schwächere Ableitungen
+dabei entfallen sind, steht über der Liste.</p>
+<p>Aus derselben Auswertung ergibt sich auch die <b>Anordnung</b>: Verteiler kommen nach oben,
+was daran hängt darunter. Ein Raster nach IP-Adresse wäre schneller gezeichnet, aber die
+Leitungen liefen kreuz und quer.</p>
+
+<h4>WLAN</h4>
+<p>Meldet das Skript, dass der Scan-Rechner über WLAN angebunden ist, wird genau diese eine
+Verbindung als <b>WLAN</b> eingetragen — mit der SSID in der Begründung. Für alle anderen
+Geräte lässt sich das vom Scan-Rechner aus nicht feststellen; sie bleiben deshalb bei der
+logischen Verbindung.</p>
+
+<h3 id="k17-7">17.7 Übernahme ins Projekt</h3>
+<p>Im Dashboard, Ansicht <span class="ui">Erkennung</span>, wählen Sie mit den Kontrollkästchen
+aus, was übernommen werden soll — oben die Geräte, darunter die Verbindungen.
+<span class="ui">Nur neue</span> ist der übliche Fall. Drei Optionen steuern das Ergebnis:</p>
+<table>
+<tbody>
+<tr><td>Bereich anlegen</td><td>legt ein beschriftetes Rechteck „Automatisch erkannt“ um die neuen Geräte — so bleibt getrennt, was Sie selbst gezeichnet haben</td></tr>
+<tr><td>Felder überschreiben</td><td>ersetzt auch bereits gefüllte Felder. Standardmäßig aus.</td></tr>
+<tr><td>Neue verbinden mit</td><td>verbindet Geräte, die aus dem Scan keine Verbindung mitbringen, mit einem vorhandenen Gerät (in der Regel dem Switch). Liegt eine MAC-Adresstabelle vor, wird der richtige Switchport eingetragen.</td></tr>
+</tbody>
+</table>
+<p>Bereits vorhandene Geräte werden über MAC, IP oder Namen wiedererkannt und nur ergänzt.
+Eine Verbindung, die es schon gibt, wird nicht doppelt angelegt.</p>
+<p>Die gesamte Übernahme ist <strong>ein einziger Schritt</strong> und mit
+<kbd>Strg</kbd>+<kbd>Z</kbd> vollständig zurücknehmbar.</p>
+
+<h3 id="k17-8">17.8 Rechtlicher Hinweis</h3>
+<p>Analysieren Sie nur Netzwerke, für die Sie zuständig sind oder eine ausdrückliche Erlaubnis
+haben. Ein Portscan in fremden Netzen kann unzulässig sein — unabhängig davon, mit welchem
+Werkzeug er ausgeführt wird.</p>
+</section>
+
+
+<section id="dashboard">
+<h2 id="k18">18. Dashboard</h2>
+<p>Das Analyse-Menü bietet außerdem <span class="ui">Inventar</span> und
+<span class="ui">Netzplan-Prüfung</span>: filterbare Tabellen für Geräte, Schnittstellen,
+Ports und Verbindungen mit Bearbeitung und CSV-Ausgabe. CSV exportiert die gesamte
+gewählte Tabelle. Die Prüfung meldet unter anderem doppelte IPs, ungültige Adressen,
+Portkonflikte und auffällige Netz-/VLAN-Zuordnungen. Hinweise können bei Bussen, Trunks
+oder Routing berechtigte Ausnahmen sein und sperren das Projekt nicht.</p>
+<p>Scanstatus beschreibt den angegebenen Beobachtungszeitpunkt; das Frontend überwacht
+keine Geräte live. Bei wiederholter Übernahme werden vorhandene Geräte anhand MAC/IP
+erneut abgeglichen. Fehlende Netzpräfixe sind als /24-Annahme gekennzeichnet.</p>
+
+<p><span class="ui">Analyse</span> → <span class="ui">Dashboard öffnen</span> oder
+<kbd>Strg</kbd>+<kbd>Umschalt</kbd>+<kbd>D</kbd>. Zwei Ansichten:</p>
+
+<h3 id="k18-1">18.1 Übersicht</h3>
+<p>Wertet das Projekt aus, ohne dass Sie etwas eintragen müssen:</p>
+<ul>
+  <li><strong>Kennzahlen</strong> — Geräte, Verbindungen, Bereiche, Ebenen, Fotos, Bilddatenmenge.</li>
+  <li><strong>Geräte nach Kategorie</strong> und <strong>Betriebsstatus</strong> als Balken.</li>
+  <li><strong>IP-Netze</strong> — aus den erfassten Adressen abgeleitet, mit Anzahl und belegtem Bereich.</li>
+  <li><strong>VLANs</strong> — aus Geräten und Verbindungen zusammengetragen.</li>
+  <li><strong>Verbindungsarten</strong> — wie viel Gigabit, wie viel 10-Gigabit, wie viel WLAN.</li>
+  <li><strong>Dokumentationsgrad</strong> — Anteil der Geräte mit IP, Hostname, MAC, Standort,
+      Hersteller und Foto. Der schnellste Weg zu der Frage „was fehlt noch?“.</li>
+  <li><strong>Nicht verbundene Geräte</strong> — Klick springt zum Gerät. Meist vergessene Leitungen.</li>
+  <li><strong>Modellbahn</strong> — erscheint, sobald entsprechende Komponenten im Projekt sind.</li>
+</ul>
+
+<h3 id="k18-2">18.2 Erkennung</h3>
+<p>Zeigt das Ergebnis der letzten Analyse: Kennzahlen, verwendete Quellen, erkanntes Gateway,
+Netze, gefundene Nachbarschaften und Switchport-Zuordnungen — darunter die vollständige
+Hostliste mit Typvorschlag, Begründung, offenen Ports und Abgleichstatus. Nach jeder Analyse
+öffnet sich diese Ansicht automatisch.</p>
+</section>
+
+
+<section id="modellbahn">
+<h2 id="k19">19. Modellbahn-Digitalkomponenten</h2>
+
+<p class="lead">Moderne Modellbahnsteuerungen sind vollwertige Netzwerkteilnehmer: Zentralen
+mit LAN und WLAN, Handregler über WLAN, Steuerrechner mit Automatikprogrammen, Booster und
+Rückmelder über Bus-Gateways. Damit gilt für die Anlage dasselbe wie für ein Firmennetz — ohne
+Plan sucht man lange.</p>
+
+<h3 id="k19-1">19.1 Verfügbare Komponenten</h3>
+<p>Die Kategorie <span class="ui">Modellbahn (Digital)</span> in der Seitenleiste enthält:</p>
+<table>
+<thead><tr><th>Komponente</th><th>Typische Rolle im Netz</th></tr></thead>
+<tbody>
+<tr><td>ESU ECoS</td><td>Digitalzentrale mit LAN, Webinterface und eigenem Steuerport</td></tr>
+<tr><td>Märklin CS3</td><td>Zentrale mit LAN/WLAN, Webinterface und CAN-Bus über Ethernet</td></tr>
+<tr><td>Roco/Fleischmann Z21</td><td>Zentrale mit LAN und WLAN, Handregler über App</td></tr>
+<tr><td>Uhlenbrock Intellibox</td><td>Zentrale mit LocoNet, per Gateway im Netz</td></tr>
+<tr><td>Digikeijs DR5000</td><td>Multibus-Zentrale mit LAN, WLAN, LocoNet und XpressNet</td></tr>
+<tr><td>ZIMO MX10</td><td>Zentrale mit LAN und CAN</td></tr>
+<tr><td>Tams MasterControl</td><td>Zentrale mit LAN-Anbindung</td></tr>
+<tr><td>DCC-EX Zentrale</td><td>Selbstbauzentrale, meist über WLAN</td></tr>
+<tr><td>Booster</td><td>Leistungsverstärker je Stromkreis</td></tr>
+<tr><td>Rückmeldemodul</td><td>Belegtmelder, häufig über S88 oder LocoNet</td></tr>
+<tr><td>Bus-Gateway</td><td>Übergang LocoNet/XpressNet ↔ Ethernet</td></tr>
+<tr><td>WLAN-Handregler</td><td>Handgerät oder Smartphone-App als Fahrpult</td></tr>
+<tr><td>Steuerrechner</td><td>JMRI, Rocrail, iTrain, TrainController, WinDigipet</td></tr>
+</tbody>
+</table>
+
+<h3 id="k19-2">19.2 Ports, Busse und Protokolle</h3>
+<p>Jede Komponente bringt eine Portliste als <strong>Vorschlag</strong> mit — etwa
+<code>LAN</code>, <code>CAN 1</code>, <code>Gleisausgang</code>, <code>S88 In</code>. Passen Sie
+sie im Eigenschaftenfenster an Ihre Anlage an; es sind keine Herstellerangaben, sondern
+bearbeitbare Bezeichnungen.</p>
+<p>Für die Digitalprotokolle gibt es das Feld <span class="ui">Protokoll / Bus</span>. Tragen Sie
+dort ein, was tatsächlich läuft, zum Beispiel:</p>
+<pre>DCC, mfx, MM2        (Zentrale mit Mehrformatbetrieb)
+DCC                  (Booster im Gleiskreis 2)
+S88-N                (Rückmelderkette Bahnhof)
+LocoNet              (Gateway zur Intellibox)</pre>
+<p>Das Dashboard zählt diese Angaben aus und zeigt sie in der Karte
+<em>Modellbahn-Digitalkomponenten</em>. So sehen Sie auf einen Blick, welche Protokolle im
+Einsatz sind und wo Mehrformatbetrieb nötig ist.</p>
+
+<h3 id="k19-3">19.3 Erkennung im Netz</h3>
+<p>Die Netzwerkanalyse erkennt Digitalkomponenten an ihren Steuerports und Hostnamen:</p>
+<table>
+<thead><tr><th>Merkmal</th><th>Vorschlag</th></tr></thead>
+<tbody>
+<tr><td>TCP 15471 offen</td><td>ESU ECoS</td></tr>
+<tr><td>UDP 15730/15731 offen</td><td>Märklin Central Station</td></tr>
+<tr><td>UDP 21105 offen</td><td>Roco/Fleischmann Z21</td></tr>
+<tr><td>TCP 2560 offen</td><td>DCC-EX Zentrale</td></tr>
+<tr><td>TCP 12080/12090 offen</td><td>Steuerrechner mit JMRI</td></tr>
+<tr><td>TCP 1234 offen</td><td>LocoNet über TCP (Gateway)</td></tr>
+<tr><td>Hostname mit „ecos“, „cs3“, „z21“, „dr5000“, „rocrail“ …</td><td>entsprechende Komponente</td></tr>
+</tbody>
+</table>
+<div class="note">
+<strong>Wichtig für UDP:</strong> Märklin CS3 und Roco Z21 antworten auf UDP-Ports. Das
+mitgelieferte Analyse-Skript prüft nur TCP — diese Zentralen erscheinen dort zwar als
+erreichbarer Host, aber ohne Portmerkmal. Für die eindeutige Erkennung hilft zusätzlich:
+<pre>nmap -sU -p 15730,15731,21105 192.168.1.0/24 -oX udp.xml</pre>
+Die XML-Datei anschließend über <span class="ui">Scan-Datei importieren</span> einlesen.
+</div>
+
+<h3 id="k19-4">19.4 Empfohlener Aufbau der Dokumentation</h3>
+<ol class="steps">
+<li>Zentrale, Steuerrechner und Switch als Kern zeichnen und verbinden.</li>
+<li>Booster mit Bereichen versehen — je Bereich ein Netzwerkbereich mit dem Gleiskreis als
+    Zusatztext, etwa „Kreis 2 · Bahnhof Nord“.</li>
+<li>Rückmelder und Gateways an die Zentrale hängen und im Feld <em>Protokoll / Bus</em>
+    dokumentieren, über welchen Bus sie laufen.</li>
+<li>Handregler auf eine eigene Ebene „WLAN“ legen — dann lässt sich die Funkseite separat zeigen.</li>
+<li>Fotos der Anschlussfelder hinterlegen. Bei Boostern und Rückmeldern ist ein Bild der
+    Klemmenreihe später Gold wert.</li>
+</ol>
+</section>
+
+
+<section id="symbole">
+<h2 id="k20">20. Eigene Symbole erstellen</h2>
+
+<p class="lead">Reicht der eingebaute Katalog nicht — etwa für ein Hutschienen-Netzteil, einen
+speziellen Sensor, ein Firmengerät oder eine Anlagenkomponente — legen Sie eigene Symbole an.
+Sie erscheinen als vollwertige Komponenten in der linken Leiste und verhalten sich wie
+eingebaute Typen: ziehen, verbinden, dokumentieren, exportieren.</p>
+
+<p>Der Editor öffnet sich über die Kachel <span class="ui">+ Neues Symbol</span> in der
+Kategorie <span class="ui">Eigene Symbole</span> am Ende der Seitenleiste. Drei Wege führen
+zum Symbol.</p>
+
+<h3 id="k20-1">20.1 Zeichnen</h3>
+<p>Der Reiter <span class="ui">Zeichnen</span> bietet ein 24 × 24 großes Raster — dasselbe
+Koordinatensystem, das die eingebauten Symbole verwenden. Damit passt Ihr Symbol optisch zu
+den übrigen.</p>
+<table>
+<thead><tr><th>Werkzeug</th><th>Bedienung</th></tr></thead>
+<tbody>
+<tr><td>Linienzug</td><td>Klicken setzt Punkt für Punkt. <b>Doppelklick</b> oder <span class="ui">Form abschließen</span> beendet den Zug. Danach beginnt ein neuer.</td></tr>
+<tr><td>Rechteck</td><td>Zwei Klicks: erste und gegenüberliegende Ecke.</td></tr>
+<tr><td>Kreis</td><td>Zwei Klicks: Mittelpunkt und ein Punkt auf dem Rand.</td></tr>
+<tr><td>Halbes Raster</td><td>Erlaubt Punkte auf halben Rasterschritten — nützlich für Schrägen und kleine Details.</td></tr>
+<tr><td>Zurück</td><td>Nimmt den letzten Punkt zurück, bei abgeschlossenen Formen die letzte Form.</td></tr>
+</tbody>
+</table>
+<p>Rechts sehen Sie das Ergebnis sofort zweimal: als Katalogkachel und als Gerätekachel in
+Originalgröße der Zeichenfläche.</p>
+<div class="note">
+Die eingebauten Symbole sind reine <em>Strichzeichnungen</em> ohne Füllung, mit Strichstärke
+1,6 und runden Enden. Wer sich daran hält, erhält ein Diagramm, das wie aus einem Guss wirkt.
+Drei bis sechs Formen genügen fast immer.
+</div>
+
+<h3 id="k20-2">20.2 SVG einfügen</h3>
+<p>Haben Sie schon eine Vektorgrafik — vom Hersteller, aus einer Icon-Sammlung oder aus
+Inkscape —, fügen Sie sie im Reiter <span class="ui">SVG einfügen</span> als Text ein oder
+wählen eine <code>.svg</code>-Datei. <span class="ui">Übernehmen &amp; Vorschau</span> zeigt das
+Ergebnis.</p>
+<p>Am besten funktionieren einfache, einfarbige Strichsymbole. Verwendet die Grafik
+<code>currentColor</code> oder gar keine Farbangabe, übernimmt das Symbol automatisch die
+eingestellte Gerätefarbe.</p>
+<div class="note note-warn">
+<strong>Sicherheit:</strong> Eingefügtes SVG wird streng gefiltert. Erhalten bleiben
+ausschließlich Geometrie-Elemente (<code>path</code>, <code>rect</code>, <code>circle</code>,
+<code>ellipse</code>, <code>line</code>, <code>polyline</code>, <code>polygon</code>,
+<code>g</code>) und eine feste Liste von Zeichenattributen. Skripte, Ereignis-Attribute,
+eingebettete Bilder, Verweise auf externe Ressourcen und alles andere werden entfernt — auch
+dann, wenn das SVG aus einer fremden Projektdatei stammt.
+</div>
+
+<h3 id="k20-3">20.3 Bilddatei verwenden</h3>
+<p>Im Reiter <span class="ui">Bilddatei</span> ziehen Sie eine PNG-, JPG-, GIF- oder
+WebP-Datei in das Feld. Das Bild wird auf 128 Pixel verkleinert und als Symbol verwendet.
+Freigestellte Bilder mit transparentem Hintergrund wirken am besten.</p>
+<p>Für ein echtes <em>Gerätefoto</em> ist dieser Weg nicht gedacht — Fotos gehören an das
+einzelne Gerät (siehe <a href="#k16">Kapitel 16</a>). Das Symbol steht für den <em>Typ</em>,
+das Foto für das <em>Exemplar</em>.</p>
+
+<h3 id="k20-4">20.4 Bezeichnung, Kategorie, Farbe, Ports</h3>
+<p>Rechts im Editor legen Sie fest:</p>
+<ul>
+  <li><strong>Bezeichnung</strong> — erscheint in der Kachel, im Gerätetyp-Feld und in der Suche.</li>
+  <li><strong>Kategorie</strong> — ordnet das Symbol in eine bestehende Gruppe der Seitenleiste
+      ein. Mit <em>Eigene Symbole</em> bleibt es am Ende gesammelt.</li>
+  <li><strong>Farbe</strong> — färbt Symbol, Farbstreifen der Kachel und Katalogeintrag.</li>
+  <li><strong>Ports</strong> — die Vorbelegung für neue Geräte dieses Typs, eine Zeile je Port.
+      Sie steht später im Verbindungsdialog zur Auswahl.</li>
+</ul>
+
+<h3 id="k20-5">20.5 Speicherung und Weitergabe</h3>
+<p>Eigene Symbole gehören zum Projekt und liegen im Feld <code>customTypes</code>. Sie werden
+daher mitgespeichert und mitexportiert:</p>
+<ul>
+  <li>Browser-Speicher und automatische Sicherung enthalten sie.</li>
+  <li>Eine exportierte JSON-Datei bringt sie beim Empfänger mit — dort erscheinen sie
+      automatisch in der Seitenleiste.</li>
+  <li>Der SVG-Export bettet sie in die Grafik ein.</li>
+</ul>
+<p>Möchten Sie einen Symbolsatz in ein anderes Projekt übernehmen, exportieren Sie das
+Ausgangsprojekt als JSON und kopieren den <code>customTypes</code>-Abschnitt in die
+Zieldatei — oder legen ein Vorlagenprojekt an, das nur die Symbole enthält.</p>
+
+<h3 id="k20-6">20.6 Bearbeiten und Löschen</h3>
+<p>Ein eigenes Symbol wird über das kleine <span class="ui">✎</span> auf der Kachel oder per
+Doppelklick darauf bearbeitet. Die Kacheln eigener Symbole sind an der gestrichelten Umrandung
+erkennbar.</p>
+<p>Beim Löschen erhalten alle Geräte, die das Symbol verwenden, den Typ <em>Desktop-PC</em>.
+Der Dialog nennt die betroffene Anzahl vorher, und der Vorgang ist mit
+<kbd>Strg</kbd>+<kbd>Z</kbd> zurücknehmbar.</p>
+</section>
+
+
+<section id="darstellung">
+<h2 id="k21">21. Darstellung und Einstellungen</h2>
+
+<p class="lead">Alle Optionen des Programms liegen an einem Ort: der Einstellungsseite. Sie
+öffnet sich über das Zahnrad <span class="ui">⚙</span> rechts in der Werkzeugleiste oder mit
+<kbd>Strg</kbd>+<kbd>,</kbd> und schließt mit <kbd>Esc</kbd>. Änderungen wirken sofort — es gibt
+kein „Übernehmen“.</p>
+
+<h3 id="k21-1">21.1 Was wo gespeichert wird</h3>
+<p>Eine Unterscheidung, die im Alltag zählt:</p>
+<table>
+<thead><tr><th>Art</th><th>Beispiele</th><th>Wo</th></tr></thead>
+<tbody>
+<tr><td><strong>Projekteinstellungen</strong></td>
+    <td>Raster, Rastergröße, Linienführung, Bilder, Hardware-Ansicht, Übersichtskarte,
+        Standard-Verbindungstyp, Zielebene</td>
+    <td>im Projekt — reisen mit einer exportierten JSON-Datei mit</td></tr>
+<tr><td><strong>Arbeitsplatzvorlieben</strong></td>
+    <td>Hinweisfenster (Tipps)</td>
+    <td>im Browser — gelten nur an diesem Rechner und werden nicht weitergegeben</td></tr>
+</tbody>
+</table>
+<p>Wer einen Netzplan an einen Kollegen schickt, gibt also die Ansicht mit, aber nicht die
+persönliche Vorliebe, ob Hinweisfenster erscheinen.</p>
+
+<h3 id="k21-2">21.2 Ansicht</h3>
+<ul>
+  <li><strong>Raster anzeigen</strong> und <strong>Am Raster ausrichten</strong> — dieselben
+      Schalter wie in der Werkzeugleiste.</li>
+  <li><strong>Rastergröße</strong> — 5 bis 200 Pixel, Standard 20. Bestimmt gleichzeitig die
+      Schrittweite von <kbd>Umschalt</kbd> + Pfeiltaste.</li>
+  <li><strong>Linienführung</strong> — orthogonal, gerade oder gebogen für alle Verbindungen.</li>
+  <li><strong>Übersichtskarte anzeigen</strong> — blendet die Minimap unten rechts vollständig
+      aus, wenn sie stört.</li>
+</ul>
+
+<h3 id="k21-3">21.3 Gerätedarstellung: die Reihenfolge</h3>
+<p>Eine Gerätekachel kann statt des Strichsymbols einen Bildstreifen zeigen. Welches Bild das
+ist, entscheidet eine feste Rangfolge — die erste zutreffende Quelle gewinnt:</p>
+<ol class="steps">
+<li><strong>Eigenes Gerätefoto</strong> — das Foto genau dieses Exemplars
+    (siehe <a href="#k16">Kapitel 16</a>).</li>
+<li><strong>Typbild</strong> — ein Bild, das für <em>alle</em> Geräte dieses Typs gilt.</li>
+<li><strong>Bildbibliothek</strong> — aus dem Ordner <code>bilder/</code> automatisch zugeordnet
+    (siehe <a href="#k21-6">21.6</a>).</li>
+<li><strong>Hardware-Ansicht</strong> — die mitgelieferte gezeichnete Frontblende, sofern
+    eingeschaltet.</li>
+<li><strong>Strichsymbol</strong> — die schlichte Standarddarstellung.</li>
+</ol>
+<p>Zwei Schalter steuern das:</p>
+<table>
+<tbody>
+<tr><td>Bilder auf der Zeichenfläche</td>
+    <td>Schaltet Gerätefotos <em>und</em> Typbilder ab. Die Bilder bleiben im Projekt
+        gespeichert und im Eigenschaftenfenster sichtbar — nur die Zeichenfläche wird ruhiger.</td></tr>
+<tr><td>Hardware-Ansicht statt Symbol</td>
+    <td>Zeigt für rund 46 Gerätetypen eine gezeichnete Frontblende: Portreihen, LEDs, Displays,
+        Rack-Ohren, Laufwerksschächte.</td></tr>
+</tbody>
+</table>
+<div class="note">
+Sobald eine Kachel einen Bildstreifen zeigt, entfällt das kleine Strichsymbol darunter — das
+Bild sagt bereits, worum es geht. Die Kachel wächst dabei von 88 auf 108 Pixel Höhe. Wer viele
+Geräte auf engem Raum hat, schaltet die Bilder für den Ausdruck einfach ab.
+</div>
+
+<h3 id="k21-4">21.4 Die Hardware-Ansicht</h3>
+<p>Die Frontblenden sind <strong>gezeichnete Darstellungen</strong>, keine Fotos. Sie zeigen die
+Bauform: ein 19-Zoll-Server mit Laufwerksschächten und Rack-Ohren, ein Managed Switch mit zwei
+Reihen zu je elf Ports und SFP-Käfigen, eine Firewall-Appliance mit LC-Display, ein NAS mit
+Einschüben, ein Access Point in Aufsicht, eine Digitalzentrale mit Display und zwei Drehreglern.</p>
+<p>Mehrere Gerätetypen teilen sich bewusst dieselbe Ansicht — ein Webserver und ein
+Datenbankserver sehen im Rack nun einmal gleich aus. Typen ohne Frontblende, etwa
+<em>Internet</em> oder <em>Cloud</em>, behalten ihr Strichsymbol; das ist beabsichtigt, denn für
+einen abstrakten Begriff gibt es keine Bauform.</p>
+<p>Die Ansichten sind Vektorgrafiken: sie bleiben bei jedem Zoom scharf, kosten kaum
+Speicherplatz und erscheinen unverändert im SVG- und PNG-Export sowie im Ausdruck.</p>
+
+<h3 id="k21-5">21.5 Gerätebilder je Typ</h3>
+<p>Im breiten Bereich unten auf der Einstellungsseite steht für jeden Gerätetyp eine Kachel.
+Dort hinterlegen Sie ein eigenes Bild — per <span class="ui">Bild wählen</span> oder indem Sie
+eine Bilddatei direkt auf die Kachel ziehen. Dieses Bild gilt anschließend für <em>alle</em>
+Geräte dieses Typs.</p>
+<p>Das ist der schnellste Weg zu einem Plan mit echten Gerätebildern: Sie fotografieren jeden
+Gerätetyp einmal statt jedes einzelne Gerät. Ein individuelles Foto am einzelnen Gerät hat
+weiterhin Vorrang — so dokumentieren Sie die Ausnahme, ohne die Regel aufzugeben.</p>
+<p>Der Schalter <span class="ui">Nur verwendete Typen zeigen</span> beschränkt die Liste auf
+Typen, die im Projekt vorkommen. Ohne hinterlegtes Bild zeigt die Kachel als Vorschau die
+gezeichnete Hardware-Ansicht.</p>
+<p>Bilder werden wie Gerätefotos auf 640 Pixel verkleinert und im Projekt gespeichert. Die
+belegte Menge steht direkt darunter und in der Karte <em>Speicher</em>.</p>
+
+<h3 id="k21-6">21.6 Bildbibliothek: Bilder automatisch zuordnen</h3>
+<p>Wer viele Gerätebilder hat, will sie nicht einzeln zuweisen. Dafür gibt es die
+Bildbibliothek — mit zwei Wegen, die sich ergänzen.</p>
+
+<h4>Weg 1: Ordner <code>bilder/</code> beim Bauen einbetten</h4>
+<p>Legen Sie Bilddateien in den Ordner <code>bilder/</code> neben dem Quellcode und bauen Sie
+mit <code>node build.js</code> neu. Die Bilder werden in die HTML-Datei eingebettet und stehen
+danach in <strong>jedem</strong> Projekt zur Verfügung — ohne die Projektdatei zu vergrößern,
+denn gespeichert wird nur der Dateiname der Zuordnung.</p>
+<p>Der Build meldet Anzahl und Gesamtgröße und warnt bei einzelnen Dateien über 80&nbsp;KB.
+Für einen 120 Pixel breiten Bildstreifen genügen rund 600 Pixel Kantenlänge; ein 1500 Pixel
+breites Foto ist das Vierzehnfache des Nötigen und bläht die Auslieferungsdatei auf.</p>
+<div class="note">
+Der Build kann Bilder <em>nicht</em> verkleinern — Node bringt ohne Zusatzpakete keinen
+Bildskalierer mit, und ein solches Paket würde die Abhängigkeitsfreiheit des Projekts opfern.
+Verkleinern Sie die Dateien vorher, oder nutzen Sie Weg 2, der im Browser skaliert.
+</div>
+
+<h4>Weg 2: Ordner in der Anwendung einlesen</h4>
+<p>Auf der Einstellungsseite unter <span class="ui">Bildbibliothek</span> →
+<span class="ui">Bildordner einlesen …</span> wählen Sie einen Ordner aus. Die Bilder werden
+im Browser auf 640 Pixel verkleinert und sofort abgeglichen. Kein Neubauen nötig, keine
+Node-Installation.</p>
+
+<h4>Wie zugeordnet wird</h4>
+<p>Der Abgleich läuft in drei Stufen und weist jedem Vorschlag eine Zuverlässigkeit zu:</p>
+<table>
+<thead><tr><th>Stufe</th><th>Beispiel</th><th>Zuverlässigkeit</th></tr></thead>
+<tbody>
+<tr><td>Dateiname entspricht Typkennung oder Bezeichnung</td>
+    <td><code>switch_managed.png</code>, <code>ESU_ECoS.jpg</code></td><td>hoch</td></tr>
+<tr><td>Bekannte Produktbezeichnung aus der Alias-Tabelle</td>
+    <td><code>Central_Station_3.jpg</code>, <code>fritzbox-7590.jpg</code>, <code>raspi4.png</code></td><td>hoch</td></tr>
+<tr><td>Bezeichnung passt, aber die Ziffer weicht ab</td>
+    <td><code>Intellibox_7.jpg</code> bei bekanntem Typ „Intellibox“</td><td>mittel</td></tr>
+<tr><td>Nur teilweise Übereinstimmung</td><td>Restfälle</td><td>niedrig</td></tr>
+<tr><td>Kein Treffer</td><td><code>DSC_04711.jpg</code></td><td>offen</td></tr>
+</tbody>
+</table>
+<p>Ziffern werden dabei ernst genommen: <code>Central_Station_2</code> wird nicht
+stillschweigend als CS3 durchgewinkt. Endungen wie <code>_small</code>, <code>_a</code> oder
+<code>_front</code> erkennt der Abgleich dagegen als <em>Bildvariante</em> und nicht als
+anderes Gerät — bei drei Intellibox-Bildern bleibt es also bei einem Gerätetyp mit drei
+Kandidaten.</p>
+
+<h4>Prüfen und von Hand zuordnen</h4>
+<p><span class="ui">Zuordnung prüfen …</span> öffnet eine Liste mit Vorschaubild, Dateiname,
+vorgeschlagenem Typ, Begründung und Zuverlässigkeit. Jede Zeile hat eine Auswahlliste zum
+Umstellen und ein Häkchen zum Abwählen; <span class="ui">Nur unsichere zeigen</span> blendet
+die eindeutigen Fälle aus. Übernommen wird ausschließlich, was angehakt ist.</p>
+<p>Liegen mehrere Bilder für einen Typ vor, wählen Sie in der Bibliotheksübersicht mit
+<span class="ui">als Typbild</span> aus, welches gilt. Die übrigen bleiben verfügbar und lassen
+sich weiterhin einzelnen Geräten zuweisen.</p>
+
+<div class="note">
+<strong>Automatisch verwendet werden nur Treffer mit Zuverlässigkeit „hoch“.</strong> Alles
+Unsichere wartet auf Ihre Bestätigung. Ein falsch zugeordnetes Gerätebild ist in einer
+Dokumentation schlimmer als gar keins.
+</div>
+
+<h4>Neue Bilder später</h4>
+<p>Der Abgleich ist wiederholbar und zerstört nichts: bereits getroffene Auswahlen bleiben,
+neue Dateien erscheinen als zusätzliche Zeilen. Nach dem Ablegen neuer Bilder in
+<code>bilder/</code> genügt <code>node build.js</code>; in der Anwendung zeigt
+<span class="ui">Zuordnung prüfen</span> anschließend, was dazugekommen ist.</p>
+
+<h4>Reihenfolge im Überblick</h4>
+<p>Damit ergibt sich die vollständige Rangfolge für das Bild auf einer Gerätekachel:</p>
+<pre>1. Foto am einzelnen Gerät
+2. Typbild im Projekt (eigene Datei zugewiesen)
+3. Bildbibliothek — gewähltes oder sicher zugeordnetes Bild
+4. Hardware-Ansicht (gezeichnete Frontblende)
+5. Strichsymbol</pre>
+
+<h3 id="k21-7">21.7 Warum keine Herstellerfotos mitgeliefert werden</h3>
+<p>Es liegt nahe zu fragen, warum das Programm nicht einfach fertige Produktfotos mitbringt.
+Der Grund ist nicht technisch, sondern rechtlich:</p>
+<ul>
+  <li>Gerätefotos in freien Bilddatenbanken stehen fast durchweg unter Lizenzen, die
+      <strong>Namensnennung</strong> und <strong>Weitergabe unter gleichen Bedingungen</strong>
+      verlangen. Für eine Datei, die Sie an Kunden oder Kollegen weiterreichen, ist das
+      untragbar.</li>
+  <li>Was manche Portale als „gemeinfrei“ bewerben, ist es lizenzrechtlich längst nicht mehr.</li>
+  <li>Für Spezialgeräte — etwa Modellbahn-Digitalzentralen — existieren praktisch nur
+      geschützte Herstellerfotos.</li>
+</ul>
+<p>Deshalb der zweigleisige Weg: eigene gezeichnete Ansichten für die Grunddarstellung, und die
+Möglichkeit, <strong>Ihre eigenen</strong> Bilder als Typbild oder Gerätefoto zu hinterlegen.
+Verwenden Sie dort nur Bilder, an denen Sie die Rechte haben — bei selbst fotografierten
+Geräten ist das unproblematisch.</p>
+
+<h3 id="k21-8">21.8 Helles und dunkles Design</h3>
+<p>Unter <span class="ui">Bedienung</span> → <span class="ui">Design</span> wählen Sie zwischen
+drei Zuständen:</p>
+<table>
+<tbody>
+<tr><td>Hell</td><td>die Standarddarstellung</td></tr>
+<tr><td>Dunkel</td><td>dunkle Oberfläche und dunkle Zeichenfläche — angenehmer bei wenig Umgebungslicht</td></tr>
+<tr><td>Automatisch</td><td>folgt der Einstellung des Betriebssystems und wechselt mit ihr mit</td></tr>
+</tbody>
+</table>
+<p>Schneller geht es über das Zahnrad in der Werkzeugleiste:
+<span class="ui">⚙</span> → <span class="ui">Design wechseln</span> schaltet reihum weiter.</p>
+
+<div class="note">
+<strong>Export und Ausdruck bleiben immer hell.</strong> Ein Netzplan auf schwarzem Grund ist
+auf Papier unbrauchbar und kostet unnötig Toner. Das dunkle Design gilt deshalb ausschließlich
+für die Oberfläche: SVG-Export, PNG-Export und Druck liefern unverändert die helle Darstellung
+— unabhängig davon, womit Sie gerade arbeiten.
+</div>
+
+<p>Im dunklen Design werden auch die Farben der Netzwerkbereiche aufgehellt, damit ihre
+Beschriftung lesbar bleibt. Der Farbton bleibt dabei erhalten, sodass Sie Ihre Zonen weiterhin
+an der Farbe erkennen.</p>
+<p>Das Design gehört zum Arbeitsplatz und liegt neben den Hinweisfenstern in den
+Browsereinstellungen. Es wird <strong>nicht</strong> im Projekt gespeichert: Wer eine
+JSON-Datei weitergibt, zwingt dem Empfänger nicht die eigene Vorliebe auf.</p>
+
+<h3 id="k21-9">21.9 Setups — zwischen Szenarien umschalten</h3>
+<p class="lead">Ein Setup ist eine benannte Momentaufnahme <em>der Einstellungen</em> — nicht
+des Netzplans. Damit wechseln Sie mit einem Klick zwischen Arbeitsweisen, ohne jedes Mal ein
+halbes Dutzend Schalter umzulegen.</p>
+
+<h4>Was ein Setup enthält</h4>
+<table>
+<thead><tr><th>Enthalten</th><th>Nicht enthalten</th></tr></thead>
+<tbody>
+<tr>
+  <td>Raster, Rastergröße, Ausrichten, Linienführung, Übersichtskarte, Bilder,
+      Hardware-Ansicht, Standard-Verbindungstyp, eigene Verbindungsarten, Bildauswahl,
+      Design, Hinweisfenster</td>
+  <td>Geräte, Verbindungen, Bereiche, Ebenen, eigene Symbole, Typbilder, Projektdaten,
+      Zoom und Bildausschnitt</td>
+</tr>
+</tbody>
+</table>
+<p>Der Bildausschnitt bleibt bewusst außen vor: ein Setup soll die Darstellung umstellen, Ihnen
+aber nicht die Ansicht verreißen, an der Sie gerade arbeiten.</p>
+
+<h4>Anlegen und anwenden</h4>
+<ol class="steps">
+<li>Alles so einstellen, wie Sie es haben möchten.</li>
+<li>Auf der Einstellungsseite unter <span class="ui">Setups</span> →
+    <span class="ui">Aktuelle Einstellungen sichern …</span>, Namen vergeben. Alternativ
+    <span class="ui">⚙</span> → <span class="ui">Aktuelle Einstellungen sichern …</span>.</li>
+<li>Umschalten über <span class="ui">Anwenden</span> in der Liste oder — schneller — über das
+    Zahnrad-Menü, in dem alle Setups direkt aufgeführt sind. Das aktive trägt einen Punkt.</li>
+</ol>
+<p>Zu jedem Setup gibt es <span class="ui">Aktualisieren</span> (mit dem aktuellen Zustand
+überschreiben), <span class="ui">Umbenennen</span> und Löschen. Das Anwenden ist ein einziger
+Schritt und mit <kbd>Strg</kbd>+<kbd>Z</kbd> zurücknehmbar.</p>
+
+<h4>Beispiel-Setups</h4>
+<p>Solange noch kein Setup existiert, legt <span class="ui">Vier Beispiel-Setups anlegen</span>
+gebrauchsfertige Ausgangspunkte an. Es sind ganz normale Setups — ändern und löschen Sie sie
+nach Belieben:</p>
+<table>
+<thead><tr><th>Setup</th><th>Gedacht für</th></tr></thead>
+<tbody>
+<tr><td><b>Arbeiten</b></td><td>Raster und Ausrichten an, Bilder an, Übersichtskarte an,
+    Hinweisfenster an, helles Design — der Zustand zum Zeichnen und Dokumentieren.</td></tr>
+<tr><td><b>Präsentation</b></td><td>Raster aus, Hardware-Ansicht an, Übersichtskarte aus,
+    Hinweisfenster aus, dunkles Design — aufgeräumt für den Beamer.</td></tr>
+<tr><td><b>Druck</b></td><td>Raster aus, Bilder aus, Übersichtskarte aus, helles Design —
+    kompakte Kacheln, damit viel auf eine Seite passt.</td></tr>
+<tr><td><b>Weitergabe</b></td><td>wie Druck, zusätzlich mit eingeschalteter Maskierung:
+    IP-Adressen, MAC-Adressen und Hostnamen sind unkenntlich. Für Unterlagen, die das Haus
+    verlassen — siehe <a href="#k10-4">10.4</a>.</td></tr>
+</tbody>
+</table>
+
+<h4>Wo Setups liegen</h4>
+<p>Setups gehören zum Arbeitsplatz und liegen im Browser, nicht im Projekt. Das ist Absicht:
+So gilt „Präsentation“ für <em>jeden</em> Netzplan, den Sie öffnen. Eine exportierte JSON-Datei
+enthält keine Setups; der Empfänger behält seine eigenen.</p>
+<div class="note">
+Weil Setups im Browser liegen, verschwinden sie mit den Website-Daten — genau wie gespeicherte
+Projekte. Wer sie sichern will, notiert sich die Einstellungen oder legt sie am neuen
+Arbeitsplatz noch einmal an; es sind wenige Klicks.
+</div>
+
+<h3 id="k21-10">21.10 Bedienung, Projekt, Speicher und Hilfe</h3>
+<table>
+<thead><tr><th>Karte</th><th>Inhalt</th></tr></thead>
+<tbody>
+<tr><td>Bedienung</td><td>Hinweisfenster ein- und ausschalten, Standard-Verbindungstyp für neu
+    gezogene Leitungen, Ebene für neu eingefügte Objekte.</td></tr>
+<tr><td>Projekt</td><td>Projektname, Autor, Firma, Standort sowie Erstellungs- und
+    Änderungsdatum. Dieselben Angaben wie unter <span class="ui">?</span> &rarr;
+    <span class="ui">Projektinformationen</span>.</td></tr>
+<tr><td>Eigene Symbole</td><td>Liste aller selbst angelegten Symbole mit
+    <span class="ui">Bearbeiten</span> und <span class="ui">Löschen</span>, dazu
+    <span class="ui">Neues Symbol …</span>. Siehe <a href="#k20">Kapitel 20</a>.</td></tr>
+<tr><td>Speicher</td><td>Verfügbarkeit des Browser-Speichers, Anzahl gespeicherter Projekte,
+    belegter Platz durch Gerätefotos und Typbilder. Dazu Projektverwaltung, JSON-Sicherung und
+    das Löschen der automatischen Sicherung.</td></tr>
+<tr><td>Hilfe</td><td>Kurzhilfe, dieses Handbuch und das Beispielnetzwerk.</td></tr>
+</tbody>
+</table>
+<p>Die Karte <em>Speicher</em> ist der richtige erste Blick, wenn das Speichern klemmt: Sie
+zeigt sofort, ob der Browser-Speicher überhaupt verfügbar ist und wie viel Platz die Bilddaten
+belegen.</p>
+</section>
+
+<section id="probleme">
+<h2 id="k22">22. Problembehebung</h2>
+
+<dl class="faq">
+<dt>Nach dem Doppelklick öffnet sich ein Texteditor statt des Browsers.</dt>
+<dd>Die Dateizuordnung für <code>.html</code> zeigt auf ein anderes Programm. Rechtsklick →
+    <em>Öffnen mit</em> → Browser wählen.</dd>
+
+<dt>Ein gezogenes Gerät landet nicht dort, wo ich losgelassen habe.</dt>
+<dd>Prüfen Sie, ob <span class="ui">Snap</span> aktiv ist — dann rastet die Position auf dem
+    Raster ein. Die Rastergröße stellen Sie in den Projektinformationen ein.</dd>
+
+<dt>Ich treffe eine Leitung nicht mit der Maus.</dt>
+<dd>Der Klickbereich ist deutlich breiter als die sichtbare Linie; treffen Sie sie in der
+    Mitte zwischen den Geräten. Liegt eine Gerätekachel darüber, verschieben Sie diese oder
+    nutzen die Suche und das Kontextmenü.</dd>
+
+<dt>Meine Änderungen sind nach einem Neustart verschwunden.</dt>
+<dd>Wird der Browser so eingestellt, dass er beim Beenden Website-Daten löscht, oder läuft
+    er im privaten Modus, wird auch die automatische Sicherung entfernt. Zeigt die
+    Statusleiste einen Hinweis auf fehlenden Browser-Speicher, arbeiten Sie mit
+    JSON-Export und -Import.</dd>
+
+<dt>Der Import meldet entfernte Verbindungen.</dt>
+<dd>In der Datei verweisen Verbindungen auf Geräte, die es nicht (mehr) gibt. Das Programm
+    entfernt nur diese Verbindungen und behält den Rest. Prüfen Sie die Quelldatei, wenn
+    Sie sie außerhalb des Programms erzeugt haben.</dd>
+
+<dt>Im exportierten SVG fehlen die Symbole.</dt>
+<dd>Das kann nur passieren, wenn die Datei nachträglich bearbeitet und der
+    <code>&lt;defs&gt;</code>-Abschnitt entfernt wurde — dort stehen alle Symbole. Exportieren
+    Sie in dem Fall erneut.</dd>
+
+<dt>Der PNG-Export bricht ab.</dt>
+<dd>Sehr große Diagramme überschreiten die Grenzen der Pixelgrafik. Nutzen Sie SVG; es ist
+    verlustfrei und beliebig skalierbar.</dd>
+
+<dt>Der Ausdruck zeigt nur einen Ausschnitt.</dt>
+<dd>Stellen Sie im Druckdialog des Browsers auf Querformat um oder verkleinern Sie den
+    Skalierungsfaktor. Für sehr breite Pläne ist der SVG- oder PDF-Weg besser geeignet.</dd>
+
+<dt>Rückgängig macht mehr oder weniger als erwartet.</dt>
+<dd>Eine zusammenhängende Bewegung — auch über viele Zwischenschritte — gilt als ein
+    Schritt. Ebenso zählt jedes Bestätigen eines Eigenschaftenfensters als genau ein Schritt.
+    Die Historie umfasst die letzten 60 Schritte.</dd>
+</dl>
+</section>
+
+
+<section id="entwickler">
+<h2 id="k23">23. Für Entwickler</h2>
+
+<p>Die ausgelieferte HTML-Datei wird aus Modulen unter <code>src/</code> erzeugt
+(<code>node build.js</code>). Jedes Modul ist eine gekapselte Funktion, die sich unter dem
+einzigen globalen Objekt <code>NWT</code> registriert; die Verständigung läuft über einen
+Ereignisbus (<code>NWT.on</code> / <code>NWT.emit</code>).</p>
+
+<table>
+<thead><tr><th>Erweiterung</th><th>Vorgehen</th></tr></thead>
+<tbody>
+<tr><td>Neuer Gerätetyp</td><td>Ein Eintrag in <code>DEVICE_TYPES</code> (<code>src/js/01-catalog.js</code>) und ein <code>&lt;symbol&gt;</code> in <code>src/icons.svg</code>. Katalog, Suche, Benennung, Ports und Darstellung folgen automatisch.</td></tr>
+<tr><td>Neue Erkennungsregel</td><td>Ein Eintrag in <code>PORT_HINTS</code> oder <code>NAME_HINTS</code> (<code>src/js/20-discovery.js</code>) — Portnummer bzw. Namensmuster, Zieltyp und Begründung.</td></tr>
+<tr><td>Neue Analysequelle</td><td>Eine Parserfunktion in <code>20-discovery.js</code>, die <code>{ip, mac, hostname, vendor, ports}</code> liefert, und ein Aufruf in <code>analyze()</code>. Die Zusammenführung über MAC/IP erledigt <code>mergeHosts()</code>.</td></tr>
+<tr><td>Neue Dashboard-Karte</td><td>Eine Funktion in <code>21-dashboard.js</code>, die mit <code>card(titel, inhalt)</code> ein Panel liefert.</td></tr>
+<tr><td>Symbol per Code</td><td><code>NWT.Symbols.save({id, label, cat, color, iconInner, iconViewBox, ports})</code>. Der Inhalt läuft immer durch <code>sanitizeSvg()</code>.</td></tr>
+<tr><td>Neuer Verbindungstyp</td><td>Ein Eintrag in <code>CONNECTION_TYPES</code> mit Farbe, Strichstärke, Strichelung und Standardgeschwindigkeit.</td></tr>
+<tr><td>Neues Werkzeug</td><td>Eigenes Modul anlegen, an <code>NWT.on('change', …)</code> andocken und einen Eintrag in der Aktionstabelle in <code>src/js/15-ui.js</code> ergänzen.</td></tr>
+<tr><td>Zugriff auf die Daten</td><td>Das vollständige, serialisierbare Projekt liegt unter <code>NWT.Store.project</code>; Indizes für schnellen Zugriff unter <code>NWT.Store.index</code>.</td></tr>
+</tbody>
+</table>
+
+<p>Vorgesehene Ausbaustufen sind unter anderem Ping- und Portscan-Anbindung, SNMP-, LLDP-
+und CDP-Abfragen, ein Subnetzrechner, VLAN- und DHCP-Planung sowie automatische
+Topologieerkennung. Das Datenmodell ist darauf ausgelegt: Geräte tragen bereits IP-, MAC-
+und Portfelder, Verbindungen kennen beide Endpunkte samt Ports.</p>
+
+<p>Zur Qualitätssicherung gehört eine automatisierte Prüfung, die die fertige HTML-Datei in
+einem echten Browser lädt und mit Maus- und Tastaturereignissen bedient
+(<code>npm test</code>).</p>
+</section>
+
+      </div>
+      <div class="help-foot">
+        Netzwerk-Topologie-Tool — Handbuch. Dieses Dokument ist auch im Programm selbst
+        unter <b>? → Ausführliches Handbuch</b> verfügbar und funktioniert vollständig offline.
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ============================================================
+   Verhalten des Hilfe-Dokuments: Inhaltsverzeichnis, Scrollspy,
+   Suche im Text. Wird von hilfe.html und vom Hilfe-Overlay der
+   Anwendung mit demselben Code verwendet.
+   ============================================================ */
+'use strict';
+
+function NWT_HELP_UI(root) {
+  if (!root || root.__helpReady) return;
+  root.__helpReady = true;
+
+  const main = root.querySelector('.help-main');
+  const toc = root.querySelector('.help-toc');
+  const search = root.querySelector('.help-search');
+  const links = Array.prototype.slice.call(toc ? toc.querySelectorAll('a[href^="#"]') : []);
+  const targets = links
+    .map(a => ({ a: a, el: root.querySelector('#' + CSS.escape(a.getAttribute('href').slice(1))) }))
+    .filter(t => t.el);
+
+  /* --- Sprung über das Inhaltsverzeichnis --------------------------- */
+  links.forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const el = root.querySelector('#' + CSS.escape(id));
+      if (!el) return;
+      e.preventDefault();
+      scrollTo(el);
+      setActive(a);
+      history.replaceState && history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  function scrollTo(el) {
+    if (!main) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+    const top = el.getBoundingClientRect().top - main.getBoundingClientRect().top + main.scrollTop - 12;
+    main.scrollTo({ top: top, behavior: 'smooth' });
+  }
+
+  function setActive(a) {
+    links.forEach(l => l.classList.remove('on'));
+    if (a) {
+      a.classList.add('on');
+      if (toc && a.offsetTop < toc.scrollTop || (toc && a.offsetTop > toc.scrollTop + toc.clientHeight - 40)) {
+        toc.scrollTop = Math.max(0, a.offsetTop - toc.clientHeight / 2);
+      }
+    }
+  }
+
+  /* --- Mitlaufende Markierung beim Scrollen -------------------------- */
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      const base = main ? main.getBoundingClientRect().top : 0;
+      let current = targets.length ? targets[0].a : null;
+      for (const t of targets) {
+        if (t.el.getBoundingClientRect().top - base <= 90) current = t.a; else break;
+      }
+      setActive(current);
+    });
+  }
+  (main || window).addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* --- Suche im Hilfetext ------------------------------------------- */
+  if (search) {
+    const sections = Array.prototype.slice.call(root.querySelectorAll('.help-main section'));
+    search.addEventListener('input', () => applyFilter(search.value));
+    search.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { search.value = ''; applyFilter(''); search.blur(); }
+      if (e.key === 'Enter') {
+        const first = links.filter(l => !l.classList.contains('hidden'))[0];
+        if (first) first.click();
+      }
+    });
+
+    function applyFilter(q) {
+      q = String(q || '').trim().toLowerCase();
+      clearMarks();
+      if (!q) {
+        links.forEach(l => l.classList.remove('hidden'));
+        sections.forEach(s => { s.style.display = ''; });
+        removeEmptyNote();
+        return;
+      }
+      let hits = 0;
+      const visibleIds = new Set();
+      sections.forEach(s => {
+        const match = s.textContent.toLowerCase().indexOf(q) >= 0;
+        s.style.display = match ? '' : 'none';
+        if (match) {
+          hits++;
+          s.querySelectorAll('h2[id],h3[id]').forEach(h => visibleIds.add(h.id));
+          markIn(s, q);
+        }
+      });
+      links.forEach(l => {
+        const id = l.getAttribute('href').slice(1);
+        l.classList.toggle('hidden', !visibleIds.has(id));
+      });
+      if (!hits) showEmptyNote(q); else removeEmptyNote();
+    }
+
+    function showEmptyNote(q) {
+      removeEmptyNote();
+      const d = document.createElement('div');
+      d.className = 'toc-empty';
+      d.textContent = 'Kein Treffer für „' + q + '“.';
+      toc && toc.appendChild(d);
+    }
+    function removeEmptyNote() {
+      const d = toc && toc.querySelector('.toc-empty');
+      if (d) d.remove();
+    }
+  }
+
+  /* --- Treffer im Text hervorheben ---------------------------------- */
+  function markIn(section, q) {
+    const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        const p = node.parentNode;
+        if (!p || p.nodeName === 'PRE' || p.nodeName === 'MARK' || p.nodeName === 'SCRIPT') {
+          return NodeFilter.FILTER_REJECT;
+        }
+        return node.nodeValue.toLowerCase().indexOf(q) >= 0
+          ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    const found = [];
+    let n;
+    while ((n = walker.nextNode())) { found.push(n); if (found.length > 300) break; }
+    found.forEach(node => {
+      const text = node.nodeValue;
+      const frag = document.createDocumentFragment();
+      let i = 0, at;
+      const low = text.toLowerCase();
+      while ((at = low.indexOf(q, i)) >= 0) {
+        if (at > i) frag.appendChild(document.createTextNode(text.slice(i, at)));
+        const m = document.createElement('mark');
+        m.className = 'hit';
+        m.textContent = text.substr(at, q.length);
+        frag.appendChild(m);
+        i = at + q.length;
+      }
+      if (i < text.length) frag.appendChild(document.createTextNode(text.slice(i)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+
+  function clearMarks() {
+    root.querySelectorAll('mark.hit').forEach(m => {
+      const t = document.createTextNode(m.textContent);
+      m.parentNode.replaceChild(t, m);
+    });
+    root.querySelectorAll('.help-main section').forEach(s => s.normalize());
+  }
+
+  /* --- Druckschaltfläche -------------------------------------------- */
+  const printBtn = root.querySelector('[data-help-print]');
+  if (printBtn) printBtn.addEventListener('click', () => window.print());
+
+  /* --- Anker aus der Adresszeile ------------------------------------ */
+  if (location.hash && location.hash.length > 1) {
+    const el = root.querySelector('#' + CSS.escape(location.hash.slice(1)));
+    if (el) setTimeout(() => scrollTo(el), 60);
+  }
+}
+
+if (typeof window !== 'undefined') window.NWT_HELP_UI = NWT_HELP_UI;
+
+NWT_HELP_UI(document.body);
+</script>
+</body>
+</html>

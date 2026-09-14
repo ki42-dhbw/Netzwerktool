@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Netzwerk-Topologie-Tool</title>
+<style>
+/*__CSS__*/
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <header id="toolbar">
+    <div class="tb-brand">
+      <svg viewBox="0 0 24 24" class="tb-logo" aria-hidden="true"><path d="M9 2.5h6v5H9zM2 16.5h6v5H2zM16 16.5h6v5h-6z"/><path d="M12 7.5v3.5M5 16.5v-3.2h14v3.2M12 11v2.3"/></svg>
+      <div class="tb-titles">
+        <strong id="project-title">Neues Netzwerk</strong>
+        <span id="project-sub">Netzwerk-Topologie-Tool</span>
+      </div>
+    </div>
+
+    <div class="tb-group">
+      <button class="tb-btn" data-act="new" title="Neues Netzwerk (Strg+N)"><span class="ico">✧</span>Neu</button>
+      <button class="tb-btn" data-act="save" title="Projekt im Browser speichern (Strg+S)"><span class="ico">💾</span>Speichern</button>
+      <button class="tb-btn" data-act="load" title="Gespeichertes Projekt laden (Strg+O)"><span class="ico">📂</span>Laden</button>
+    </div>
+
+    <div class="tb-group">
+      <div class="tb-menu-wrap">
+        <button class="tb-btn" data-act="export-menu" title="Exportieren"><span class="ico">⬇</span>Export<span class="caret">▾</span></button>
+        <div class="tb-menu" id="export-menu" hidden>
+          <button data-act="export-json">Projekt als JSON …</button>
+          <button data-act="export-svg">Diagramm als SVG …</button>
+          <button data-act="export-png">Diagramm als PNG …</button>
+          <button data-act="export-image">Als Bild speichern (maskiert) …</button>
+          <button data-act="report">Bericht exportieren …</button>
+        </div>
+      </div>
+      <button class="tb-btn" data-act="import" title="JSON-Projektdatei importieren"><span class="ico">⬆</span>Import</button>
+      <button class="tb-btn" data-act="print" title="Diagramm drucken (Strg+P)"><span class="ico">🖨</span>Drucken</button>
+    </div>
+
+    <div class="tb-group">
+      <div class="tb-menu-wrap">
+        <button class="tb-btn" data-act="analysis-menu" title="Netzwerk analysieren und Dashboard"><span class="ico">◎</span>Analyse<span class="caret">▾</span></button>
+        <div class="tb-menu" id="analysis-menu" hidden>
+          <button data-act="analysis-paste">Netzwerkdaten einlesen …</button>
+          <button data-act="analysis-file">Scan-Datei importieren …</button>
+          <button data-act="analysis-script">Analyse-Skript anzeigen …</button>
+          <div class="tb-menu-sep"></div>
+          <button data-act="dashboard">Dashboard öffnen</button>
+          <button data-act="review">Netzplan-Prüfung …</button>
+          <button data-act="inventory">Inventar …</button>
+          <button data-act="layout">Automatisch anordnen …</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tb-group tb-modes">
+      <button class="tb-btn mode" data-act="mode-select" data-mode="select" title="Auswahlmodus (V)"><span class="ico">⬉</span>Auswahl</button>
+      <button class="tb-btn mode" data-act="mode-connect" data-mode="connect" title="Verbindungsmodus (C)"><span class="ico">⇄</span>Verbinden</button>
+      <span class="tb-conn">
+        <svg class="tb-conn-swatch" viewBox="0 0 22 12" aria-hidden="true"><line id="conn-swatch" x1="1" y1="6" x2="21" y2="6" stroke-linecap="round"></line></svg>
+        <select id="opt-conntype" class="tb-select" title="Art für neue Verbindungen"></select>
+      </span>
+      <button class="tb-btn mode" data-act="mode-pan" data-mode="pan" title="Hand-Werkzeug (H)"><span class="ico">✋</span>Hand</button>
+    </div>
+
+    <div class="tb-group">
+      <button class="tb-btn icon-only" data-act="undo" title="Rückgängig (Strg+Z)">↶</button>
+      <button class="tb-btn icon-only" data-act="redo" title="Wiederholen (Strg+Y)">↷</button>
+    </div>
+
+    <div class="tb-group">
+      <button class="tb-btn icon-only" data-act="zoom-out" title="Zoom verkleinern (Strg+-)">−</button>
+      <button class="tb-btn zoom-label" data-act="zoom-reset" title="Zoom zurücksetzen (Strg+0)"><span id="zoom-value">100 %</span></button>
+      <button class="tb-btn icon-only" data-act="zoom-in" title="Zoom vergrößern (Strg++)">+</button>
+      <button class="tb-btn icon-only" data-act="zoom-fit" title="Alles einpassen (Strg+1)">⤢</button>
+    </div>
+
+    <div class="tb-group">
+      <label class="tb-check" title="Raster anzeigen"><input type="checkbox" id="opt-grid" checked><span>Raster</span></label>
+      <label class="tb-check" title="Am Raster ausrichten"><input type="checkbox" id="opt-snap" checked><span>Snap</span></label>
+      <label class="tb-check" title="Hinweisfenster ein-/ausblenden"><input type="checkbox" id="opt-tips" checked><span>Tipps</span></label>
+      <label class="tb-check" title="Gerätefotos auf der Zeichenfläche anzeigen"><input type="checkbox" id="opt-photos" checked><span>Fotos</span></label>
+      <select id="opt-routing" class="tb-select" title="Linienführung">
+        <option value="orthogonal">Orthogonal</option>
+        <option value="straight">Gerade</option>
+        <option value="curved">Gebogen</option>
+      </select>
+    </div>
+
+    <div class="tb-spacer"></div>
+
+    <div class="tb-search">
+      <input type="search" id="device-search" placeholder="Gerät suchen …" autocomplete="off">
+      <div id="search-results" class="search-results" hidden></div>
+    </div>
+
+    <div class="tb-group">
+      <button class="tb-btn danger" data-act="clear" title="Zeichenfläche löschen"><span class="ico">🗑</span>Leeren</button>
+      <div class="tb-menu-wrap">
+        <button class="tb-btn" data-act="help-menu" title="Hilfe, Handbuch und Projektinformationen">?<span class="caret">▾</span></button>
+        <div class="tb-menu tb-menu-right" id="help-menu" hidden>
+          <button data-act="help">Hilfe &amp; Tastaturkürzel …</button>
+          <button data-act="handbook">Ausführliches Handbuch …</button>
+          <div class="tb-menu-sep"></div>
+          <button data-act="info">Projektinformationen …</button>
+        </div>
+      </div>
+      <div class="tb-menu-wrap">
+        <button class="tb-btn" data-act="settings-menu" title="Einstellungen, Design und Setups">⚙<span class="caret">▾</span></button>
+        <div class="tb-menu tb-menu-right" id="settings-menu" hidden>
+          <button data-act="settings">Einstellungen …</button>
+          <button data-act="recovery">Sicherungsverlauf …</button>
+          <button data-act="theme">Design wechseln</button>
+          <button data-act="privacy">Vertrauliche Angaben maskieren</button>
+          <div class="tb-menu-sep"></div>
+          <div class="tb-menu-title">Setups</div>
+          <div id="setup-list"></div>
+          <button data-act="setup-save">Aktuelle Einstellungen sichern …</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="main">
+
+    <aside id="sidebar">
+      <div class="side-block">
+        <input type="search" id="catalog-search" placeholder="Komponente suchen …" autocomplete="off">
+      </div>
+      <div id="catalog" class="side-scroll"></div>
+      <div class="side-block side-foot">
+        <div class="side-head">
+          <span>Ebenen</span>
+          <button class="mini-btn" id="layer-add" title="Ebene hinzufügen">+</button>
+        </div>
+        <div id="layers"></div>
+        <label class="layer-target">
+          <span>Neue Objekte auf</span>
+          <select id="active-layer"></select>
+        </label>
+      </div>
+    </aside>
+
+    <div id="canvas-wrap">
+      <svg id="canvas" tabindex="0">
+        <defs id="svg-defs">
+          <pattern id="p-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path id="grid-minor" d="M20 0H0V20" fill="none" stroke="#e3e8ef" stroke-width="1"/>
+          </pattern>
+          <pattern id="p-grid-major" width="100" height="100" patternUnits="userSpaceOnUse">
+            <rect width="100" height="100" fill="url(#p-grid)"/>
+            <path id="grid-major" d="M100 0H0V100" fill="none" stroke="#cdd5e0" stroke-width="1"/>
+          </pattern>
+          <clipPath id="clip-node-photo" clipPathUnits="userSpaceOnUse">
+            <rect x="6" y="6" width="120" height="48" rx="6"></rect>
+          </clipPath>
+          <!--__ICONS__-->
+          <!--__HARDWARE__-->
+          <g id="custom-defs"></g>
+        </defs>
+
+        <rect id="grid-bg" x="0" y="0" width="100%" height="100%" fill="url(#p-grid-major)"></rect>
+
+        <g id="viewport">
+          <g id="l-areas"></g>
+          <g id="l-deco"></g>
+          <g id="l-edges"></g>
+          <g id="l-nodes"></g>
+          <g id="l-deco-front"></g>
+          <g id="l-overlay"></g>
+        </g>
+      </svg>
+
+      <div id="minimap" title="Übersichtskarte">
+        <svg id="minimap-svg" viewBox="0 0 200 130" preserveAspectRatio="xMidYMid meet">
+          <g id="mm-content"></g>
+          <rect id="mm-view" x="0" y="0" width="0" height="0"></rect>
+        </svg>
+        <button id="minimap-toggle" title="Minimap ein-/ausblenden">▾</button>
+      </div>
+
+      <div id="statusbar">
+        <span id="st-mode">Auswahl</span>
+        <span id="st-counts">0 Geräte · 0 Verbindungen</span>
+        <span id="st-selection">Keine Auswahl</span>
+        <span id="st-coords">x 0 · y 0</span>
+        <span id="st-storage"></span>
+      </div>
+
+      <div id="connect-hint" class="hint" hidden>Erstes Gerät wählen …</div>
+    </div>
+  </div>
+</div>
+
+<div id="contextmenu" class="ctx" hidden></div>
+<dialog id="modal"></dialog>
+<div id="toasts"></div>
+<input type="file" id="file-input" accept="application/json,.json" hidden>
+
+<script>
+/*__JS__*/
+</script>
+</body>
+</html>

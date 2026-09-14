@@ -1,0 +1,25 @@
+{
+  "name": "netzwerk-topologie-tool",
+  "version": "1.0.0",
+  "description": "Interaktiver Editor für Netzwerk-Topologien — Auslieferung als einzelne, offline lauffähige HTML-Datei",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node build.js",
+    "watch": "node build.js --watch",
+    "test": "node build.js && node test/smoke.js && node test/regression.js",
+    "test:regression": "node build.js && node test/regression.js",
+    "test:scanners": "node test/scanners.js",
+    "test:repository": "node test/repository.js",
+    "release": "node build.js && node release.js",
+    "test:visual": "node build.js && node test/visual.js",
+    "test:all": "node build.js && node test/repository.js && node test/smoke.js && node test/regression.js && node test/contrast.js && node test/visual.js && node test/scanners.js",
+    "browser:install": "node node_modules/playwright-core/cli.js install chromium",
+    "test:contrast": "node build.js && node test/contrast.js"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.56.0"
+  }
+}

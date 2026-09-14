@@ -1,0 +1,16 @@
+WINDOWS
+=======
+start.bat doppelklicken.
+
+LINUX UND MACOS
+===============
+netzwerk_topologie_tool.html im Browser oeffnen.
+
+Das Frontend benoetigt nur einen aktuellen Browser und keine Anaconda-Umgebung.
+Projektdateien regelmaessig als JSON exportieren, damit eine unabhaengige
+Sicherung ausserhalb des Browserprofils vorhanden ist.
+
+Das Linux-/macOS-Analyseskript benoetigt Python 3.9+ und die Netzwerkwerkzeuge
+des Systems. Scanner nur in eigenen oder ausdruecklich freigegebenen Netzen
+verwenden.
+

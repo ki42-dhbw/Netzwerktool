@@ -1,0 +1,12 @@
+node_modules/
+test/output/
+scan/
+dist/
+git/
+__pycache__/
+.DS_Store
+Thumbs.db
+*.log
+netzwerk_scan.json
+.vscode/
+.idea/
